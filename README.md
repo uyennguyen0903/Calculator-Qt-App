@@ -1,2 +1,2 @@
 # CompUT
-Application CompUT - Scientific Calculator
+CompUT - Scientific Calculator
