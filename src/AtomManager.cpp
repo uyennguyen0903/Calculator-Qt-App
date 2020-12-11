@@ -1,21 +1,24 @@
 #include "AtomManager.h"
 
+AtomManager::~AtomManager() {
+  for (Atom* atom : atoms_) delete atom;
+}
+
 AtomManager::AtomHandler AtomManager::atom_handler_;
 
-Atom& AtomManager::AddAtom(string const& id, Literal* literal,
-                           const Literal::LiteralType& type) {
-  for (Atom* atom : atoms) {
+Atom& AtomManager::AddAtom(string const& id, Literal* literal) {
+  for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
-      atom->SetValue(literal, type);
+      atom->SetValue(literal);
       return *atom;
     }
   }
-  atoms.push_back(new Atom(id, literal, type));
-  return *(atoms.back());
+  atoms_.push_back(new Atom(id, literal));
+  return *(atoms_.back());
 }
 
 bool AtomManager::CheckExistedAtom(string const& id) {
-  for (Atom* atom : atoms) {
+  for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
       return true;
     }
@@ -30,7 +33,7 @@ AtomManager& AtomManager::GetInstance() {
   return *(atom_handler_.instance);
 }
 
-void AtomManager::LibererInstance() {
+void AtomManager::FreeInstance() {
   delete atom_handler_.instance;
   atom_handler_.instance = nullptr;
 }

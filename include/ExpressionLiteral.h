@@ -12,9 +12,11 @@ class ExpressionLiteral : public Literal {
   string id_;
 
  public:
- public:
-  ExpressionLiteral(string const& id) : id_(id) {}
+  ExpressionLiteral(string const& id) : id_(id) {};
+ 
   const string Print() const override { return id_; }
+ 
+  LiteralType GetLiteralType() const override { return kExpression; }
 };
 
 #endif  // EXPRESSION_LITERAL_H_

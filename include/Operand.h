@@ -15,10 +15,14 @@ class Operand {
     kExpression,
     kOperator
   };
+
   static constexpr OperandType kOperandList[] = {
       kInteger, kReal, kFraction, kProgram, kExpression, kOperator};
+
   Operand() = default;
+
   virtual ~Operand(){};
+
   virtual const string Print() const = 0;
 };
 

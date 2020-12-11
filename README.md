@@ -1,2 +1,2 @@
-# CompUT
-CompUT - Scientific Calculator
+# Calculator-Qt-App
+Scientific Calculator

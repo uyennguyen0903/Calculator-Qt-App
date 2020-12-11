@@ -9,32 +9,33 @@ using namespace std;
 
 class AtomManager {
  private:
-  vector<Atom*> atoms;
+  vector<Atom*> atoms_;
 
-  ~AtomManager() {
-    for (Atom* atom : atoms) delete atom;
-  }
+  ~AtomManager();
 
   AtomManager() = default;
 
-  AtomManager(const AtomManager& am) = delete;
+  AtomManager(const AtomManager& atom_mananger) = delete;
 
-  AtomManager& operator=(const AtomManager& am) = delete;
+  AtomManager& operator=(const AtomManager& atom_manager) = delete;
 
+  // Design Pattern Singleton.
   struct AtomHandler {
     AtomManager* instance;
-    AtomHandler() : instance(nullptr) {}
+    AtomHandler() : instance(nullptr){};
     ~AtomHandler() { delete instance; }
   };
 
   static AtomHandler atom_handler_;
 
  public:
-  Atom& AddAtom(string const& id, Literal* literal,
-                const Literal::LiteralType& type);
+  Atom& AddAtom(string const& id, Literal* literal);
+
   bool CheckExistedAtom(string const& id);
+
   static AtomManager& GetInstance();
-  static void LibererInstance();
+
+  static void FreeInstance();
 };
 
 #endif  // ATOM_MANAGER_H_

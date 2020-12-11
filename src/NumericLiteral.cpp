@@ -1,7 +1,5 @@
 #include "NumericLiteral.h"
 
-#include "ComputerException.h"
-
 Fraction::Fraction(int numerator, int denominator) {
   SetFraction(numerator, denominator);
 }

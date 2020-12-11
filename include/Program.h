@@ -8,18 +8,18 @@
 
 using namespace std;
 
-class Program : public Literal, public Operand {
+class Program : public Literal {
  private:
   vector<Operand*> elements_;
 
  public:
-  Program(vector<Operand*> elements) : elements_(elements) {}
+  Program(vector<Operand*> elements) : elements_(elements){};
 
-  ~Program() {
-    for (Operand* element : elements_) delete element;
-  }
+  ~Program();
 
   const string Print() const;
+
+  LiteralType GetLiteralType() const override { return LiteralType::kProgram; }
 };
 
 #endif  // PROGRAM_H_

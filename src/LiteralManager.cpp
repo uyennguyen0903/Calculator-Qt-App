@@ -1,15 +1,23 @@
 #include "LiteralManager.h"
 
 LiteralManager::~LiteralManager() {
-  for (auto p : literals_) {
-    delete p.first;
+  for (auto literal : literals_) {
+    delete literal;
   }
 }
 
-Literal& LiteralManager::AddLiteral(Literal* const literal,
-                                    const Literal::LiteralType& type) {
-  literals_.push_back(make_pair(literal, type));
-  return *(literals_.back().first);
+Literal& LiteralManager::AddLiteral(Literal* const literal) {
+  literals_.push_back(literal);
+  return *(literals_.back());
+}
+
+void LiteralManager::RemoveLiteral(Literal& literal) {
+  for (size_t i = 0; i < literals_.size(); ++i) {
+    if (literals_[i] == &literal) {
+      delete literals_[i];
+      literals_.erase(literals_.begin() + i);
+    }
+  }
 }
 
 LiteralManager::LiteralHandler LiteralManager::literal_handler_;

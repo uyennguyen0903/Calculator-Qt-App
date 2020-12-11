@@ -12,23 +12,32 @@ using namespace std;
 
 class LiteralManager {
  private:
-  vector<pair<Literal*, Literal::LiteralType>> literals_;
+  vector<Literal*> literals_;
+
   LiteralManager() = default;
+
   ~LiteralManager();
+
   LiteralManager(const LiteralManager& lm) = delete;
+
   LiteralManager& operator=(const LiteralManager& lm) = delete;
 
+  // Design Pattern Singleton.
   struct LiteralHandler {
     LiteralManager* instance;
-    LiteralHandler() : instance(nullptr) {}
+    LiteralHandler() : instance(nullptr){};
     ~LiteralHandler() { delete instance; }
   };
 
   static LiteralHandler literal_handler_;
 
  public:
-  Literal& AddLiteral(Literal* const literal, const Literal::LiteralType& type);
+  Literal& AddLiteral(Literal* const literal);
+
+  void RemoveLiteral(Literal& literal);
+
   static LiteralManager& GetInstance();
+
   static void LibererInstance();
 };
 

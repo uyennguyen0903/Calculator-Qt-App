@@ -9,8 +9,11 @@ class Item {
 
  public:
   Item() : literal_(nullptr) {}
+
   void SetLiteral(Literal& literal) { literal_ = &literal; }
-  void raz() { literal_ = nullptr; }
+
+  void SetLiteralNull() { literal_ = nullptr; }
+
   Literal& GetLiteral() const;
 };
 

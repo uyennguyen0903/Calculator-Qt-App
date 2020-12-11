@@ -4,16 +4,21 @@
 #include <algorithm>
 #include <string>
 
+#include "ComputerException.h"
 #include "Literal.h"
 #include "Operand.h"
 
 using namespace std;
 
-class NumericLiteral : public Operand, public Literal {
+class NumericLiteral : public Literal {
  public:
   NumericLiteral() = default;
+
   virtual ~NumericLiteral(){};
+
   virtual const string Print() const = 0;
+
+  virtual LiteralType GetLiteralType() const = 0;
 };
 
 class Integer : public NumericLiteral {
@@ -22,9 +27,14 @@ class Integer : public NumericLiteral {
 
  public:
   Integer(int value) : value_(value){};
+
   int GetInt() { return value_; }
+
   void SetInt(int value) { value_ = value; }
+
   const string Print() const override { return to_string(value_); }
+
+  LiteralType GetLiteralType() const override { return LiteralType::kInteger; }
 };
 
 class Fraction : public NumericLiteral {
@@ -35,12 +45,18 @@ class Fraction : public NumericLiteral {
 
  public:
   Fraction(int numerator = 0, int denominator = 1);
+
   int GetNumerator() { return numerator_; }
+
   int GetDenominator() { return denominator_; }
+
   void SetFraction(int numerator, int denominator);
+
   const string Print() const override {
     return to_string(numerator_) + "/" + to_string(denominator_);
   }
+
+  LiteralType GetLiteralType() const override { return LiteralType::kFraction; }
 };
 
 class Real : public NumericLiteral {
@@ -48,10 +64,15 @@ class Real : public NumericLiteral {
   double value_;
 
  public:
-  Real(double value) : value_(value) {}
+  Real(double value) : value_(value){};
+
   int GetReal() { return value_; }
+
   void SetReal(double value) { value_ = value; }
+
   const string Print() const override { return to_string(value_); }
+
+  LiteralType GetLiteralType() const override { return LiteralType::kReal; }
 };
 
 #endif  // NUMERICAL_LITERAL_H_

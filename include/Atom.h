@@ -7,25 +7,20 @@
 #include "NumericLiteral.h"
 
 using namespace std;
-// xem xet co nen bo cai numeric_literal ko ?
+
 class Atom {
  private:
   string id_;
-  Literal::LiteralType literal_type_;
   Literal* literal_ = nullptr;
 
  public:
-  Atom(string const& id, Literal* literal, Literal::LiteralType type)
-      : id_(id), literal_(literal), literal_type_(type) {}
+  Atom(string const& id, Literal* literal) : id_(id), literal_(literal){};
 
   ~Atom() { delete literal_; }
 
   string GetId() const { return id_; }
 
-  void SetValue(Literal* literal, const Literal::LiteralType& type) {
-    delete literal_;
-    literal_ = literal;
-  }
+  void SetValue(Literal* literal);
 };
 
 #endif  // ATOM_H_
