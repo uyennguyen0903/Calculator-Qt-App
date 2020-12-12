@@ -42,6 +42,13 @@ target_link_libraries(UTCalculateur Qt5::Gui)
 # target_link_libraries(UTCalculateur Qt5Multimedia)
 # target_link_libraries(UTCalculateur Qt5::Multimedia)
 
+add_library(UTComp_lib ${all_SRCS})
+target_link_libraries(UTComp_lib Qt5::Widgets)
+target_link_libraries(UTComp_lib Qt5::Core)
+target_link_libraries(UTComp_lib Qt5::Gui)
+
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+
+add_subdirectory(test)

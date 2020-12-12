@@ -5,4 +5,4 @@ void Controller::SetOperator(Operator* op) {
   operator_ = op;
 }
 
-void Controller::Commande(const QString& exp) {}
+void Controller::Commande(const QString& expression) {}

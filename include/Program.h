@@ -1,6 +1,7 @@
 #ifndef PROGRAM_H_
 #define PROGRAM_H_
 
+#include <QString>
 #include <vector>
 
 #include "Literal.h"

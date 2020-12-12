@@ -13,11 +13,13 @@ class Operand {
     kFraction,
     kProgram,
     kExpression,
-    kOperator
+    kAtom,
+    kOperator,
+    kUndefined
   };
 
   static constexpr OperandType kOperandList[] = {
-      kInteger, kReal, kFraction, kProgram, kExpression, kOperator};
+      kInteger, kReal, kFraction, kProgram, kExpression, kOperator, kUndefined, kAtom};
 
   Operand() = default;
 

@@ -23,7 +23,7 @@ class Operator : public Operand {
 
   virtual ~Operator(){};
 
-  static const set<QString> operator_list_;
+  static const set<QString> kOperatorList;
 
   virtual const QString Print() const = 0;
 
