@@ -20,7 +20,7 @@ class Controller {
 
   void SetOperator(Operator* op);
 
-  void Commande(const string& exp);
+  void Commande(const QString& exp);
 };
 
 #endif  // CONTROLLER_H_

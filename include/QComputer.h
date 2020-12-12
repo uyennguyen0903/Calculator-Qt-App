@@ -12,6 +12,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <iostream>
 
 #include "ComputerException.h"
 #include "Controller.h"
@@ -38,6 +39,7 @@ class QComputer : public QWidget {
   void Refresh();
 
   void GetNextCommande();
+
   void OnClick();
 };
 

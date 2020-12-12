@@ -17,7 +17,7 @@ class Program : public Literal {
 
   ~Program();
 
-  const string Print() const;
+  const QString Print() const;
 
   LiteralType GetLiteralType() const override { return LiteralType::kProgram; }
 };

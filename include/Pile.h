@@ -1,22 +1,24 @@
 #ifndef PILE_H_
 #define PILE_H_
 
+#include <QObject>
 #include <vector>
 
 #include "Item.h"
 
 using namespace std;
 
-class Pile {
+class Pile : public QObject {
  private:
+  Q_OBJECT;
   vector<Item> items_;
-  string message_;
+  QString message_;
   size_t nb_display_;
 
  public:
   Pile() : message_(""), nb_display_(5){};
 
-  ~Pile();
+  ~Pile() = default;
 
   void Push(Literal& literal);
 
@@ -28,11 +30,42 @@ class Pile {
 
   size_t GetNbDisplay() const { return nb_display_; }
 
-  void SetMessage(string message) { message_ = message; }
+  void SetMessage(QString message) { message_ = message; }
 
-  string GetMessage() const { return message_; }
+  QString GetMessage() const { return message_; }
 
   size_t GetPileSize() const { return items_.size(); }
+
+  // Design pattern iterator.
+  class Iterator {
+   private:
+    vector<Item> items_;
+
+    size_t cur_position_;
+
+    Iterator(vector<Item> items, size_t pos)
+        : items_(items), cur_position_(pos){};
+
+    friend class Pile;
+
+   public:
+    Literal& operator*() const { return items_[cur_position_].GetLiteral(); }
+
+    bool operator!=(Iterator it) const {
+      return it.cur_position_ != cur_position_;
+    }
+
+    Iterator& operator++() {
+      --cur_position_;
+      return *this;
+    }
+  };
+
+  Iterator begin() { return Iterator(items_, items_.size() - 1); }
+  Iterator end() { return Iterator(items_, -1); }
+
+ signals:
+  void ModifyStatus();
 };
 
 #endif  // PILE_H_

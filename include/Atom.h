@@ -1,7 +1,7 @@
 #ifndef ATOM_H_
 #define ATOM_H_
 
-#include <iostream>
+#include <QString>
 
 #include "Literal.h"
 #include "NumericLiteral.h"
@@ -10,15 +10,15 @@ using namespace std;
 
 class Atom {
  private:
-  string id_;
+  QString id_;
   Literal* literal_ = nullptr;
 
  public:
-  Atom(string const& id, Literal* literal) : id_(id), literal_(literal){};
+  Atom(QString const& id, Literal* literal) : id_(id), literal_(literal){};
 
   ~Atom() { delete literal_; }
 
-  string GetId() const { return id_; }
+  QString GetId() const { return id_; }
 
   void SetValue(Literal* literal);
 };

@@ -6,7 +6,7 @@ AtomManager::~AtomManager() {
 
 AtomManager::AtomHandler AtomManager::atom_handler_;
 
-Atom& AtomManager::AddAtom(string const& id, Literal* literal) {
+Atom& AtomManager::AddAtom(QString const& id, Literal* literal) {
   for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
       atom->SetValue(literal);
@@ -17,7 +17,7 @@ Atom& AtomManager::AddAtom(string const& id, Literal* literal) {
   return *(atoms_.back());
 }
 
-bool AtomManager::CheckExistedAtom(string const& id) {
+bool AtomManager::CheckExistedAtom(QString const& id) {
   for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
       return true;

@@ -1,7 +1,6 @@
 #ifndef OPERATOR_H_
 #define OPERATOR_H_
 
-#include <iostream>
 #include <set>
 
 #include "Literal.h"
@@ -24,21 +23,21 @@ class Operator : public Operand {
 
   virtual ~Operator(){};
 
-  static const set<string> operator_list_;
+  static const set<QString> operator_list_;
 
-  virtual const string Print() const = 0;
+  virtual const QString Print() const = 0;
 
   virtual void Execute() const = 0;
 };
 
 class AdditionOperator : public Operator {
  private:
-  string expression_ = "+";
+  QString expression_ = "+";
 
  public:
   AdditionOperator() = default;
 
-  string const Print() const override { return expression_; }
+  QString const Print() const override { return expression_; }
 
   void Execute() const override;
 };

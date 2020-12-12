@@ -1,7 +1,7 @@
 #ifndef LITERAL_H_
 #define LITERAL_H_
 
-#include <iostream>
+#include <QString>
 
 #include "Operand.h"
 
@@ -16,7 +16,7 @@ class Literal : public Operand {
 
   virtual ~Literal(){};
 
-  virtual const string Print() const = 0;
+  virtual const QString Print() const = 0;
 
   virtual LiteralType GetLiteralType() const = 0;
 

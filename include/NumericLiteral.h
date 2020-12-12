@@ -1,8 +1,8 @@
 #ifndef NUMERICAL_LITERAL_H_
 #define NUMERICAL_LITERAL_H_
 
+#include <QString>
 #include <algorithm>
-#include <string>
 
 #include "ComputerException.h"
 #include "Literal.h"
@@ -16,7 +16,7 @@ class NumericLiteral : public Literal {
 
   virtual ~NumericLiteral(){};
 
-  virtual const string Print() const = 0;
+  virtual const QString Print() const = 0;
 
   virtual LiteralType GetLiteralType() const = 0;
 };
@@ -32,7 +32,7 @@ class Integer : public NumericLiteral {
 
   void SetInt(int value) { value_ = value; }
 
-  const string Print() const override { return to_string(value_); }
+  const QString Print() const override { return QString::number(value_); }
 
   LiteralType GetLiteralType() const override { return LiteralType::kInteger; }
 };
@@ -52,8 +52,8 @@ class Fraction : public NumericLiteral {
 
   void SetFraction(int numerator, int denominator);
 
-  const string Print() const override {
-    return to_string(numerator_) + "/" + to_string(denominator_);
+  const QString Print() const override {
+    return QString::number(numerator_) + "/" + QString::number(denominator_);
   }
 
   LiteralType GetLiteralType() const override { return LiteralType::kFraction; }
@@ -70,7 +70,7 @@ class Real : public NumericLiteral {
 
   void SetReal(double value) { value_ = value; }
 
-  const string Print() const override { return to_string(value_); }
+  const QString Print() const override { return QString::number(value_); }
 
   LiteralType GetLiteralType() const override { return LiteralType::kReal; }
 };

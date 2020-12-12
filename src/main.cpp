@@ -1,13 +1,12 @@
-#include <cstdlib>
+#include <QApplication>
 #include <iostream>
 
-using namespace std;
+#include "QComputer.h"
 
-int main() {
-  string s;
-  cin >> s;
-  double x = stod(s);
-  cout << x << endl;
-  cout << "hello" << endl;
-  return 0;
+int main(int argc, char* argv[]) {
+  QApplication app(argc, argv);
+  QComputer fenetre;
+  fenetre.setFixedSize(700, 600);
+  fenetre.show();
+  return app.exec();
 }

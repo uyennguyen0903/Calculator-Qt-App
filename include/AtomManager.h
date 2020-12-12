@@ -1,6 +1,7 @@
 #ifndef ATOM_MANAGER_H_
 #define ATOM_MANAGER_H_
 
+#include <QString>
 #include <vector>
 
 #include "Atom.h"
@@ -29,9 +30,9 @@ class AtomManager {
   static AtomHandler atom_handler_;
 
  public:
-  Atom& AddAtom(string const& id, Literal* literal);
+  Atom& AddAtom(QString const& id, Literal* literal);
 
-  bool CheckExistedAtom(string const& id);
+  bool CheckExistedAtom(QString const& id);
 
   static AtomManager& GetInstance();
 

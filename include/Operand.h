@@ -1,7 +1,7 @@
 #ifndef OPERAND_H_
 #define OPERAND_H_
 
-#include <iostream>
+#include <QString>
 
 using namespace std;
 
@@ -23,7 +23,7 @@ class Operand {
 
   virtual ~Operand(){};
 
-  virtual const string Print() const = 0;
+  virtual const QString Print() const = 0;
 };
 
 #endif  // OPERAND_H_
