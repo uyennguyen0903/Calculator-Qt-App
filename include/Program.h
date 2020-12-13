@@ -4,6 +4,7 @@
 #include <QString>
 #include <vector>
 
+#include "AtomManager.h"
 #include "Literal.h"
 #include "Operand.h"
 
@@ -11,10 +12,12 @@ using namespace std;
 
 class Program : public Literal {
  private:
-  vector<Operand*> elements_;
+  // vector<Operand*> elements_;
+  vector<QString> elements_;
+  AtomManager& atom_mananer_ = AtomManager::GetInstance();
 
  public:
-  Program(vector<QString> elements);
+  Program(vector<QString> elements) : elements_(elements){};
 
   ~Program();
 
