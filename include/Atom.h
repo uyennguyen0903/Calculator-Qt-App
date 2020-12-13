@@ -18,7 +18,7 @@ class Atom {
 
   ~Atom() { delete literal_; }
 
-  QString GetId() const { return id_; }
+  const QString GetId() const { return id_; }
 
   void SetValue(Literal* literal);
 };

@@ -1,31 +1,34 @@
 #include "QComputer.h"
 
+#include <QDebug>
+
 QComputer::QComputer(QWidget* parent) : QWidget(parent) {
-  pile_ = new Pile;
-  controller_ = new Controller(LiteralManager::GetInstance(), *pile_);
+  pile = new Pile;
+  controleur = new Controller(LiteralManager::GetInstance(), *pile, nullptr);
   // Créer la barre de message pour l'utilisateur.
-  message_ = new QLineEdit;
-  message_->setReadOnly(true);
+  message = new QLineEdit;
+  message->setReadOnly(true);
 
   // Créer et customiser la panel de pile.
-  vue_pile_ = new QTableWidget(pile_->GetNbDisplay(), 1);
-  vue_pile_->horizontalHeader()->setVisible(false);
-  vue_pile_->horizontalHeader()->setStretchLastSection(true);
+  vue_pile = new QTableWidget(pile->GetNbDisplay(), 1);
+  // maintenant nbAfficher = 5, il faut modifier quand on a la class Pile.
+  vue_pile->horizontalHeader()->setVisible(false);
+  vue_pile->horizontalHeader()->setStretchLastSection(true);
 
   QStringList labelList;
-  for (size_t i = pile_->GetNbDisplay(); i > 0; --i) {
+  for (unsigned int i = pile->GetNbDisplay(); i > 0; --i) {
     QString str = QString::number(i);
     labelList << str;
   }
-  vue_pile_->setVerticalHeaderLabels(labelList);
+  vue_pile->setVerticalHeaderLabels(labelList);
   // vue_pile->setDisabled(true);  // Mettre la pile non modiable.
 
-  for (size_t i = 0; i < pile_->GetNbDisplay(); i++) {
-    vue_pile_->setItem(i, 0, new QTableWidgetItem(""));
+  for (unsigned int i = 0; i < pile->GetNbDisplay(); i++) {
+    vue_pile->setItem(i, 0, new QTableWidgetItem(""));
   }
 
   // Créer la barre de commande.
-  commande_ = new QLineEdit;
+  commande = new QLineEdit;
 
   // Mettre un titre à la fenêtre.
   setWindowTitle("Comp'UT");
@@ -33,49 +36,49 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   // Créer les buttons pour les claviers cliquables.
   // Expressions litérales.
   QPushButton* un = new QPushButton("1");
-  connect(un, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(un, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* deux = new QPushButton("2");
-  connect(deux, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(deux, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* trois = new QPushButton("3");
-  connect(trois, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(trois, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* quatre = new QPushButton("4");
-  connect(quatre, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(quatre, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* cinq = new QPushButton("5");
-  connect(cinq, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(cinq, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* six = new QPushButton("6");
-  connect(six, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(six, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* sept = new QPushButton("7");
-  connect(sept, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(sept, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* huit = new QPushButton("8");
-  connect(huit, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(huit, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* neuf = new QPushButton("9");
-  connect(neuf, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(neuf, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* zero = new QPushButton("0");
-  connect(zero, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(zero, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* point = new QPushButton(".");
-  connect(point, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(point, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* paren_ouvrante = new QPushButton("[");
-  connect(paren_ouvrante, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(paren_ouvrante, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* paren_ferrmante = new QPushButton("]");
-  connect(paren_ferrmante, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(paren_ferrmante, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* guillemet_simp = new QPushButton("'");
-  connect(guillemet_simp, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(guillemet_simp, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // Opérandes.
   QPushButton* plus = new QPushButton("+");
-  connect(plus, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(plus, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* moins = new QPushButton("-");
-  connect(moins, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(moins, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* fois = new QPushButton("*");
-  connect(fois, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(fois, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* division = new QPushButton("/");
-  connect(division, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(division, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // Les touches Entrée & Eval.
   QPushButton* entree = new QPushButton("ENTREE");
-  connect(entree, SIGNAL(clicked()), this, SLOT(GetNextCommande()));
+  connect(entree, SIGNAL(clicked()), this, SLOT(getNextCommande()));
   QPushButton* eval = new QPushButton("EVAL");
-  connect(eval, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(eval, SIGNAL(clicked()), this, SLOT(onClick()));
 
   QHBoxLayout* line0 = new QHBoxLayout;
   line0->addWidget(guillemet_simp);
@@ -117,35 +120,35 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
 
   // Opérateurs numériques
   QPushButton* div = new QPushButton("DIV");
-  connect(div, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(div, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* mod = new QPushButton("MOD");
-  connect(mod, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(mod, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* neg = new QPushButton("NEG");
-  connect(neg, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(neg, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* sq_root = new QPushButton("SQRT");
-  connect(sq_root, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(sq_root, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* pow = new QPushButton("POW");
-  connect(pow, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(pow, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* exp = new QPushButton("EXP");
-  connect(exp, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(exp, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* ln = new QPushButton("LN");
-  connect(ln, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(ln, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* num = new QPushButton("NUM");
-  connect(num, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(num, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* den = new QPushButton("DEN");
-  connect(den, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(den, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* sin = new QPushButton("SIN");
-  connect(sin, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(sin, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* cos = new QPushButton("COS");
-  connect(cos, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(cos, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* tan = new QPushButton("TAN");
-  connect(tan, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(tan, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* arcsin = new QPushButton("ARCSIN");
-  connect(arcsin, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(arcsin, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* arccos = new QPushButton("ARCCOS");
-  connect(arccos, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(arccos, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* arctan = new QPushButton("ARCTAN");
-  connect(arctan, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(arctan, SIGNAL(clicked()), this, SLOT(onClick()));
 
   QHBoxLayout* line5 = new QHBoxLayout;
   line5->addWidget(neg);
@@ -182,19 +185,19 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
 
   // Opérateurs logiques.
   QPushButton* equal = new QPushButton("=");
-  connect(equal, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(equal, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* diff = new QPushButton("!=");
-  connect(diff, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(diff, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* sup = new QPushButton(">");
-  connect(sup, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(sup, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* inf = new QPushButton("<");
-  connect(inf, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(inf, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* et = new QPushButton("AND");
-  connect(et, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(et, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* ou = new QPushButton("OR");
-  connect(ou, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(ou, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* non = new QPushButton("NOT");
-  connect(non, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(non, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // La 'couche3' contient les opérateurs logiques.
   QHBoxLayout* couche3 = new QHBoxLayout;
@@ -208,21 +211,21 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
 
   // Opérateurs de manipulation.
   QPushButton* dup = new QPushButton("DUP");
-  connect(dup, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(dup, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* drop = new QPushButton("DROP");
-  connect(drop, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(drop, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* echanger = new QPushButton("SWAP");
-  connect(echanger, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(echanger, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* effacer = new QPushButton("CLEAR");
-  connect(effacer, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(effacer, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // Opérateurs conditionnels et de boucle.
   QPushButton* ift = new QPushButton("IFT");
-  connect(ift, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(ift, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* ifte = new QPushButton("IFTE");
-  connect(ifte, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(ifte, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* tant_que = new QPushButton("WHILE");
-  connect(tant_que, SIGNAL(clicked()), this, SLOT(OnClick()));
+  connect(tant_que, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // La 'couche4' contient les opérateurs de manipulation et opérateurs
   // conditionnels et de boucle.
@@ -239,47 +242,47 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   couche12->addLayout(couche2);
   couche12->addLayout(couche1);
 
-  QVBoxLayout* clavier_ = new QVBoxLayout;
-  clavier_->addLayout(couche4);
-  clavier_->addLayout(couche3);
-  clavier_->addLayout(couche12);
+  QVBoxLayout* clavier = new QVBoxLayout;
+  clavier->addLayout(couche4);
+  clavier->addLayout(couche3);
+  clavier->addLayout(couche12);
 
   // Aligner tous les objets précédents.
-  couche_ = new QVBoxLayout;
-  couche_->addWidget(message_);
-  couche_->addWidget(vue_pile_);
-  couche_->addWidget(commande_);
-  couche_->addLayout(clavier_);
-  setLayout(couche_);
+  couche = new QVBoxLayout;
+  couche->addWidget(message);
+  couche->addWidget(vue_pile);
+  couche->addWidget(commande);
+  couche->addLayout(clavier);
+  setLayout(couche);
 
-  connect(pile_, SIGNAL(ModifyStatus()), this, SLOT(Refresh()));
-  connect(commande_, SIGNAL(ReturnPressed()), this, SLOT(GetNextCommande()));
+  connect(pile, SIGNAL(ModifyStatus()), this, SLOT(refresh()));
+  connect(commande, SIGNAL(returnPressed()), this, SLOT(getNextCommande()));
 }
 
-void QComputer::Refresh() {
-  message_->setText(pile_->GetMessage());
-
-  for (size_t i = 0; i < pile_->GetNbDisplay(); i++) {
-    vue_pile_->item(i, 0)->setText("");
+void QComputer::refresh() {
+  message->setText(pile->GetMessage());
+  for (size_t i = 0; i < pile->GetNbDisplay(); i++) {
+    vue_pile->item(i, 0)->setText("");
   }
 
   size_t nb = 0;
-  for (Pile::Iterator it = pile_->begin();
-       it != pile_->end() && nb < pile_->GetNbDisplay(); ++it) {
-    vue_pile_->item(pile_->GetNbDisplay() - nb - 1, 0)->setText((*it).Print());
+  for (Pile::Iterator it = pile->begin();
+       it != pile->end() && nb < pile->GetNbDisplay(); ++it) {
+    vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)->setText((*it).Print());
     nb++;
   }
 }
 
-void QComputer::GetNextCommande() {
-  QString c = commande_->text();  // On récupère la ligne de commande.
-  controller_->Commande(c);
-  commande_->clear();
+void QComputer::getNextCommande() {
+  QString c = commande->text();  // on récupère la ligne de commande
+  std::cout << c.toLocal8Bit().constData() << endl;
+  QString InvalidCommand = controleur->Commande(c);
+  commande->setText(InvalidCommand);
 }
 
-void QComputer::OnClick() {
+void QComputer::onClick() {
   QPushButton* button = (QPushButton*)sender();
-  QString c = commande_->text();  // On récupère la ligne de commande.
+  QString c = commande->text();  // on récupère la ligne de commande
   c += button->text();
-  commande_->setText(c);
+  commande->setText(c);
 }

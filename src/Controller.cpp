@@ -8,6 +8,7 @@ void Controller::SetOperator(Operator* op) {
 int Controller::ParseProgram(const QStringList& list, int position) {
   vector<QString> prog_element;
   int cnt = 1;
+  ++position;
 
   do {
     const QString cur_operand = list.at(position++);
@@ -28,8 +29,13 @@ int Controller::ParseProgram(const QStringList& list, int position) {
     prog_element.push_back(cur_operand);
   } while (cnt != 0 && position < list.size());
 
+  if (cnt != 0) {
+    pile_.SetMessage("Erreur : Programme invalid.");
+    return -1;
+  }
+
   prog_element.pop_back();
-  literal_manager_.AddLiteral(new Program(prog_element));
+  pile_.Push(literal_manager_.AddLiteral(new Program(prog_element)));
 
   return position;
 }
@@ -39,7 +45,6 @@ QString Controller::Commande(const QString& expression) {
       expression.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
   int error_position = -1;
-
   for (int i = 0; i < operand_list.size(); ++i) {
     const QString cur_operand = operand_list.at(i);
 
@@ -59,36 +64,40 @@ QString Controller::Commande(const QString& expression) {
       }
 
       if (type == Operand::OperandType::kInteger) {
-        literal_manager_.AddLiteral(new Integer(cur_operand.toInt()));
+        pile_.Push(
+            literal_manager_.AddLiteral(new Integer(cur_operand.toInt())));
       }
 
       if (type == Operand::OperandType::kReal) {
-        literal_manager_.AddLiteral(new Real(cur_operand.toDouble()));
+        pile_.Push(
+            literal_manager_.AddLiteral(new Real(cur_operand.toDouble())));
       }
 
       if (type == Operand::OperandType::kFraction) {
         QStringList list = cur_operand.split("/", QString::SkipEmptyParts);
-        literal_manager_.AddLiteral(
-            new Fraction(list.at(0).toInt(), list.at(1).toInt()));
+        pile_.Push(literal_manager_.AddLiteral(
+            new Fraction(list.at(0).toInt(), list.at(1).toInt())));
       }
 
       if (type == Operand::OperandType::kAtom) {
         const QString id = cur_operand.mid(1, cur_operand.length() - 2);
         atom_manager_.AddAtom(id, nullptr);
-        literal_manager_.AddLiteral(new ExpressionLiteral(id));
+        // literal_manager_.AddLiteral(new ExpressionLiteral(id));
       }
 
       if (type == Operand::OperandType::kExpression) {
-        literal_manager_.AddLiteral(new ExpressionLiteral(cur_operand));
+        pile_.Push(
+            literal_manager_.AddLiteral(new ExpressionLiteral(cur_operand)));
       }
     }
   }
 
   if (error_position == -1) return "";
+
   QString str_rest = "";
   for (int i = error_position; i < operand_list.size(); ++i) {
     str_rest.append(operand_list.at(i));
-    return str_rest;
+    str_rest.append(" ");
   }
   return str_rest;
 }

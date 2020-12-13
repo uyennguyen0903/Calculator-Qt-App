@@ -16,6 +16,7 @@ void LiteralManager::RemoveLiteral(Literal& literal) {
     if (literals_[i] == &literal) {
       delete literals_[i];
       literals_.erase(literals_.begin() + i);
+      return;
     }
   }
 }

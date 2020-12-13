@@ -16,7 +16,7 @@ endif()
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 set(TEST test_UTcomp)
-add_executable(${TEST} UtilTest.cpp)
+add_executable(${TEST} LiteralManagerTest.cpp)
 
 target_link_libraries(${TEST} Qt5::Widgets)
 target_link_libraries(${TEST} Qt5::Core)

@@ -14,6 +14,8 @@ class Literal : public Operand {
   static constexpr LiteralType kLiteralList[] = {kInteger, kReal, kFraction,
                                                  kProgram, kExpression};
 
+  Literal() = default;
+
   virtual ~Literal(){};
 
   virtual const QString Print() const = 0;

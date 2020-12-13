@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
+#include <iostream>
 #include <vector>
 
 #include "AtomManager.h"
@@ -10,8 +11,8 @@
 #include "Operand.h"
 #include "Operator.h"
 #include "Pile.h"
-#include "Utils.h"
 #include "Program.h"
+#include "Utils.h"
 
 class Controller {
  private:

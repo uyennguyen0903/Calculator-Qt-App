@@ -37,7 +37,7 @@ class AdditionOperator : public Operator {
  public:
   AdditionOperator() = default;
 
-  QString const Print() const override { return expression_; }
+  const QString Print() const override { return expression_; }
 
   void Execute() const override;
 };

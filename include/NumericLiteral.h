@@ -28,7 +28,7 @@ class Integer : public NumericLiteral {
  public:
   Integer(int value) : value_(value){};
 
-  int GetInt() { return value_; }
+  int GetInt() const{ return value_; }
 
   void SetInt(int value) { value_ = value; }
 
@@ -46,9 +46,9 @@ class Fraction : public NumericLiteral {
  public:
   Fraction(int numerator = 0, int denominator = 1);
 
-  int GetNumerator() { return numerator_; }
+  int GetNumerator() const { return numerator_; }
 
-  int GetDenominator() { return denominator_; }
+  int GetDenominator() const { return denominator_; }
 
   void SetFraction(int numerator, int denominator);
 
@@ -66,7 +66,7 @@ class Real : public NumericLiteral {
  public:
   Real(double value) : value_(value){};
 
-  int GetReal() { return value_; }
+  int GetReal() const { return value_; }
 
   void SetReal(double value) { value_ = value; }
 

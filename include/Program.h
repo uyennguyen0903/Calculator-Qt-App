@@ -14,14 +14,14 @@ class Program : public Literal {
  private:
   // vector<Operand*> elements_;
   vector<QString> elements_;
-  AtomManager& atom_mananer_ = AtomManager::GetInstance();
+  // AtomManager& atom_mananer_ = AtomManager::GetInstance();
 
  public:
   Program(vector<QString> elements) : elements_(elements){};
 
-  ~Program();
+  ~Program() = default;
 
-  const QString Print() const;
+  const QString Print() const override;
 
   LiteralType GetLiteralType() const override { return LiteralType::kProgram; }
 };

@@ -14,7 +14,9 @@ class ExpressionLiteral : public Literal {
 
   const QString Print() const override { return id_; }
 
-  LiteralType GetLiteralType() const override { return kExpression; }
+  LiteralType GetLiteralType() const override {
+    return LiteralType::kExpression;
+  }
 };
 
 #endif  // EXPRESSION_LITERAL_H_

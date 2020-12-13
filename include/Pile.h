@@ -13,7 +13,7 @@ class Pile : public QObject {
   Q_OBJECT;
   vector<Item> items_;
   QString message_;
-  size_t nb_display_;
+  size_t nb_display_ = 5;
 
  public:
   Pile() : message_(""), nb_display_(5){};
@@ -30,7 +30,10 @@ class Pile : public QObject {
 
   size_t GetNbDisplay() const { return nb_display_; }
 
-  void SetMessage(QString message) { message_ = message; }
+  void SetMessage(const QString& message) {
+    message_ = message;
+    ModifyStatus();
+  }
 
   QString GetMessage() const { return message_; }
 

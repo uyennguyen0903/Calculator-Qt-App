@@ -12,7 +12,7 @@ class ComputerException : public exception {
  public:
   ComputerException(const QString& info) noexcept : info_(info) {}
 
-  virtual ~ComputerException() noexcept {}
+  virtual ~ComputerException() noexcept {};
 
   QString getInfo() const noexcept { return info_; }
 };
