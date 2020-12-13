@@ -14,7 +14,7 @@ class Program : public Literal {
   vector<Operand*> elements_;
 
  public:
-  Program(vector<Operand*> elements) : elements_(elements){};
+  Program(vector<QString> elements);
 
   ~Program();
 

@@ -11,6 +11,7 @@ int main() {
                           "1.5",    "1,5",    "4/55", "//",   "4/",  "/5",
                           "ABS",    "1A",     "afd",  "\"",   "\'",  "\'\'",
                           "\'re\'", "\'A4\'", "\'4\'"};
+
   for (int i = 0; i < str_list.size(); ++i) {
     cout << str_list[i].toLocal8Bit().constData() << " ";
     Operand::OperandType type = FindTypeOperand(str_list[i]);
