@@ -63,6 +63,12 @@ QString Controller::Commande(const QString& expression) {
         break;
       }
 
+      if (type == Operand::OperandType::kOperator) {
+        if (cur_operand == "+")
+          SetOperator(new AdditionOperator(literal_manager_, pile_));
+        operator_->Execute();
+      }
+
       if (type == Operand::OperandType::kInteger) {
         pile_.Push(
             literal_manager_.AddLiteral(new Integer(cur_operand.toInt())));
