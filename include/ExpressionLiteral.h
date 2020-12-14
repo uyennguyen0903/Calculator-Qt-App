@@ -1,6 +1,7 @@
 #ifndef EXPRESSION_LITERAL_H_
 #define EXPRESSION_LITERAL_H_
 
+#include "Atom.h"
 #include "Literal.h"
 
 using namespace std;

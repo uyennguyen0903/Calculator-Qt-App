@@ -20,6 +20,8 @@ class Atom {
 
   const QString GetId() const { return id_; }
 
+  Literal* GetAtomValue() const { return literal_; }
+
   void SetValue(Literal* literal);
 };
 

@@ -28,7 +28,7 @@ class Integer : public NumericLiteral {
  public:
   Integer(int value) : value_(value){};
 
-  int GetInt() const{ return value_; }
+  int GetInt() const { return value_; }
 
   void SetInt(int value) { value_ = value; }
 
@@ -66,7 +66,7 @@ class Real : public NumericLiteral {
  public:
   Real(double value) : value_(value){};
 
-  int GetReal() const { return value_; }
+  double GetReal() const { return value_; }
 
   void SetReal(double value) { value_ = value; }
 

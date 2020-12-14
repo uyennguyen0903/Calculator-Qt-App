@@ -91,7 +91,13 @@ Literal* AdditionOperator::Compute(const Fraction& arg1, const Fraction& arg2) {
   int d1 = arg1.GetDenominator();
   int n2 = arg2.GetNumerator();
   int d2 = arg2.GetDenominator();
-  return new Fraction(n1 * d2 + n2 * d1, d1 * d2);
+  Fraction* sum = new Fraction(n1 * d2 + n2 * d1, d1 * d2);
+  if (sum->GetDenominator() == 1) {
+    int sum_int = sum->GetNumerator();
+    delete sum;
+    return new Integer(sum_int);
+  }
+  return sum;
 }
 
 Literal* AdditionOperator::Compute(const Integer& arg1, const Real& arg2) {
@@ -106,11 +112,14 @@ Literal* AdditionOperator::Compute(const Integer& arg1, const Fraction& arg2) {
   Fraction* sum =
       new Fraction(arg1.GetInt() * arg2.GetDenominator() + arg2.GetNumerator(),
                    arg2.GetDenominator());
+  
   if (sum->GetDenominator() == 1) {
-    return new Integer(sum->GetNumerator());
-  } else {
-    return sum;
-  }
+    int sum_int = sum->GetNumerator();
+    delete sum;
+    return new Integer(sum_int);
+  } 
+
+  return sum;
 }
 
 Literal* AdditionOperator::Compute(const Fraction& arg1, const Integer& arg2) {

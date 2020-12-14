@@ -275,7 +275,6 @@ void QComputer::refresh() {
 
 void QComputer::getNextCommande() {
   QString c = commande->text();  // on récupère la ligne de commande
-  std::cout << c.toLocal8Bit().constData() << endl;
   QString InvalidCommand = controleur->Commande(c);
   commande->setText(InvalidCommand);
 }

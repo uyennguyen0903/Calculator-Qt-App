@@ -2,19 +2,18 @@
 #define COMPUTER_EXCEPTION_H_
 
 #include <QString>
-#include <stdexcept>
 
 using namespace std;
 
-class ComputerException : public exception {
+class ComputerException {
   QString info_;
 
  public:
-  ComputerException(const QString& info) noexcept : info_(info) {}
+  ComputerException(const QString& info) : info_(info) {}
 
-  virtual ~ComputerException() noexcept {};
+  virtual ~ComputerException(){};
 
-  QString getInfo() const noexcept { return info_; }
+  QString GetInfo() const { return info_; }
 };
 
 #endif  // COMPUTER_EXCEPTION_H_
