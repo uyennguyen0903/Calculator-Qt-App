@@ -1,58 +1,27 @@
 #include "BinaryOperator.h"
 
+template <class T>
+Literal* BinaryOperator::CastSecondArg(T& arg1, Literal& arg2) {
+  if (arg2.GetLiteralType() == Literal::LiteralType::kInteger)
+    return Compute(arg1, dynamic_cast<Integer&>(arg2));
+  if (arg2.GetLiteralType() == Literal::LiteralType::kFraction)
+    return Compute(arg1, dynamic_cast<Fraction&>(arg2));
+  if (arg2.GetLiteralType() == Literal::LiteralType::kReal)
+    return Compute(arg1, dynamic_cast<Real&>(arg2));
+  if (arg2.GetLiteralType() == Literal::LiteralType::kExpression)
+    return Compute(arg1, dynamic_cast<ExpressionLiteral&>(arg2));
+}
+
 Literal* BinaryOperator::CastFirstArg(Literal& arg1, Literal& arg2) {
   if (arg1.GetLiteralType() == Literal::LiteralType::kInteger)
-    return CastSecondArg(dynamic_cast<Integer&>(arg1), arg2);
+    return CastSecondArg<Integer>(dynamic_cast<Integer&>(arg1), arg2);
   if (arg1.GetLiteralType() == Literal::LiteralType::kFraction)
-    return CastSecondArg(dynamic_cast<Fraction&>(arg1), arg2);
+    return CastSecondArg<Fraction>(dynamic_cast<Fraction&>(arg1), arg2);
   if (arg1.GetLiteralType() == Literal::LiteralType::kReal)
-    return CastSecondArg(dynamic_cast<Real&>(arg1), arg2);
+    return CastSecondArg<Real>(dynamic_cast<Real&>(arg1), arg2);
   if (arg1.GetLiteralType() == Literal::LiteralType::kExpression)
-    return CastSecondArg(dynamic_cast<ExpressionLiteral&>(arg1), arg2);
-}
-
-Literal* BinaryOperator::CastSecondArg(Integer& arg1, Literal& arg2) {
-  if (arg2.GetLiteralType() == Literal::LiteralType::kInteger)
-    return Compute(arg1, dynamic_cast<Integer&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kFraction)
-    return Compute(arg1, dynamic_cast<Fraction&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kReal)
-    return Compute(arg1, dynamic_cast<Real&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kExpression)
-    return Compute(arg1, dynamic_cast<ExpressionLiteral&>(arg2));
-}
-
-Literal* BinaryOperator::CastSecondArg(Real& arg1, Literal& arg2) {
-  if (arg2.GetLiteralType() == Literal::LiteralType::kInteger)
-    return Compute(arg1, dynamic_cast<Integer&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kFraction)
-    return Compute(arg1, dynamic_cast<Fraction&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kReal)
-    return Compute(arg1, dynamic_cast<Real&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kExpression)
-    return Compute(arg1, dynamic_cast<ExpressionLiteral&>(arg2));
-}
-
-Literal* BinaryOperator::CastSecondArg(Fraction& arg1, Literal& arg2) {
-  if (arg2.GetLiteralType() == Literal::LiteralType::kInteger)
-    return Compute(arg1, dynamic_cast<Integer&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kFraction)
-    return Compute(arg1, dynamic_cast<Fraction&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kReal)
-    return Compute(arg1, dynamic_cast<Real&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kExpression)
-    return Compute(arg1, dynamic_cast<ExpressionLiteral&>(arg2));
-}
-
-Literal* BinaryOperator::CastSecondArg(ExpressionLiteral& arg1, Literal& arg2) {
-  if (arg2.GetLiteralType() == Literal::LiteralType::kInteger)
-    return Compute(arg1, dynamic_cast<Integer&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kFraction)
-    return Compute(arg1, dynamic_cast<Fraction&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kReal)
-    return Compute(arg1, dynamic_cast<Real&>(arg2));
-  if (arg2.GetLiteralType() == Literal::LiteralType::kExpression)
-    return Compute(arg1, dynamic_cast<ExpressionLiteral&>(arg2));
+    return CastSecondArg<ExpressionLiteral>(
+        dynamic_cast<ExpressionLiteral&>(arg1), arg2);
 }
 
 Literal* BinaryOperator::Compute(Integer& arg1, Integer& arg2) {

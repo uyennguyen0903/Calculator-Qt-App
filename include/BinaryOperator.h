@@ -22,13 +22,7 @@ class BinaryOperator : public Operator {
 
   Literal* CastFirstArg(Literal& arg1, Literal& arg2);
 
-  Literal* CastSecondArg(Integer& arg1, Literal& arg2);
-
-  Literal* CastSecondArg(Real& arg1, Literal& arg2);
-
-  Literal* CastSecondArg(Fraction& arg1, Literal& arg2);
-
-  Literal* CastSecondArg(ExpressionLiteral& arg1, Literal& arg2);
+  template<class T> Literal* CastSecondArg(T& arg1, Literal& arg2);
 
   virtual const QString Print() const = 0;
 
