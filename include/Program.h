@@ -12,18 +12,18 @@ using namespace std;
 
 class Program : public Literal {
  private:
-  vector<QString> elements_;
+  QString program_str_;
 
  public:
-  Program(vector<QString> elements) : elements_(elements){};
+  Program(QString program_str) : program_str_(program_str){};
 
   ~Program() = default;
 
-  vector<QString> GetProgramElement() const { return elements_; }
+  QString GetProgramElement() const { return program_str_; }
 
-  Program(const Program& prog) : elements_(prog.GetProgramElement()){};
+  Program(const Program& prog) : program_str_(prog.GetProgramElement()){};
 
-  const QString Print() const override;
+  const QString Print() const override { return program_str_; };
 
   LiteralType GetLiteralType() const override { return LiteralType::kProgram; }
 };

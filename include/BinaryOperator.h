@@ -17,9 +17,18 @@ class BinaryOperator : public Operator {
 
   void Execute() override;
 
-  virtual void UpdatePile(Literal& arg1, Literal& arg, Literal* res, const QString& error_str) = 0;
+  virtual void UpdatePile(Literal& arg1, Literal& arg, Literal* res,
+                          const QString& error_str) = 0;
 
-  Literal* CastLiteral(Literal& arg1, Literal& arg2);
+  Literal* CastFirstArg(Literal& arg1, Literal& arg2);
+
+  Literal* CastSecondArg(Integer& arg1, Literal& arg2);
+
+  Literal* CastSecondArg(Real& arg1, Literal& arg2);
+
+  Literal* CastSecondArg(Fraction& arg1, Literal& arg2);
+
+  Literal* CastSecondArg(ExpressionLiteral& arg1, Literal& arg2);
 
   virtual const QString Print() const = 0;
 

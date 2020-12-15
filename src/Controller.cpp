@@ -6,36 +6,31 @@ void Controller::SetOperator(Operator* op) {
 }
 
 int Controller::ParseProgram(const QStringList& list, int position) {
-  vector<QString> prog_element;
-  int cnt = 1;
-  ++position;
+  QString prog_str = "";
+  int cnt = 0;
 
   do {
     const QString cur_operand = list.at(position++);
-    if (cur_operand == "[")
+    if (cur_operand == "[") {
       ++cnt;
-    else if (cur_operand == "]") {
+    } else if (cur_operand == "]") {
       if (cnt > 0) {
         --cnt;
       } else {
-        pile_.SetMessage("Erreur : Programme invalid.");
-        return -1;
+        throw(ComputerException("Programme invalid."));
       }
     } else if (FindTypeOperand(cur_operand) ==
                Operand::OperandType::kUndefined) {
-      pile_.SetMessage("Erreur : Programme contient operand inconnu.");
-      return -1;
+      throw(ComputerException("Programme contient operand inconnu."));
     }
-    prog_element.push_back(cur_operand);
+    prog_str.append(" " + cur_operand);
   } while (cnt != 0 && position < list.size());
 
   if (cnt != 0) {
-    pile_.SetMessage("Erreur : Programme invalid.");
-    return -1;
+    throw(ComputerException("Programme invalid."));
   }
 
-  prog_element.pop_back();
-  pile_.Push(literal_manager_.AddLiteral(new Program(prog_element)));
+  pile_.Push(literal_manager_.AddLiteral(new Program(prog_str)));
 
   return position;
 }
@@ -55,24 +50,20 @@ QString Controller::Commande(const QString& expression) {
       expression.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
   int error_position = -1;
-  std::cout << operand_list.size() << endl;
+
   for (int i = 0; i < operand_list.size(); ++i) {
     try {
       const QString cur_operand = operand_list.at(i);
+      error_position = i;
 
       if (cur_operand == "[") {
         int next_position = ParseProgram(operand_list, i);
-        if (next_position == -1) {
-          error_position = i;
-          break;
-        }
+        i = next_position - 1;
       } else {
         Operand::OperandType type = FindTypeOperand(cur_operand);
 
         if (type == Operand::OperandType::kUndefined) {
-          error_position = i;
-          pile_.SetMessage("Erreur : Operand inconnu.");
-          break;
+          throw(ComputerException("Operand inconnu."));
         }
 
         if (type == Operand::OperandType::kOperator) {
@@ -103,9 +94,16 @@ QString Controller::Commande(const QString& expression) {
           if (atom_value == nullptr) {
             pile_.SetMessage(
                 cur_operand +
-                " n'a aucune valeure associée. Créé un expression litéral");
+                " n'a aucune valeur associée. Créé un expression litéral");
+            pile_.Push(literal_manager_.AddLiteral(new ExpressionLiteral(
+                cur_operand, atom_manager_.GetAtom(cur_operand))));
           } else {
-            pile_.Push(literal_manager_.AddLiteral(atom_value));
+            if (atom_value->GetLiteralType() ==
+                Literal::LiteralType::kProgram) {
+              Commande(atom_value->Print());
+            } else {
+              pile_.Push(literal_manager_.AddLiteral(atom_value));
+            }
           }
         }
 
@@ -123,6 +121,8 @@ QString Controller::Commande(const QString& expression) {
       error_position = i;
       break;
     }
+
+    if (i == operand_list.size() - 1) error_position = -1;
   }
 
   if (error_position == -1) return "";
