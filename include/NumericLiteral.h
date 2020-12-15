@@ -30,6 +30,8 @@ class Integer : public NumericLiteral {
 
   int GetInt() const { return value_; }
 
+  Integer(Integer* const num) : value_(num->GetInt()){};
+
   void SetInt(int value) { value_ = value; }
 
   const QString Print() const override { return QString::number(value_); }
@@ -50,6 +52,9 @@ class Fraction : public NumericLiteral {
 
   int GetDenominator() const { return denominator_; }
 
+  Fraction(Fraction* const frac)
+      : numerator_(frac->GetNumerator()), denominator_(frac->GetDenominator()){};
+
   void SetFraction(int numerator, int denominator);
 
   const QString Print() const override {
@@ -67,6 +72,8 @@ class Real : public NumericLiteral {
   Real(double value) : value_(value){};
 
   double GetReal() const { return value_; }
+
+  Real(Real* const num) : value_(num->GetReal()){};
 
   void SetReal(double value) { value_ = value; }
 

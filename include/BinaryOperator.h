@@ -15,29 +15,28 @@ class BinaryOperator : public Operator {
 
   virtual ~BinaryOperator(){};
 
-  void Execute();
+  void Execute() override;
 
   Literal* CastLiteral(Literal& arg1, Literal& arg2);
 
   virtual const QString Print() const = 0;
 
-  virtual Literal* Compute(const Integer& arg1, const Integer& arg2);
-  virtual Literal* Compute(const Real& arg1, const Real& arg2);
-  virtual Literal* Compute(const Fraction& arg1, const Fraction& arg2);
-  virtual Literal* Compute(const Integer& arg1, const Real& arg2);
-  virtual Literal* Compute(const Real& arg1, const Integer& arg2);
-  virtual Literal* Compute(const Integer& arg1, const Fraction& arg2);
-  virtual Literal* Compute(const Fraction& arg1, const Integer& arg2);
-  virtual Literal* Compute(const Real& arg1, const Fraction& arg2);
-  virtual Literal* Compute(const Fraction& arg1, const Real& arg2);
-  virtual Literal* Compute(const Integer& arg1, const ExpressionLiteral& arg2);
-  virtual Literal* Compute(const Real& arg1, const ExpressionLiteral& arg2);
-  virtual Literal* Compute(const Fraction& arg1, const ExpressionLiteral& arg2);
-  virtual Literal* Compute(const ExpressionLiteral& arg1, const Integer& arg2);
-  virtual Literal* Compute(const ExpressionLiteral& arg1, const Real& arg2);
-  virtual Literal* Compute(const ExpressionLiteral& arg1, const Fraction& arg2);
-  virtual Literal* Compute(const ExpressionLiteral& arg1,
-                           const ExpressionLiteral& arg2);
+  virtual Literal* Compute(Integer& arg1, Integer& arg2);
+  virtual Literal* Compute(Real& arg1, Real& arg2);
+  virtual Literal* Compute(Fraction& arg1, Fraction& arg2);
+  virtual Literal* Compute(ExpressionLiteral& arg1, ExpressionLiteral& arg2);
+  virtual Literal* Compute(Integer& arg1, Real& arg2);
+  virtual Literal* Compute(Real& arg1, Integer& arg2);
+  virtual Literal* Compute(Integer& arg1, Fraction& arg2);
+  virtual Literal* Compute(Fraction& arg1, Integer& arg2);
+  virtual Literal* Compute(Real& arg1, Fraction& arg2);
+  virtual Literal* Compute(Fraction& arg1, Real& arg2);
+  virtual Literal* Compute(Integer& arg1, ExpressionLiteral& arg2);
+  virtual Literal* Compute(Real& arg1, ExpressionLiteral& arg2);
+  virtual Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2);
+  virtual Literal* Compute(ExpressionLiteral& arg1, Integer& arg2);
+  virtual Literal* Compute(ExpressionLiteral& arg1, Real& arg2);
+  virtual Literal* Compute(ExpressionLiteral& arg1, Fraction& arg2);
 };
 
 #endif  // BINARY_OPERATOR_H

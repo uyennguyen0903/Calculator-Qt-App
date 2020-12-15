@@ -21,6 +21,10 @@ class Program : public Literal {
 
   ~Program() = default;
 
+  vector<QString> GetProgramElement() const {return elements_;}
+
+  Program(const Program& prog) : elements_(prog.GetProgramElement()){};
+
   const QString Print() const override;
 
   LiteralType GetLiteralType() const override { return LiteralType::kProgram; }

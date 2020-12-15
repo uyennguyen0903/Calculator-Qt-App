@@ -26,13 +26,26 @@ bool AtomManager::CheckExistedAtom(const QString& id) {
   return false;
 }
 
-Literal* AtomManager::GetAtomValue(const QString& id) {
+Literal* AtomManager::EvalAtom(const QString& id) {
+  Literal* atom_value = nullptr;
   for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
-      return atom->GetAtomValue();
+      atom_value = atom->GetAtomValue();
+      break;
     }
   }
-  return nullptr;
+  if (atom_value != nullptr) {
+    if (atom_value->GetLiteralType() == Literal::LiteralType::kInteger) {
+      return new Integer(dynamic_cast<Integer*>(atom_value));
+    }
+    if (atom_value->GetLiteralType() == Literal::LiteralType::kFraction) {
+      return new Fraction(dynamic_cast<Fraction*>(atom_value));
+    }
+    if (atom_value->GetLiteralType() == Literal::LiteralType::kReal) {
+      return new Real(dynamic_cast<Real*>(atom_value));
+    }
+  }
+  throw(ComputerException("Atome n'est associée à aucune valeur."));
 }
 
 Atom& AtomManager::GetAtom(const QString& id) {

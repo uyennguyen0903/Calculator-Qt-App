@@ -1,5 +1,7 @@
 #include "LiteralManager.h"
 
+#include <iostream>
+
 LiteralManager::~LiteralManager() {
   for (auto literal : literals_) {
     delete literal;
@@ -14,7 +16,10 @@ Literal& LiteralManager::AddLiteral(Literal* const literal) {
 void LiteralManager::RemoveLiteral(Literal& literal) {
   for (size_t i = 0; i < literals_.size(); ++i) {
     if (literals_[i] == &literal) {
+      std::cout << literals_.size() << endl;
+      std::cout << literals_[i]->Print().toLocal8Bit().constData() << endl;
       delete literals_[i];
+      std::cout << literals_.size() << endl;
       literals_.erase(literals_.begin() + i);
       return;
     }

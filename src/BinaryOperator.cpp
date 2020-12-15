@@ -92,73 +92,105 @@ Literal* BinaryOperator::CastLiteral(Literal& arg1, Literal& arg2) {
   return nullptr;
 }
 
-Literal* BinaryOperator::Compute(const Integer& arg1, const Integer& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Integer& arg1, Integer& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Real& arg1, const Real& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Real& arg1, Real& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Fraction& arg1, const Fraction& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Fraction& arg1, Fraction& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Integer& arg1, const Real& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Integer& arg1, Real& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Real& arg1, const Integer& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Real& arg1, Integer& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Integer& arg1, const Fraction& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Integer& arg1, Fraction& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Fraction& arg1, const Integer& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Fraction& arg1, Integer& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Real& arg1, const Fraction& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Real& arg1, Fraction& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Fraction& arg1, const Real& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Fraction& arg1, Real& arg2) {
+  throw(ComputerException("Invalide opération"));
 }
 
-Literal* BinaryOperator::Compute(const Integer& arg1,
-                                 const ExpressionLiteral& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
-}
-Literal* BinaryOperator::Compute(const Fraction& arg1,
-                                 const ExpressionLiteral& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
-}
-Literal* BinaryOperator::Compute(const Real& arg1,
-                                 const ExpressionLiteral& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Integer& arg1, ExpressionLiteral& arg2) {
+  Literal* exp_value = arg2.GetAtom().GetAtomValue();
+  if (exp_value != nullptr) {
+    return CastLiteral(arg1, *exp_value);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
 }
 
-Literal* BinaryOperator::Compute(const ExpressionLiteral& arg1,
-                                 const Integer& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Fraction& arg1, ExpressionLiteral& arg2) {
+  Literal* exp_value = arg2.GetAtom().GetAtomValue();
+  if (exp_value != nullptr) {
+    return CastLiteral(arg1, *exp_value);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
 }
 
-Literal* BinaryOperator::Compute(const ExpressionLiteral& arg1,
-                                 const Real& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(Real& arg1, ExpressionLiteral& arg2) {
+  Literal* exp_value = arg2.GetAtom().GetAtomValue();
+  if (exp_value != nullptr) {
+    return CastLiteral(arg1, *exp_value);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
 }
 
-Literal* BinaryOperator::Compute(const ExpressionLiteral& arg1,
-                                 const Fraction& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Integer& arg2) {
+  Literal* exp_value = arg1.GetAtom().GetAtomValue();
+  if (exp_value != nullptr) {
+    return CastLiteral(*exp_value, arg2);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
 }
 
-Literal* BinaryOperator::Compute(const ExpressionLiteral& arg1,
-                                 const ExpressionLiteral& arg2) {
-  throw(ComputerException("Arguments sont invalids."));
+Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Real& arg2) {
+  Literal* exp_value = arg1.GetAtom().GetAtomValue();
+  if (exp_value != nullptr) {
+    return CastLiteral(*exp_value, arg2);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
+}
+
+Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Fraction& arg2) {
+  Literal* exp_value = arg1.GetAtom().GetAtomValue();
+  if (exp_value != nullptr) {
+    return CastLiteral(*exp_value, arg2);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
+}
+
+Literal* BinaryOperator::Compute(ExpressionLiteral& arg1,
+                                 ExpressionLiteral& arg2) {
+  Literal* exp_value1 = arg1.GetAtom().GetAtomValue();
+  Literal* exp_value2 = arg2.GetAtom().GetAtomValue();
+  if (exp_value1 != nullptr && exp_value2 != nullptr) {
+    return CastLiteral(*exp_value1, *exp_value2);
+  } else {
+    throw(ComputerException("Invalide opération"));
+  }
 }
 
 void BinaryOperator::Execute() {
@@ -167,12 +199,14 @@ void BinaryOperator::Execute() {
     pile_.Pop();
     Literal& arg1 = pile_.Top();
     pile_.Pop();
-
     Literal* res = CastLiteral(arg1, arg2);
-
-    literal_manager_.RemoveLiteral(arg1);
-    literal_manager_.RemoveLiteral(arg2);
-    if (res != nullptr) pile_.Push(literal_manager_.AddLiteral(res));
+    if (res != nullptr) {
+      literal_manager_.RemoveLiteral(arg1);
+      if (&arg2 == nullptr) std::cout << "chetme" << endl;  
+      literal_manager_.RemoveLiteral(arg2);
+      std::cout << res->GetLiteralType() << " Hihi" << endl;
+      pile_.Push(literal_manager_.AddLiteral(res));
+    }
   } else {
     throw(ComputerException("Pas assez argument."));
   }

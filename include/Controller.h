@@ -8,6 +8,7 @@
 #include "AtomManager.h"
 #include "BinaryOperator.h"
 #include "ExpressionLiteral.h"
+#include "HandlingOperator.h"
 #include "LiteralManager.h"
 #include "NumericLiteral.h"
 #include "NumericOperator.h"

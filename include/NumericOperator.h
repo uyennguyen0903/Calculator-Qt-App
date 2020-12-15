@@ -17,34 +17,16 @@ class AdditionOperator : public BinaryOperator {
 
   const QString Print() const override { return expression_; }
 
-  Literal* Compute(const Integer& arg1, const Integer& arg2) override;
-  Literal* Compute(const Real& arg1, const Real& arg2) override;
-  Literal* Compute(const Fraction& arg1, const Fraction& arg2) override;
-  Literal* Compute(const Integer& arg1, const Real& arg2) override;
-  Literal* Compute(const Real& arg1, const Integer& arg2) override;
-  Literal* Compute(const Integer& arg1, const Fraction& arg2) override;
-  Literal* Compute(const Fraction& arg1, const Integer& arg2) override;
-  Literal* Compute(const Real& arg1, const Fraction& arg2) override;
-  Literal* Compute(const Fraction& arg1, const Real& arg2) override;
+  Literal* Compute(Integer& arg1, Integer& arg2) override;
+  Literal* Compute(Real& arg1, Real& arg2) override;
+  Literal* Compute(Fraction& arg1, Fraction& arg2) override;
+  Literal* Compute(Integer& arg1, Real& arg2) override;
+  Literal* Compute(Real& arg1, Integer& arg2) override;
+  Literal* Compute(Integer& arg1, Fraction& arg2) override;
+  Literal* Compute(Fraction& arg1, Integer& arg2) override;
+  Literal* Compute(Real& arg1, Fraction& arg2) override;
+  Literal* Compute(Fraction& arg1, Real& arg2) override;
   // TODO : Implement Compute() method for 'Atom' & 'Program'.
-};
-
-class STO : public BinaryOperator {
- private:
-  QString expression_ = "STO";
-  AtomManager& atom_manager_ = AtomManager::GetInstance();
-
- public:
-  STO(LiteralManager& literal_manager, Pile& pile)
-      : BinaryOperator(literal_manager, pile){};
-
-  const QString Print() const override { return expression_; }
-
-  Literal* Compute(const Integer& arg1, const ExpressionLiteral& arg2) override;
-  Literal* Compute(const Real& arg1, const ExpressionLiteral& arg2) override;
-  Literal* Compute(const Fraction& arg1,
-                   const ExpressionLiteral& arg2) override;
-  // TODO :  Implement Compute() method for 'Program'.
 };
 
 #endif  // NUMERIC_OPERATOR_H

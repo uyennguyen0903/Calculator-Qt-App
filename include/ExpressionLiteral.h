@@ -18,6 +18,8 @@ class ExpressionLiteral : public Literal {
 
   Atom& GetAtom() const { return *atom_; }
 
+  ~ExpressionLiteral() { delete atom_; }
+
   LiteralType GetLiteralType() const override {
     return LiteralType::kExpression;
   }

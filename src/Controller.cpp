@@ -98,8 +98,7 @@ QString Controller::Commande(const QString& expression) {
           if (!atom_manager_.CheckExistedAtom(cur_operand)) {
             atom_manager_.AddAtom(cur_operand, nullptr);
           }
-
-          Literal* atom_value = atom_manager_.GetAtomValue(cur_operand);
+          Literal* atom_value = atom_manager_.EvalAtom(cur_operand);
           if (atom_value == nullptr) {
             // pile_.Push(literal_manager_.AddLiteral(new
             // ExpressionLiteral(id)));

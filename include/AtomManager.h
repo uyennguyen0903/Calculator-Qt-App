@@ -5,6 +5,8 @@
 #include <vector>
 
 #include "Atom.h"
+#include "NumericLiteral.h"
+#include "Program.h"
 
 using namespace std;
 
@@ -34,7 +36,7 @@ class AtomManager {
 
   bool CheckExistedAtom(const QString& id);
 
-  Literal* GetAtomValue(const QString& id);
+  Literal* EvalAtom(const QString& id);
 
   Atom& GetAtom(const QString& id);
 
