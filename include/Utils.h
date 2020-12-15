@@ -5,6 +5,7 @@
 #include "Operator.h"
 #include "Literal.h"
 #include "NumericLiteral.h"
+#include "ComputerException.h"
 
 Operand::OperandType FindTypeOperand(const QString& str);
 

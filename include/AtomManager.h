@@ -30,11 +30,15 @@ class AtomManager {
   static AtomHandler atom_handler_;
 
  public:
-  Atom& AddAtom(const QString& id, Literal* literal);
+  Atom& AddAtom(const QString& id, Literal* const literal);
 
   bool CheckExistedAtom(const QString& id);
 
-  Literal* EvaluateAtom(const QString& id);
+  Literal* GetAtomValue(const QString& id);
+
+  Atom& GetAtom(const QString& id);
+
+  void SetValueAtom(const QString& id, Literal* const literal);
 
   static AtomManager& GetInstance();
 

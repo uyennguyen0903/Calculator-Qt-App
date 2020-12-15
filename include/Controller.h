@@ -4,15 +4,24 @@
 #include <iostream>
 #include <vector>
 
+#include "Atom.h"
 #include "AtomManager.h"
+#include "BinaryOperator.h"
 #include "ExpressionLiteral.h"
 #include "LiteralManager.h"
 #include "NumericLiteral.h"
+#include "NumericOperator.h"
 #include "Operand.h"
 #include "Operator.h"
 #include "Pile.h"
 #include "Program.h"
 #include "Utils.h"
+
+// TODO 1: Throw all the errors to ComputerException to clean code instead of
+// using pile_SetMessge().
+
+// TODO 2: The program literal is now just used to read command line, needs to
+// be implemented later.
 
 class Controller {
  private:
@@ -31,6 +40,8 @@ class Controller {
   void SetOperator(Operator* op);
 
   QString Commande(const QString& expression);
+
+  void ExecuteOperator(const QString& op);
 
   int ParseProgram(const QStringList& list, int position);
 };

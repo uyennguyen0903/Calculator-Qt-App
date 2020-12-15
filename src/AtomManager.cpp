@@ -6,7 +6,7 @@ AtomManager::~AtomManager() {
 
 AtomManager::AtomHandler AtomManager::atom_handler_;
 
-Atom& AtomManager::AddAtom(const QString& id, Literal* literal) {
+Atom& AtomManager::AddAtom(const QString& id, Literal* const literal) {
   for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
       atom->SetValue(literal);
@@ -26,13 +26,31 @@ bool AtomManager::CheckExistedAtom(const QString& id) {
   return false;
 }
 
-Literal* AtomManager::EvaluateAtom(const QString& id) {
+Literal* AtomManager::GetAtomValue(const QString& id) {
   for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
       return atom->GetAtomValue();
     }
   }
   return nullptr;
+}
+
+Atom& AtomManager::GetAtom(const QString& id) {
+  for (Atom* atom : atoms_) {
+    if (atom->GetId() == id) {
+      return *atom;
+    }
+  }
+  throw(ComputerException("ID n'existe pas."));
+}
+
+void AtomManager::SetValueAtom(const QString& id, Literal* const literal) {
+  for (Atom* atom : atoms_) {
+    if (atom->GetId() == id) {
+      atom->SetValue(literal);
+      return;
+    }
+  }
 }
 
 AtomManager& AtomManager::GetInstance() {

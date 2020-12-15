@@ -3,6 +3,9 @@
 bool ValidIdentifier(const QString& str) {
   if (!str[0].isLetter()) return false;
 
+  if (Operator::kOperatorList.find(str) != Operator::kOperatorList.end())
+    return false;
+
   for (int i = 0; i < str.length(); ++i) {
     if (str[i].isDigit() || (str[i].isUpper() && str[i].isLetter()))
       continue;
@@ -44,12 +47,16 @@ Operand::OperandType FindTypeOperand(const QString& str) {
 
   if (str.length() > 2 && str.at(0) == "'" && str.at(str.length() - 1) == "'") {
     if (ValidIdentifier(str.mid(1, str.length() - 2))) {
-      return Operand::OperandType::kAtom;
+      return Operand::OperandType::kExpression;
     } else {
-      return Operand::OperandType::kUndefined;
+      throw(ComputerException("Invalid identicateur"));
     }
   }
-  if (ValidIdentifier(str)) return Operand::OperandType::kExpression;
+  if (ValidIdentifier(str)) {
+    return Operand::OperandType::kAtom;
+  } else {
+    throw(ComputerException("Invalid indenticateur"));
+  }
 
   return Operand::OperandType::kUndefined;
 }

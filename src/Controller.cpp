@@ -40,6 +40,16 @@ int Controller::ParseProgram(const QStringList& list, int position) {
   return position;
 }
 
+void Controller::ExecuteOperator(const QString& op) {
+  if (op == "+") {
+    SetOperator(new AdditionOperator(literal_manager_, pile_));
+  }
+  if (op == "STO") {
+    SetOperator(new STO(literal_manager_, pile_));
+  }
+  operator_->Execute();
+}
+
 QString Controller::Commande(const QString& expression) {
   QStringList operand_list =
       expression.split(QRegExp("\\s+"), QString::SkipEmptyParts);
@@ -65,9 +75,7 @@ QString Controller::Commande(const QString& expression) {
         }
 
         if (type == Operand::OperandType::kOperator) {
-          if (cur_operand == "+")
-            SetOperator(new AdditionOperator(literal_manager_, pile_));
-          operator_->Execute();
+          ExecuteOperator(cur_operand);
         }
 
         if (type == Operand::OperandType::kInteger) {
@@ -87,26 +95,33 @@ QString Controller::Commande(const QString& expression) {
         }
 
         if (type == Operand::OperandType::kAtom) {
-          const QString id = cur_operand.mid(1, cur_operand.length() - 2);
-          if (!atom_manager_.CheckExistedAtom(id)) {
-            atom_manager_.AddAtom(id, nullptr);
+          if (!atom_manager_.CheckExistedAtom(cur_operand)) {
+            atom_manager_.AddAtom(cur_operand, nullptr);
           }
 
-          Literal* atom_value = atom_manager_.EvaluateAtom(id);
+          Literal* atom_value = atom_manager_.GetAtomValue(cur_operand);
           if (atom_value == nullptr) {
-            pile_.Push(literal_manager_.AddLiteral(new ExpressionLiteral(id)));
+            // pile_.Push(literal_manager_.AddLiteral(new
+            // ExpressionLiteral(id)));
+            pile_.SetMessage(
+                cur_operand +
+                " n'a aucune valeure associée. Créé un expression litéral");
           } else {
             pile_.Push(literal_manager_.AddLiteral(atom_value));
           }
         }
 
         if (type == Operand::OperandType::kExpression) {
-          pile_.Push(
-              literal_manager_.AddLiteral(new ExpressionLiteral(cur_operand)));
+          const QString id = cur_operand.mid(1, cur_operand.length() - 2);
+          if (!atom_manager_.CheckExistedAtom(id)) {
+            atom_manager_.AddAtom(id, nullptr);
+          }
+          pile_.Push(literal_manager_.AddLiteral(
+              new ExpressionLiteral(id, atom_manager_.GetAtom(id))));
         }
       }
-    } catch (ComputerException& e) {
-      pile_.SetMessage(e.GetInfo());
+    } catch (ComputerException& error) {
+      pile_.SetMessage(error.GetInfo());
       error_position = i;
     }
   }
