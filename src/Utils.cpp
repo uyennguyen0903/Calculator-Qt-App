@@ -49,13 +49,13 @@ Operand::OperandType FindTypeOperand(const QString& str) {
     if (ValidIdentifier(str.mid(1, str.length() - 2))) {
       return Operand::OperandType::kExpression;
     } else {
-      throw(ComputerException("Invalid identicateur"));
+      throw(ComputerException("Invalid expression"));
     }
   }
   if (ValidIdentifier(str)) {
     return Operand::OperandType::kAtom;
   } else {
-    throw(ComputerException("Invalid indenticateur"));
+    throw(ComputerException("Invalid expression"));
   }
 
   return Operand::OperandType::kUndefined;

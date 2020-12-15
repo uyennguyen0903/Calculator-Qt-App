@@ -12,16 +12,14 @@ using namespace std;
 
 class Program : public Literal {
  private:
-  // vector<Operand*> elements_;
   vector<QString> elements_;
-  // AtomManager& atom_mananer_ = AtomManager::GetInstance();
 
  public:
   Program(vector<QString> elements) : elements_(elements){};
 
   ~Program() = default;
 
-  vector<QString> GetProgramElement() const {return elements_;}
+  vector<QString> GetProgramElement() const { return elements_; }
 
   Program(const Program& prog) : elements_(prog.GetProgramElement()){};
 

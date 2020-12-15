@@ -55,6 +55,7 @@ QString Controller::Commande(const QString& expression) {
       expression.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
   int error_position = -1;
+  std::cout << operand_list.size() << endl;
   for (int i = 0; i < operand_list.size(); ++i) {
     try {
       const QString cur_operand = operand_list.at(i);
@@ -120,6 +121,7 @@ QString Controller::Commande(const QString& expression) {
     } catch (ComputerException& error) {
       pile_.SetMessage(error.GetInfo());
       error_position = i;
+      break;
     }
   }
 

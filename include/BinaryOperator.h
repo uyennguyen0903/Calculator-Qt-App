@@ -17,6 +17,8 @@ class BinaryOperator : public Operator {
 
   void Execute() override;
 
+  virtual void UpdatePile(Literal& arg1, Literal& arg, Literal* res, const QString& error_str) = 0;
+
   Literal* CastLiteral(Literal& arg1, Literal& arg2);
 
   virtual const QString Print() const = 0;

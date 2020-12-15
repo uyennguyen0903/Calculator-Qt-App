@@ -275,6 +275,7 @@ void QComputer::refresh() {
 
 void QComputer::getNextCommande() {
   QString c = commande->text();  // on récupère la ligne de commande
+  pile->SetMessage("");          // effacer l'ancien message
   QString InvalidCommand = controleur->Commande(c);
   commande->setText(InvalidCommand);
 }

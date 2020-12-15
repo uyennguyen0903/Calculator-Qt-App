@@ -4,8 +4,20 @@
 
 // Addition Operator.
 
+void AdditionOperator::UpdatePile(Literal& arg1, Literal& arg2,
+                                  Literal* const res,
+                                  const QString& error_str) {
+  if (error_str == "") {
+    literal_manager_.RemoveLiteral(arg1);
+    literal_manager_.RemoveLiteral(arg2);
+    pile_.Push(literal_manager_.AddLiteral(res));
+  } else {
+    pile_.Push(arg1);
+    pile_.Push(arg2);
+  }
+}
+
 Literal* AdditionOperator::Compute(Integer& arg1, Integer& arg2) {
-  cout << "++" << endl;
   return new Integer(arg1.GetInt() + arg2.GetInt());
 }
 

@@ -93,39 +93,48 @@ Literal* BinaryOperator::CastLiteral(Literal& arg1, Literal& arg2) {
 }
 
 Literal* BinaryOperator::Compute(Integer& arg1, Integer& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Real& arg1, Real& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Fraction& arg1, Fraction& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Integer& arg1, Real& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Real& arg1, Integer& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Integer& arg1, Fraction& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Fraction& arg1, Integer& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Real& arg1, Fraction& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Fraction& arg1, Real& arg2) {
-  throw(ComputerException("Invalide opération"));
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
 Literal* BinaryOperator::Compute(Integer& arg1, ExpressionLiteral& arg2) {
@@ -133,7 +142,8 @@ Literal* BinaryOperator::Compute(Integer& arg1, ExpressionLiteral& arg2) {
   if (exp_value != nullptr) {
     return CastLiteral(arg1, *exp_value);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -142,7 +152,8 @@ Literal* BinaryOperator::Compute(Fraction& arg1, ExpressionLiteral& arg2) {
   if (exp_value != nullptr) {
     return CastLiteral(arg1, *exp_value);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -151,7 +162,8 @@ Literal* BinaryOperator::Compute(Real& arg1, ExpressionLiteral& arg2) {
   if (exp_value != nullptr) {
     return CastLiteral(arg1, *exp_value);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -160,7 +172,8 @@ Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Integer& arg2) {
   if (exp_value != nullptr) {
     return CastLiteral(*exp_value, arg2);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -169,7 +182,8 @@ Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Real& arg2) {
   if (exp_value != nullptr) {
     return CastLiteral(*exp_value, arg2);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -178,7 +192,8 @@ Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Fraction& arg2) {
   if (exp_value != nullptr) {
     return CastLiteral(*exp_value, arg2);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -189,7 +204,8 @@ Literal* BinaryOperator::Compute(ExpressionLiteral& arg1,
   if (exp_value1 != nullptr && exp_value2 != nullptr) {
     return CastLiteral(*exp_value1, *exp_value2);
   } else {
-    throw(ComputerException("Expression n'a pas de valeur associée."));
+    throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                            " entre " + arg1.Print() + " et " + arg2.Print()));
   }
 }
 
@@ -199,12 +215,15 @@ void BinaryOperator::Execute() {
     pile_.Pop();
     Literal& arg1 = pile_.Top();
     pile_.Pop();
-    Literal* res = CastLiteral(arg1, arg2);
-    if (res != nullptr) {
-      literal_manager_.RemoveLiteral(arg1);
-      literal_manager_.RemoveLiteral(arg2);
-      pile_.Push(literal_manager_.AddLiteral(res));
+    Literal* res = nullptr;
+    QString error_str = "";
+    try {
+      res = CastLiteral(arg1, arg2);
+    } catch (ComputerException& error) {
+      error_str = error.GetInfo();
     }
+    UpdatePile(arg1, arg2, res, error_str);
+    if (error_str != "") throw ComputerException(error_str);
   } else {
     throw(ComputerException("Pas assez argument."));
   }
