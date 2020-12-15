@@ -5,7 +5,7 @@
 // Addition Operator.
 
 Literal* AdditionOperator::Compute(Integer& arg1, Integer& arg2) {
-  std::cout << "++" << endl;
+  cout << "++" << endl;
   return new Integer(arg1.GetInt() + arg2.GetInt());
 }
 

@@ -129,67 +129,67 @@ Literal* BinaryOperator::Compute(Fraction& arg1, Real& arg2) {
 }
 
 Literal* BinaryOperator::Compute(Integer& arg1, ExpressionLiteral& arg2) {
-  Literal* exp_value = arg2.GetAtom().GetAtomValue();
+  Literal* exp_value = arg2.GetAtom().CopyAtomValue();
   if (exp_value != nullptr) {
     return CastLiteral(arg1, *exp_value);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
 Literal* BinaryOperator::Compute(Fraction& arg1, ExpressionLiteral& arg2) {
-  Literal* exp_value = arg2.GetAtom().GetAtomValue();
+  Literal* exp_value = arg2.GetAtom().CopyAtomValue();
   if (exp_value != nullptr) {
     return CastLiteral(arg1, *exp_value);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
 Literal* BinaryOperator::Compute(Real& arg1, ExpressionLiteral& arg2) {
-  Literal* exp_value = arg2.GetAtom().GetAtomValue();
+  Literal* exp_value = arg2.GetAtom().CopyAtomValue();
   if (exp_value != nullptr) {
     return CastLiteral(arg1, *exp_value);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
 Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Integer& arg2) {
-  Literal* exp_value = arg1.GetAtom().GetAtomValue();
+  Literal* exp_value = arg1.GetAtom().CopyAtomValue();
   if (exp_value != nullptr) {
     return CastLiteral(*exp_value, arg2);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
 Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Real& arg2) {
-  Literal* exp_value = arg1.GetAtom().GetAtomValue();
+  Literal* exp_value = arg1.GetAtom().CopyAtomValue();
   if (exp_value != nullptr) {
     return CastLiteral(*exp_value, arg2);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
 Literal* BinaryOperator::Compute(ExpressionLiteral& arg1, Fraction& arg2) {
-  Literal* exp_value = arg1.GetAtom().GetAtomValue();
+  Literal* exp_value = arg1.GetAtom().CopyAtomValue();
   if (exp_value != nullptr) {
     return CastLiteral(*exp_value, arg2);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
 Literal* BinaryOperator::Compute(ExpressionLiteral& arg1,
                                  ExpressionLiteral& arg2) {
-  Literal* exp_value1 = arg1.GetAtom().GetAtomValue();
-  Literal* exp_value2 = arg2.GetAtom().GetAtomValue();
+  Literal* exp_value1 = arg1.GetAtom().CopyAtomValue();
+  Literal* exp_value2 = arg2.GetAtom().CopyAtomValue();
   if (exp_value1 != nullptr && exp_value2 != nullptr) {
     return CastLiteral(*exp_value1, *exp_value2);
   } else {
-    throw(ComputerException("Invalide opération"));
+    throw(ComputerException("Expression n'a pas de valeur associée."));
   }
 }
 
@@ -202,9 +202,7 @@ void BinaryOperator::Execute() {
     Literal* res = CastLiteral(arg1, arg2);
     if (res != nullptr) {
       literal_manager_.RemoveLiteral(arg1);
-      if (&arg2 == nullptr) std::cout << "chetme" << endl;  
       literal_manager_.RemoveLiteral(arg2);
-      std::cout << res->GetLiteralType() << " Hihi" << endl;
       pile_.Push(literal_manager_.AddLiteral(res));
     }
   } else {

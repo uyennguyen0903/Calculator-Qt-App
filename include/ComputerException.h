@@ -9,7 +9,7 @@ class ComputerException {
   QString info_;
 
  public:
-  ComputerException(const QString& info) : info_(info) {}
+  ComputerException(const QString& info) : info_(info){};
 
   virtual ~ComputerException(){};
 

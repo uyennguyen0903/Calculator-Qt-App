@@ -100,8 +100,6 @@ QString Controller::Commande(const QString& expression) {
           }
           Literal* atom_value = atom_manager_.EvalAtom(cur_operand);
           if (atom_value == nullptr) {
-            // pile_.Push(literal_manager_.AddLiteral(new
-            // ExpressionLiteral(id)));
             pile_.SetMessage(
                 cur_operand +
                 " n'a aucune valeure associée. Créé un expression litéral");
@@ -130,7 +128,7 @@ QString Controller::Commande(const QString& expression) {
   QString str_rest = "";
   for (int i = error_position; i < operand_list.size(); ++i) {
     str_rest.append(operand_list.at(i));
-    str_rest.append(" ");
+    if (i != operand_list.size() - 1) str_rest.append(" ");
   }
   return str_rest;
 }
