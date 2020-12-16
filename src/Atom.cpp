@@ -16,5 +16,8 @@ Literal* Atom::CopyAtomValue() {
   if (literal_->GetLiteralType() == Literal::LiteralType::kReal) {
     return new Real(dynamic_cast<Real*>(literal_));
   }
+  if (literal_->GetLiteralType() == Literal::LiteralType::kProgram) {
+    return new Program(dynamic_cast<Program*>(literal_));
+  }
   return nullptr;
 }

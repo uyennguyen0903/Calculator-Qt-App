@@ -4,7 +4,6 @@
 #include <QString>
 #include <vector>
 
-#include "AtomManager.h"
 #include "Literal.h"
 #include "Operand.h"
 
@@ -19,9 +18,9 @@ class Program : public Literal {
 
   ~Program() = default;
 
-  QString GetProgramElement() const { return program_str_; }
+  QString GetProgramStr() const { return program_str_; }
 
-  Program(const Program& prog) : program_str_(prog.GetProgramElement()){};
+  Program(Program* const prog) : program_str_(prog->GetProgramStr()){};
 
   const QString Print() const override { return program_str_; };
 

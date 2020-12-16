@@ -24,7 +24,7 @@ class STO : public BinaryOperator {
   Literal* Compute(Integer& arg1, ExpressionLiteral& arg2) override;
   Literal* Compute(Real& arg1, ExpressionLiteral& arg2) override;
   Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2) override;
-  // TODO :  Implement Compute() method for 'Program'.
+  Literal* Compute(Program& arg1, ExpressionLiteral& arg2) override;
 };
 
 #endif  // HANDLING_OPERATOR_H

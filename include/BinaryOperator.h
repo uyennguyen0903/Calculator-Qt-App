@@ -7,6 +7,7 @@
 #include "ComputerException.h"
 #include "NumericLiteral.h"
 #include "Operator.h"
+#include "Program.h"
 
 class BinaryOperator : public Operator {
  public:
@@ -22,7 +23,8 @@ class BinaryOperator : public Operator {
 
   Literal* CastFirstArg(Literal& arg1, Literal& arg2);
 
-  template<class T> Literal* CastSecondArg(T& arg1, Literal& arg2);
+  template <class T>
+  Literal* CastSecondArg(T& arg1, Literal& arg2);
 
   virtual const QString Print() const = 0;
 
@@ -42,6 +44,15 @@ class BinaryOperator : public Operator {
   virtual Literal* Compute(ExpressionLiteral& arg1, Integer& arg2);
   virtual Literal* Compute(ExpressionLiteral& arg1, Real& arg2);
   virtual Literal* Compute(ExpressionLiteral& arg1, Fraction& arg2);
+  virtual Literal* Compute(Program& arg1, Program& arg2);
+  virtual Literal* Compute(Integer& arg1, Program& arg2);
+  virtual Literal* Compute(Real& arg1, Program& arg2);
+  virtual Literal* Compute(Fraction& arg1, Program& arg2);
+  virtual Literal* Compute(ExpressionLiteral& arg1, Program& arg2);
+  virtual Literal* Compute(Program& arg1, ExpressionLiteral& arg2);
+  virtual Literal* Compute(Program& arg1, Integer& arg2);
+  virtual Literal* Compute(Program& arg1, Real& arg2);
+  virtual Literal* Compute(Program& arg1, Fraction& arg2);
 };
 
 #endif  // BINARY_OPERATOR_H

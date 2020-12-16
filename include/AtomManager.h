@@ -5,8 +5,6 @@
 #include <vector>
 
 #include "Atom.h"
-#include "NumericLiteral.h"
-#include "Program.h"
 
 using namespace std;
 

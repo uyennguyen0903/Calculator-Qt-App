@@ -22,3 +22,8 @@ Literal* STO::Compute(Fraction& arg1, ExpressionLiteral& arg2) {
   arg2.GetAtom().SetValue(new Fraction(&arg1));
   return nullptr;
 }
+
+Literal* STO::Compute(Program& arg1, ExpressionLiteral& arg2) {
+  arg2.GetAtom().SetValue(new Program(&arg1));
+  return nullptr;
+}
