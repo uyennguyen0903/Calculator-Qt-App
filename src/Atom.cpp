@@ -1,23 +1,26 @@
 #include "Atom.h"
 
-void Atom::SetValue(Literal* literal) {
-  delete literal_;
-  literal_ = literal;
-}
+void Atom::SetValue(Literal* literal) { values_.push_back(literal); }
 
 Literal* Atom::CopyAtomValue() {
-  if (literal_ == nullptr) return nullptr;
-  if (literal_->GetLiteralType() == Literal::LiteralType::kInteger) {
-    return new Integer(dynamic_cast<Integer*>(literal_));
+  if (values_.empty()) return nullptr;
+  Literal* value = values_.back();
+  if (value->GetLiteralType() == Literal::LiteralType::kInteger) {
+    return new Integer(dynamic_cast<Integer*>(value));
   }
-  if (literal_->GetLiteralType() == Literal::LiteralType::kFraction) {
-    return new Fraction(dynamic_cast<Fraction*>(literal_));
+  if (value->GetLiteralType() == Literal::LiteralType::kFraction) {
+    return new Fraction(dynamic_cast<Fraction*>(value));
   }
-  if (literal_->GetLiteralType() == Literal::LiteralType::kReal) {
-    return new Real(dynamic_cast<Real*>(literal_));
+  if (value->GetLiteralType() == Literal::LiteralType::kReal) {
+    return new Real(dynamic_cast<Real*>(value));
   }
-  if (literal_->GetLiteralType() == Literal::LiteralType::kProgram) {
-    return new Program(dynamic_cast<Program*>(literal_));
+  if (value->GetLiteralType() == Literal::LiteralType::kProgram) {
+    return new Program(dynamic_cast<Program*>(value));
   }
   return nullptr;
+}
+
+void Atom::Restore() {
+  if (values_.empty()) return;
+  values_.pop_back();
 }

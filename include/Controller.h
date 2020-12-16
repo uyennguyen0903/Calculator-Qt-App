@@ -15,6 +15,7 @@
 #include "Operand.h"
 #include "Operator.h"
 #include "Pile.h"
+#include "PileCareTaker.h"
 #include "Program.h"
 #include "Utils.h"
 
@@ -31,6 +32,7 @@ class Controller {
   Pile& pile_;
   Operator* operator_;
   QString command_error_;
+  PileCareTaker* pile_care_taker_;
 
  public:
   Controller(LiteralManager& literal_manager, Pile& pile,
@@ -38,9 +40,13 @@ class Controller {
       : literal_manager_(literal_manager),
         pile_(pile),
         operator_(op),
-        command_error_(""){};
+        command_error_(""),
+        pile_care_taker_(new PileCareTaker(&pile)){};
 
-  ~Controller() { delete operator_; }
+  ~Controller() {
+    delete operator_;
+    delete pile_care_taker_;
+  }
 
   void SetOperator(Operator* op);
 

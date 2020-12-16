@@ -18,6 +18,9 @@ class Pile : public QObject {
  public:
   Pile() : message_(""), nb_display_(5){};
 
+  Pile(vector<Item> items, QString message, size_t nb_display)
+      : items_(items), message_(message), nb_display_(nb_display){};
+
   ~Pile() = default;
 
   void Push(Literal& literal);
@@ -38,6 +41,12 @@ class Pile : public QObject {
   QString GetMessage() const { return message_; }
 
   size_t GetPileSize() const { return items_.size(); }
+
+  // Design pattern momento.
+
+  Pile* SaveStatus() const{ return new Pile(items_, message_, nb_display_); }
+
+  void Restore(Pile* const memento);
 
   // Design pattern iterator.
   class Iterator {

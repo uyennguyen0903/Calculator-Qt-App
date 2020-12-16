@@ -8,8 +8,8 @@ void AdditionOperator::UpdatePile(Literal& arg1, Literal& arg2,
                                   Literal* const res,
                                   const QString& error_str) {
   if (error_str == "") {
-    literal_manager_.RemoveLiteral(arg1);
-    literal_manager_.RemoveLiteral(arg2);
+    //literal_manager_.RemoveLiteral(arg1);
+    //literal_manager_.RemoveLiteral(arg2);
     pile_.Push(literal_manager_.AddLiteral(res));
   } else {
     pile_.Push(arg1);
