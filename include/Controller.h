@@ -30,23 +30,31 @@ class Controller {
   AtomManager& atom_manager_ = AtomManager::GetInstance();
   Pile& pile_;
   Operator* operator_;
+  QString command_error_;
 
  public:
   Controller(LiteralManager& literal_manager, Pile& pile,
              Operator* op = nullptr)
-      : literal_manager_(literal_manager), pile_(pile), operator_(op){};
+      : literal_manager_(literal_manager),
+        pile_(pile),
+        operator_(op),
+        command_error_(""){};
 
   ~Controller() { delete operator_; }
 
   void SetOperator(Operator* op);
 
-  QString Commande(const QString& expression);
+  void Commande(const QString& expression);
 
   void ExecuteOperator(const QString& op);
 
   void EvalExpressionOrProgram();
 
   int ParseProgram(const QStringList& list, int position);
+
+  void ClearError() { command_error_ = ""; }
+
+  QString GetErrorCommand() const { return command_error_; }
 };
 
 #endif  // CONTROLLER_H_

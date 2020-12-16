@@ -82,15 +82,13 @@ void Controller::EvalExpressionOrProgram() {
   }
 }
 
-QString Controller::Commande(const QString& expression) {
+void Controller::Commande(const QString& expression) {
   QStringList operand_list =
       expression.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-  int error_position = -1;
 
   for (int i = 0; i < operand_list.size(); ++i) {
     try {
       const QString cur_operand = operand_list.at(i);
-      error_position = i;
 
       if (cur_operand == "[") {
         int next_position = ParseProgram(operand_list, i);
@@ -158,19 +156,11 @@ QString Controller::Commande(const QString& expression) {
       }
     } catch (ComputerException& error) {
       pile_.SetMessage(error.GetInfo());
-      error_position = i;
-      break;
+      for (int j = i; j < operand_list.size(); ++j) {
+        command_error_.append(operand_list.at(j));
+        if (j != operand_list.size() - 1) command_error_.append(" ");
+      }
+      throw(ComputerException(pile_.GetMessage()));
     }
-
-    if (i == operand_list.size() - 1) error_position = -1;
   }
-
-  if (error_position == -1) return "";
-
-  QString str_rest = "";
-  for (int i = error_position; i < operand_list.size(); ++i) {
-    str_rest.append(operand_list.at(i));
-    if (i != operand_list.size() - 1) str_rest.append(" ");
-  }
-  return str_rest;
 }

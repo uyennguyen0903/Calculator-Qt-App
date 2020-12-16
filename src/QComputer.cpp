@@ -275,9 +275,12 @@ void QComputer::refresh() {
 
 void QComputer::getNextCommande() {
   QString c = commande->text();  // on récupère la ligne de commande
-  pile->SetMessage("");          // effacer l'ancien message
-  QString InvalidCommand = controleur->Commande(c);
-  commande->setText(InvalidCommand);
+  pile->SetMessage("");          // effacer l'ancien message.
+  controleur->ClearError();
+  try {
+  controleur->Commande(c);
+  commande->setText(controleur->GetErrorCommand());
+  } catch (ComputerException& error) {}
 }
 
 void QComputer::onClick() {
