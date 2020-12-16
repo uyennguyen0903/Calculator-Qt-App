@@ -1,5 +1,7 @@
 #include "AtomManager.h"
 
+#include <iostream>
+
 AtomManager::~AtomManager() {
   for (Atom* atom : atoms_) delete atom;
 }

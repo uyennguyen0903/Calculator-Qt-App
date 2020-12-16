@@ -6,8 +6,9 @@ void Controller::SetOperator(Operator* op) {
 }
 
 int Controller::ParseProgram(const QStringList& list, int position) {
-  QString prog_str = "";
-  int cnt = 0;
+  QString prog_str = "[";
+  int cnt = 1;
+  ++position;  // Skip the first '['.
 
   do {
     const QString cur_operand = list.at(position++);
@@ -38,17 +39,52 @@ int Controller::ParseProgram(const QStringList& list, int position) {
 void Controller::ExecuteOperator(const QString& op) {
   if (op == "+") {
     SetOperator(new AdditionOperator(literal_manager_, pile_));
+    operator_->Execute();
   }
+
   if (op == "STO") {
     SetOperator(new STO(literal_manager_, pile_));
+    operator_->Execute();
   }
-  operator_->Execute();
+
+  if (op == "EVAL") {
+    EvalExpressionOrProgram();
+  }
+}
+
+void Controller::EvalExpressionOrProgram() {
+  Literal& exp_or_prog = pile_.Top();
+  Literal::LiteralType type = exp_or_prog.GetLiteralType();
+
+  QString str = exp_or_prog.Print();
+
+  if (type == Literal::LiteralType::kExpression) {
+    Literal* atom_value = atom_manager_.GetAtom(str).CopyAtomValue();
+    if (atom_value != nullptr) {
+      pile_.Pop();
+      if (atom_value->GetLiteralType() == Literal::LiteralType::kProgram) {
+        str = atom_value->Print();
+        Commande(str.mid(1, str.length() - 2));
+      } else {
+        pile_.Push(*atom_value);
+      }
+    } else {
+      throw(ComputerException("Expression n'est associée à aucune valeur."));
+    }
+  } else if (type = Literal::LiteralType::kProgram) {
+    // Effacer "]" & "[".
+    pile_.Pop();
+    Commande(str.mid(1, str.length() - 2));
+  } else {
+    throw(ComputerException(
+        "Commande invalide. EVAL opération est seulement pour "
+        "expression/programme litérale."));
+  }
 }
 
 QString Controller::Commande(const QString& expression) {
   QStringList operand_list =
       expression.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-
   int error_position = -1;
 
   for (int i = 0; i < operand_list.size(); ++i) {
@@ -68,11 +104,13 @@ QString Controller::Commande(const QString& expression) {
 
         if (type == Operand::OperandType::kOperator) {
           ExecuteOperator(cur_operand);
+          // continue;
         }
 
         if (type == Operand::OperandType::kInteger) {
           pile_.Push(
               literal_manager_.AddLiteral(new Integer(cur_operand.toInt())));
+          // continue;
         }
 
         if (type == Operand::OperandType::kReal) {
@@ -100,7 +138,9 @@ QString Controller::Commande(const QString& expression) {
           } else {
             if (atom_value->GetLiteralType() ==
                 Literal::LiteralType::kProgram) {
-              Commande(atom_value->Print());
+              QString prog_str = atom_value->Print();
+              // Effacer "]" & "[".
+              Commande(prog_str.mid(1, prog_str.length() - 2));
             } else {
               pile_.Push(literal_manager_.AddLiteral(atom_value));
             }

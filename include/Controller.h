@@ -44,6 +44,8 @@ class Controller {
 
   void ExecuteOperator(const QString& op);
 
+  void EvalExpressionOrProgram();
+
   int ParseProgram(const QStringList& list, int position);
 };
 
