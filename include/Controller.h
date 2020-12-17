@@ -31,7 +31,6 @@ class Controller {
   AtomManager& atom_manager_ = AtomManager::GetInstance();
   Pile& pile_;
   Operator* operator_;
-  QString command_error_;
   PileCareTaker* pile_care_taker_;
 
  public:
@@ -40,7 +39,6 @@ class Controller {
       : literal_manager_(literal_manager),
         pile_(pile),
         operator_(op),
-        command_error_(""),
         pile_care_taker_(new PileCareTaker(&pile)){};
 
   ~Controller() {
@@ -50,17 +48,17 @@ class Controller {
 
   void SetOperator(Operator* op);
 
-  void Commande(const QString& expression);
+  void CommandeProcess(const QString& command);
 
   void ExecuteOperator(const QString& op);
 
   void EvalExpressionOrProgram();
 
+  void PileBackUp() { pile_care_taker_->BackUp(); }
+
+  void PileRestore() { pile_care_taker_->Undo(); }
+
   int ParseProgram(const QStringList& list, int position);
-
-  void ClearError() { command_error_ = ""; }
-
-  QString GetErrorCommand() const { return command_error_; }
 };
 
 #endif  // CONTROLLER_H_

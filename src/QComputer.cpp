@@ -276,11 +276,15 @@ void QComputer::refresh() {
 void QComputer::getNextCommande() {
   QString c = commande->text();  // on récupère la ligne de commande
   pile->SetMessage("");          // effacer l'ancien message.
-  controleur->ClearError();
+  controleur->PileBackUp();
   try {
-  controleur->Commande(c);
-  commande->setText(controleur->GetErrorCommand());
-  } catch (ComputerException& error) {}
+    controleur->CommandeProcess(c);
+    commande->clear();
+  } catch (ComputerException& error) {
+    controleur->PileRestore();
+    pile->SetMessage(error.GetInfo());
+    refresh();
+  }
 }
 
 void QComputer::onClick() {

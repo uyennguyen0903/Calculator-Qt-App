@@ -1,8 +1,6 @@
 #include "PileCareTaker.h"
 
-void PileCareTaker::BackUp() {
-  mementos_.push_back(originator_->SaveStatus());
-}
+void PileCareTaker::BackUp() { mementos_.push_back(originator_->SaveStatus()); }
 
 void PileCareTaker::Undo() {
   if (mementos_.empty()) return;
