@@ -21,10 +21,12 @@ class STO : public BinaryOperator {
 
   const QString Print() const override { return expression_; }
 
-  Literal* Compute(Integer& arg1, ExpressionLiteral& arg2) override;
-  Literal* Compute(Real& arg1, ExpressionLiteral& arg2) override;
-  Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2) override;
-  Literal* Compute(Program& arg1, ExpressionLiteral& arg2) override;
+  Literal* Compute(Literal& arg1, Literal& arg2) override;
+  
+  Literal* Compute(Integer& arg1, ExpressionLiteral& arg2);
+  Literal* Compute(Real& arg1, ExpressionLiteral& arg2);
+  Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2) ;
+  Literal* Compute(Program& arg1, ExpressionLiteral& arg2) ;
 };
 
 #endif  // HANDLING_OPERATOR_H

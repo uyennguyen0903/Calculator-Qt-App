@@ -21,38 +21,9 @@ class BinaryOperator : public Operator {
   virtual void UpdatePile(Literal& arg1, Literal& arg, Literal* res,
                           const QString& error_str) = 0;
 
-  Literal* CastFirstArg(Literal& arg1, Literal& arg2);
-
-  template <class T>
-  Literal* CastSecondArg(T& arg1, Literal& arg2);
-
   virtual const QString Print() const = 0;
 
-  virtual Literal* Compute(Integer& arg1, Integer& arg2);
-  virtual Literal* Compute(Real& arg1, Real& arg2);
-  virtual Literal* Compute(Fraction& arg1, Fraction& arg2);
-  virtual Literal* Compute(ExpressionLiteral& arg1, ExpressionLiteral& arg2);
-  virtual Literal* Compute(Integer& arg1, Real& arg2);
-  virtual Literal* Compute(Real& arg1, Integer& arg2);
-  virtual Literal* Compute(Integer& arg1, Fraction& arg2);
-  virtual Literal* Compute(Fraction& arg1, Integer& arg2);
-  virtual Literal* Compute(Real& arg1, Fraction& arg2);
-  virtual Literal* Compute(Fraction& arg1, Real& arg2);
-  virtual Literal* Compute(Integer& arg1, ExpressionLiteral& arg2);
-  virtual Literal* Compute(Real& arg1, ExpressionLiteral& arg2);
-  virtual Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2);
-  virtual Literal* Compute(ExpressionLiteral& arg1, Integer& arg2);
-  virtual Literal* Compute(ExpressionLiteral& arg1, Real& arg2);
-  virtual Literal* Compute(ExpressionLiteral& arg1, Fraction& arg2);
-  virtual Literal* Compute(Program& arg1, Program& arg2);
-  virtual Literal* Compute(Integer& arg1, Program& arg2);
-  virtual Literal* Compute(Real& arg1, Program& arg2);
-  virtual Literal* Compute(Fraction& arg1, Program& arg2);
-  virtual Literal* Compute(ExpressionLiteral& arg1, Program& arg2);
-  virtual Literal* Compute(Program& arg1, ExpressionLiteral& arg2);
-  virtual Literal* Compute(Program& arg1, Integer& arg2);
-  virtual Literal* Compute(Program& arg1, Real& arg2);
-  virtual Literal* Compute(Program& arg1, Fraction& arg2);
+  virtual Literal* Compute(Literal& arg1, Literal& arg2) = 0;
 };
 
 #endif  // BINARY_OPERATOR_H

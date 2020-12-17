@@ -52,13 +52,17 @@ class Controller {
 
   void ExecuteOperator(const QString& op);
 
-  void EvalExpressionOrProgram();
-
   void PileBackUp() { pile_care_taker_->BackUp(); }
 
   void PileRestore() { pile_care_taker_->Undo(); }
 
   int ParseProgram(const QStringList& list, int position);
+
+  void EVAL();
+
+  void DUP();
+
+  void DROP();
 };
 
 #endif  // CONTROLLER_H_

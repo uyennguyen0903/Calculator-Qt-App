@@ -14,6 +14,9 @@ class ExpressionLiteral : public Literal {
  public:
   ExpressionLiteral(QString const& id, Atom& atom) : id_(id), atom_(&atom){};
 
+  ExpressionLiteral(ExpressionLiteral* const exp)
+      : id_(exp->id_), atom_(exp->atom_){};
+
   const QString Print() const override { return id_; }
 
   Atom& GetAtom() const { return *atom_; }

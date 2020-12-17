@@ -6,6 +6,7 @@
 #include "ComputerException.h"
 #include "NumericLiteral.h"
 #include "Operator.h"
+#include "Utils.h"
 
 class AdditionOperator : public BinaryOperator {
  private:
@@ -17,18 +18,16 @@ class AdditionOperator : public BinaryOperator {
 
   const QString Print() const override { return expression_; }
 
-  void UpdatePile(Literal& arg1, Literal& arg2, Literal* res, const QString& error_str) override;
+  void UpdatePile(Literal& arg1, Literal& arg2, Literal* res,
+                  const QString& error_str) override;
 
-  Literal* Compute(Integer& arg1, Integer& arg2) override;
-  Literal* Compute(Real& arg1, Real& arg2) override;
-  Literal* Compute(Fraction& arg1, Fraction& arg2) override;
-  Literal* Compute(Integer& arg1, Real& arg2) override;
-  Literal* Compute(Real& arg1, Integer& arg2) override;
-  Literal* Compute(Integer& arg1, Fraction& arg2) override;
-  Literal* Compute(Fraction& arg1, Integer& arg2) override;
-  Literal* Compute(Real& arg1, Fraction& arg2) override;
-  Literal* Compute(Fraction& arg1, Real& arg2) override;
-  // TODO : Implement Compute() method for 'Atom' & 'Program'.
+  Literal* CastSameType(Literal& arg1, Literal& arg2);
+
+  Literal* Compute(Literal& arg1, Literal& arg2) override;
+  
+  Literal* Compute(Integer& arg1, Integer& arg2);
+  Literal* Compute(Real& arg1, Real& arg2);
+  Literal* Compute(Fraction& arg1, Fraction& arg2);
 };
 
 #endif  // NUMERIC_OPERATOR_H

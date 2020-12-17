@@ -9,7 +9,7 @@ using namespace std;
 
 class Literal : public Operand {
  public:
-  enum LiteralType { kInteger = 0, kReal, kFraction, kProgram, kExpression };
+  enum LiteralType { kInteger = 0, kFraction, kReal, kProgram, kExpression };
 
   static constexpr LiteralType kLiteralList[] = {kInteger, kReal, kFraction,
                                                  kProgram, kExpression};

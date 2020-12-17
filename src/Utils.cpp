@@ -60,3 +60,26 @@ Operand::OperandType FindTypeOperand(const QString& str) {
 
   return Operand::OperandType::kUndefined;
 }
+
+Fraction* ConvertIntToFraction(Literal& num) {
+  Integer& n = dynamic_cast<Integer&>(num);
+  return new Fraction(n.GetInt(), 1);
+}
+
+Real* ConvertIntToReal(Literal& num) {
+  Integer& n = dynamic_cast<Integer&>(num);
+  return new Real(double(n.GetInt()));
+}
+
+Real* ConvertFractionToReal(Literal& frac) {
+  Fraction& n = dynamic_cast<Fraction&>(frac);
+  return new Real(double(n.GetNumerator()) / double(n.GetDenominator()));
+}
+
+Real* ConvertToReal(Literal& num) {
+  if (num.GetLiteralType() == Literal::LiteralType::kInteger) {
+    return ConvertIntToReal(num);
+  } else {
+    return ConvertFractionToReal(num);
+  }
+}

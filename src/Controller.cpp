@@ -48,41 +48,16 @@ void Controller::ExecuteOperator(const QString& op) {
   }
 
   if (op == "EVAL") {
-    EvalExpressionOrProgram();
-  }
-}
-
-void Controller::EvalExpressionOrProgram() {
-  Literal& exp_or_prog = pile_.Top();
-  Literal::LiteralType type = exp_or_prog.GetLiteralType();
-
-  QString str = exp_or_prog.Print();
-
-  if (type == Literal::LiteralType::kExpression) {
-    Literal* atom_value = atom_manager_.GetAtom(str).CopyAtomValue();
-    if (atom_value != nullptr) {
-      pile_.Pop();
-      if (atom_value->GetLiteralType() == Literal::LiteralType::kProgram) {
-        str = atom_value->Print();
-        CommandeProcess(str.mid(1, str.length() - 2));
-      } else {
-        pile_.Push(*atom_value);
-      }
-    } else {
-      throw(ComputerException("Expression n'est associée à aucune valeur."));
-    }
-    return;
+    EVAL();
   }
 
-  if (type == Literal::LiteralType::kProgram) {
-    // Effacer "]" & "[".
-    pile_.Pop();
-    CommandeProcess(str.mid(1, str.length() - 2));
-    return;
+  if (op == "DUP") {
+    DUP();
   }
 
-  throw(ComputerException(
-      "EVAL opération est seulement pour expression/programme litérale."));
+  if (op == "DROP") {
+    DROP();
+  }
 }
 
 void Controller::CommandeProcess(const QString& command) {
