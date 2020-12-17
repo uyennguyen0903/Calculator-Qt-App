@@ -1,8 +1,6 @@
 #ifndef BINARY_OPERATOR_H_
 #define BINARY_OPERATOR_H_
 
-#include <iostream>
-
 #include "AtomManager.h"
 #include "ComputerException.h"
 #include "NumericLiteral.h"

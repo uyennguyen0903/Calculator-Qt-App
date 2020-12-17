@@ -63,6 +63,10 @@ class Controller {
   void DUP();
 
   void DROP();
+
+  void SWAP();
+
+  void CLEAR();
 };
 
 #endif  // CONTROLLER_H_

@@ -21,7 +21,7 @@ Atom& AtomManager::AddAtom(const QString& id, Literal* const literal) {
 
 bool AtomManager::CheckExistedAtom(const QString& id) {
   for (Atom* atom : atoms_) {
-    if (atom->GetId() == id) {
+    if (atom->GetId() == id && atom->CopyAtomValue() != nullptr) {
       return true;
     }
   }
@@ -45,7 +45,7 @@ Atom& AtomManager::GetAtom(const QString& id) {
       return *atom;
     }
   }
-  throw(ComputerException("ID n'existe pas."));
+  return AddAtom(id, nullptr);
 }
 
 void AtomManager::SetValueAtom(const QString& id, Literal* const literal) {

@@ -30,6 +30,8 @@ Literal* AdditionOperator::CastSameType(Literal& arg1, Literal& arg2) {
     return Compute(dynamic_cast<Fraction&>(arg1),
                    dynamic_cast<Fraction&>(arg2));
   }
+
+  return nullptr;
 }
 
 Literal* AdditionOperator::Compute(Literal& arg1, Literal& arg2) {
@@ -38,12 +40,22 @@ Literal* AdditionOperator::Compute(Literal& arg1, Literal& arg2) {
 
   if (type1 == Literal::LiteralType::kExpression) {
     ExpressionLiteral& exp1 = dynamic_cast<ExpressionLiteral&>(arg1);
-    return Compute(*exp1.GetAtom().CopyAtomValue(), arg2);
+    Literal* value1 = exp1.GetAtom().CopyAtomValue();
+    if (value1 != nullptr) {
+      return Compute(*value1, arg2);
+    } else {
+      throw(ComputerException("Atom/Expression n'est pas value associée."));
+    }
   }
 
   if (type2 == Literal::LiteralType::kExpression) {
     ExpressionLiteral& exp2 = dynamic_cast<ExpressionLiteral&>(arg2);
-    return Compute(arg1, *exp2.GetAtom().CopyAtomValue());
+    Literal* value2 = exp2.GetAtom().CopyAtomValue();
+    if (value2 != nullptr) {
+      return Compute(arg1, *value2);
+    } else {
+      throw(ComputerException("Atom/Expression n'est pas value associée."));
+    }
   }
 
   if (type1 < type2 && type2 <= 2) {
@@ -96,4 +108,55 @@ Literal* AdditionOperator::Compute(Fraction& arg1, Fraction& arg2) {
 
 // ****************************************************************************
 // ****************************************************************************
-// ****************************************************************************
+
+// NEG operator.
+
+Literal* NegativeOperator::Compute(Literal& arg) {
+  Literal::LiteralType type = arg.GetLiteralType();
+
+  if (type == Literal::LiteralType::kInteger) {
+    return Compute(dynamic_cast<Integer&>(arg));
+  }
+
+  if (type == Literal::LiteralType::kReal) {
+    return Compute(dynamic_cast<Real&>(arg));
+  }
+
+  if (type == Literal::LiteralType::kFraction) {
+    return Compute(dynamic_cast<Fraction&>(arg));
+  }
+
+  if (type == Literal::LiteralType::kExpression) {
+    return Compute(dynamic_cast<ExpressionLiteral&>(arg));
+  }
+
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg.Print()));
+}
+
+Literal* NegativeOperator::Compute(Integer& arg) {
+  return new Integer(arg.GetInt() * -1);
+}
+
+Literal* NegativeOperator::Compute(Fraction& arg) {
+  return new Fraction(arg.GetNumerator() * -1, arg.GetDenominator());
+}
+
+Literal* NegativeOperator::Compute(Real& arg) {
+  return new Real(arg.GetReal() * -1.0);
+}
+
+Literal* NegativeOperator::Compute(ExpressionLiteral& arg) {
+  if (arg.GetLiteralType() == Literal::LiteralType::kProgram) {
+    throw(ComputerException("Impossible de changer la signe d'une programme."));
+  }
+
+  Literal* value = arg.GetAtom().CopyAtomValue();
+  if (value == nullptr) {
+    throw(ComputerException("Atome/Expression n'a pas value associée."));
+  }
+
+  arg.GetAtom().SetValue(Compute(*value));
+
+  return new ExpressionLiteral(arg.Print(), arg.GetAtom());
+}

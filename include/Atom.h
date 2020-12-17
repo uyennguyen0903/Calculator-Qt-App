@@ -30,6 +30,8 @@ class Atom {
 
   void SetValue(Literal* literal);
 
+  bool CheckEmptyAtom() const;
+
   void Restore();
 };
 

@@ -47,6 +47,11 @@ void Controller::ExecuteOperator(const QString& op) {
     operator_->Execute();
   }
 
+  if (op == "NEG") {
+    SetOperator(new NegativeOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
   if (op == "EVAL") {
     EVAL();
   }
@@ -57,6 +62,14 @@ void Controller::ExecuteOperator(const QString& op) {
 
   if (op == "DROP") {
     DROP();
+  }
+
+  if (op == "SWAP") {
+    SWAP();
+  }
+
+  if (op == "CLEAR") {
+    CLEAR();
   }
 }
 
@@ -120,8 +133,12 @@ void Controller::CommandeProcess(const QString& command) {
 
       if (type == Operand::OperandType::kAtom) {
         if (!atom_manager_.CheckExistedAtom(cur_operand)) {
-          throw(ComputerException(
-              "Invalide opérande, atome n'est pas encore initialisée."));
+          pile_.SetMessage(
+              "Atome n'est pas initialisée, empiler litéral expression "
+              "associée.");
+          pile_.Push(literal_manager_.AddLiteral(new ExpressionLiteral(
+              cur_operand, atom_manager_.GetAtom(cur_operand))));
+          continue;
         }
 
         Literal* atom_value = atom_manager_.EvalAtom(cur_operand);

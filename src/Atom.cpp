@@ -1,6 +1,8 @@
 #include "Atom.h"
 
-void Atom::SetValue(Literal* literal) { values_.push_back(literal); }
+void Atom::SetValue(Literal* literal) {
+  if (literal != nullptr) values_.push_back(literal);
+}
 
 Literal* Atom::CopyAtomValue() {
   if (values_.empty()) return nullptr;
@@ -23,4 +25,11 @@ Literal* Atom::CopyAtomValue() {
 void Atom::Restore() {
   if (values_.empty()) return;
   values_.pop_back();
+}
+
+bool Atom::CheckEmptyAtom() const {
+  if (values_.empty())
+    return true;
+  else
+    return false;
 }

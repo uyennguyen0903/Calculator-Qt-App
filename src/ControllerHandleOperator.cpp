@@ -75,3 +75,24 @@ void Controller::DROP() {
 
   pile_.Pop();
 }
+
+void Controller::SWAP() {
+  if (pile_.GetPileSize() < 2) {
+    throw(ComputerException("Opérateur invalid."));
+  }
+
+  Literal& literal1 = pile_.Top();
+  pile_.Pop();
+
+  Literal& literal2 = pile_.Top();
+  pile_.Pop();
+
+  pile_.Push(literal1);
+  pile_.Push(literal2);
+}
+
+void Controller::CLEAR() {
+  while (pile_.GetPileSize() != 0) {
+    pile_.Pop();
+  }
+}
