@@ -46,14 +46,30 @@ class STO : public BinaryOperator {
   Literal* Compute(Program& arg1, ExpressionLiteral& arg2);
 };
 
-class DIVMOD : public BinaryOperator {
+class DivMod : public BinaryOperator {
  private:
   QString expression_ = "DIV";
-  bool div_; // True on div, False on mod;
+  bool div_;  // True on div, False on mod;
 
  public:
-  DIVMOD(LiteralManager& literal_manager, Pile& pile, bool div)
+  DivMod(LiteralManager& literal_manager, Pile& pile, bool div)
       : BinaryOperator(literal_manager, pile), div_(div){};
+
+  const QString Print() const override { return expression_; }
+
+  Literal* Compute(Literal& arg1, Literal& arg2) override;
+
+  Literal* Compute(Integer& arg1, Integer& arg2);
+};
+
+class AndOr : public BinaryOperator {
+ private:
+  QString expression_ = "";
+  bool and_; // True on AND, False on OR.
+
+ public:
+  AndOr(LiteralManager& literal_manager, Pile& pile, bool type)
+      : BinaryOperator(literal_manager, pile), and_(type){};
 
   const QString Print() const override { return expression_; }
 

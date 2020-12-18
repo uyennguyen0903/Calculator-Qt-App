@@ -141,12 +141,12 @@ void Controller::ExecuteOperator(const QString& op) {
   }
 
   if (op == "DIV") {
-    SetOperator(new DIVMOD(literal_manager_, pile_, true));
+    SetOperator(new DivMod(literal_manager_, pile_, true));
     operator_->Execute();
   }
 
   if (op == "MOD") {
-    SetOperator(new DIVMOD(literal_manager_, pile_, false));
+    SetOperator(new DivMod(literal_manager_, pile_, false));
     operator_->Execute();
   }
 
@@ -182,6 +182,16 @@ void Controller::ExecuteOperator(const QString& op) {
 
   if (op == "!=") {
     SetOperator(new Equal(literal_manager_, pile_, true));
+    operator_->Execute();
+  }
+
+  if (op == "AND") {
+    SetOperator(new AndOr(literal_manager_, pile_, true));
+    operator_->Execute();
+  }
+
+  if (op == "OR") {
+    SetOperator(new AndOr(literal_manager_, pile_, false));
     operator_->Execute();
   }
 
