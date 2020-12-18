@@ -67,12 +67,16 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   // Opérandes.
   QPushButton* plus = new QPushButton("+");
   connect(plus, SIGNAL(clicked()), this, SLOT(onClick()));
+  connect(plus, SIGNAL(clicked()), this, SLOT(getNextCommande()));
   QPushButton* moins = new QPushButton("-");
   connect(moins, SIGNAL(clicked()), this, SLOT(onClick()));
+  connect(moins, SIGNAL(clicked()), this, SLOT(getNextCommande()));
   QPushButton* fois = new QPushButton("*");
   connect(fois, SIGNAL(clicked()), this, SLOT(onClick()));
+  connect(fois, SIGNAL(clicked()), this, SLOT(getNextCommande()));
   QPushButton* division = new QPushButton("/");
   connect(division, SIGNAL(clicked()), this, SLOT(onClick()));
+  connect(division, SIGNAL(clicked()), this, SLOT(getNextCommande()));
 
   // Les touches Entrée & Eval.
   QPushButton* entree = new QPushButton("ENTREE");
@@ -290,6 +294,7 @@ void QComputer::getNextCommande() {
 void QComputer::onClick() {
   QPushButton* button = (QPushButton*)sender();
   QString c = commande->text();  // on récupère la ligne de commande
+  if (c[c.size() - 1] != " " && c.size() > 0) c += " ";
   c += button->text();
   commande->setText(c);
 }
