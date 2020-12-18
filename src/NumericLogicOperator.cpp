@@ -216,8 +216,8 @@ Literal* Greater::Compute(Integer& arg1, Integer& arg2) {
 }
 
 Literal* Greater::Compute(Real& arg1, Real& arg2) {
-  int n1 = arg1.GetReal();
-  int n2 = arg2.GetReal();
+  double n1 = arg1.GetReal();
+  double n2 = arg2.GetReal();
   bool res;
   if (inverse_) swap(n1, n2);
   if (equal_) {
@@ -259,8 +259,8 @@ Literal* Equal::Compute(Integer& arg1, Integer& arg2) {
 }
 
 Literal* Equal::Compute(Real& arg1, Real& arg2) {
-  int n1 = arg1.GetReal();
-  int n2 = arg2.GetReal();
+  double n1 = arg1.GetReal();
+  double n2 = arg2.GetReal();
   bool res;
   if (diff_) {
     res = (n1 != n2);

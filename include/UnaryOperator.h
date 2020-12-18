@@ -21,4 +21,22 @@ class UnaryOperator : public Operator {
   virtual Literal* Compute(Literal& arg) = 0;
 };
 
+class NegativeOperator : public UnaryOperator {
+ private:
+  QString expression_ = "NEG";
+
+ public:
+  NegativeOperator(LiteralManager& literal_manager, Pile& pile)
+      : UnaryOperator(literal_manager, pile){};
+
+  const QString Print() const override { return expression_; };
+
+  Literal* Compute(Literal& arg) override;
+
+  Literal* Compute(Integer& arg);
+  Literal* Compute(Fraction& arg);
+  Literal* Compute(Real& arg);
+  Literal* Compute(ExpressionLiteral& arg);
+};
+
 #endif  // UNARY_OPERATOR_H
