@@ -224,18 +224,18 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   connect(ift, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* ifte = new QPushButton("IFTE");
   connect(ifte, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* tant_que = new QPushButton("WHILE");
-  connect(tant_que, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* forget = new QPushButton("FORGET");
+  connect(forget, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // La 'couche4' contient les opérateurs de manipulation et opérateurs
   // conditionnels et de boucle.
   QHBoxLayout* couche4 = new QHBoxLayout;
   couche4->addWidget(ift);
   couche4->addWidget(ifte);
-  couche4->addWidget(tant_que);
   couche4->addWidget(dup);
   couche4->addWidget(drop);
   couche4->addWidget(echanger);
+  couche4->addWidget(forget);
   couche4->addWidget(effacer);
 
   QHBoxLayout* couche12 = new QHBoxLayout;
