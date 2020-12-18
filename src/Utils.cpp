@@ -22,6 +22,9 @@ Operand::OperandType FindTypeOperand(const QString& str) {
 
   bool ValidType;
 
+  if (str.indexOf("-") == 0)
+    throw(ComputerException("Impossible de saisir un nombre négatif."));
+
   str.toLong(&ValidType);
   if (ValidType) {
     return Operand::OperandType::kInteger;

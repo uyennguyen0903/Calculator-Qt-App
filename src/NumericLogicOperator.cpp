@@ -23,6 +23,12 @@ Literal* NumericLogicOperator::Compute(Literal& arg1, Literal& arg2) {
   Literal::LiteralType type1 = arg1.GetLiteralType();
   Literal::LiteralType type2 = arg2.GetLiteralType();
 
+  if (type1 == Literal::LiteralType::kProgram ||
+      type2 == Literal::LiteralType::kProgram) {
+    throw(ComputerException(
+        "Impossible d'effectuer cet opérateur sur litérale programme."));
+  }
+
   if (type1 == Literal::LiteralType::kExpression) {
     ExpressionLiteral& exp1 = dynamic_cast<ExpressionLiteral&>(arg1);
     Literal* value1 = exp1.GetAtom().CopyAtomValue();
@@ -156,10 +162,15 @@ Literal* MultiplyOperator::Compute(Fraction& arg1, Fraction& arg2) {
 // Devision operator.
 
 Literal* DivisionOperator::Compute(Integer& arg1, Integer& arg2) {
-  if (!arg2.GetInt()) {
+  long n1 = arg1.GetInt();
+  long n2 = arg2.GetInt();
+  if (!n2) {
     throw(ComputerException("Division par zéro"));
   }
-  return new Integer(arg1.GetInt() / arg2.GetInt());
+  if (n1 % n2 == 0)
+    return new Integer(n1 / n2);
+  else
+    return new Fraction(n1, n2);
 }
 
 Literal* DivisionOperator::Compute(Real& arg1, Real& arg2) {
