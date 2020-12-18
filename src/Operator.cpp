@@ -2,7 +2,7 @@
 
 const set<QString> Operator::kOperatorList = {
     "+",   "-",    "*",    "/",     "DIV", "NEG",    "=",   "!=",
-    "=<",  ">=",   "<",    "<",     "AND", "OR",     "NOT", "EVAL",
+    "=<",  ">=",   "<",    ">",     "AND", "OR",     "NOT", "EVAL",
     "DUP", "DROP", "SWAP", "CLEAR", "IFT", "FORGET", "STO"};
 
 bool Operator::IsEnoughArguments(size_t n) const {
@@ -12,4 +12,3 @@ bool Operator::IsEnoughArguments(size_t n) const {
   }
   return true;
 }
-

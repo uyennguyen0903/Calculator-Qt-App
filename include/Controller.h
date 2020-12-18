@@ -12,7 +12,7 @@
 #include "LiteralManager.h"
 #include "NEGoperator.h"
 #include "NumericLiteral.h"
-#include "NumericOperator.h"
+#include "NumericLogicOperator.h"
 #include "Operand.h"
 #include "Operator.h"
 #include "Pile.h"

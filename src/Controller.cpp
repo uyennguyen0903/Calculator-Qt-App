@@ -36,58 +36,6 @@ int Controller::ParseProgram(const QStringList& list, int position) {
   return position;
 }
 
-void Controller::ExecuteOperator(const QString& op) {
-  if (op == "+") {
-    SetOperator(new AdditionOperator(literal_manager_, pile_));
-    operator_->Execute();
-  }
-
-  if (op == "-") {
-    SetOperator(new SubtractionOperator(literal_manager_, pile_));
-    operator_->Execute();
-  }
-
-  if (op == "*") {
-    SetOperator(new MultiplyOperator(literal_manager_, pile_));
-    operator_->Execute();
-  }
-
-  if (op == "/") {
-    SetOperator(new DivisionOperator(literal_manager_, pile_));
-    operator_->Execute();
-  }
-
-  if (op == "STO") {
-    SetOperator(new STO(literal_manager_, pile_));
-    operator_->Execute();
-  }
-
-  if (op == "NEG") {
-    SetOperator(new NegativeOperator(literal_manager_, pile_));
-    operator_->Execute();
-  }
-
-  if (op == "EVAL") {
-    EVAL();
-  }
-
-  if (op == "DUP") {
-    DUP();
-  }
-
-  if (op == "DROP") {
-    DROP();
-  }
-
-  if (op == "SWAP") {
-    SWAP();
-  }
-
-  if (op == "CLEAR") {
-    CLEAR();
-  }
-}
-
 void Controller::CommandeProcess(const QString& command) {
   QStringList operand_list =
       command.split(QRegExp("\\s+"), QString::SkipEmptyParts);
@@ -170,5 +118,92 @@ void Controller::CommandeProcess(const QString& command) {
       pile_.SetMessage(error.GetInfo());
       throw(ComputerException(pile_.GetMessage()));
     }
+  }
+}
+
+void Controller::ExecuteOperator(const QString& op) {
+  if (op == "+") {
+    SetOperator(new AdditionOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "-") {
+    SetOperator(new SubtractionOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "*") {
+    SetOperator(new MultiplyOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "/") {
+    SetOperator(new DivisionOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == ">") {
+    SetOperator(new Greater(literal_manager_, pile_, false, false));
+    operator_->Execute();
+  }
+
+  if (op == ">=") {
+    SetOperator(new Greater(literal_manager_, pile_, false, true));
+    operator_->Execute();
+  }
+
+  if (op == "<") {
+    SetOperator(new Greater(literal_manager_, pile_, true, false));
+    operator_->Execute();
+  }
+
+  if (op == "<=") {
+    SetOperator(new Greater(literal_manager_, pile_, true, true));
+    operator_->Execute();
+  }
+
+  if (op == "<=") {
+    SetOperator(new Greater(literal_manager_, pile_, true, true));
+    operator_->Execute();
+  }
+
+  if (op == "=") {
+    SetOperator(new Equal(literal_manager_, pile_, false));
+    operator_->Execute();
+  }
+
+  if (op == "!=") {
+    SetOperator(new Equal(literal_manager_, pile_, true));
+    operator_->Execute();
+  }
+
+  if (op == "STO") {
+    SetOperator(new STO(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "NEG") {
+    SetOperator(new NegativeOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "EVAL") {
+    EVAL();
+  }
+
+  if (op == "DUP") {
+    DUP();
+  }
+
+  if (op == "DROP") {
+    DROP();
+  }
+
+  if (op == "SWAP") {
+    SWAP();
+  }
+
+  if (op == "CLEAR") {
+    CLEAR();
   }
 }
