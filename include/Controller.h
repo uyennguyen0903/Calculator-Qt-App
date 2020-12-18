@@ -64,6 +64,8 @@ class Controller {
   void CLEAR();
 
   void FORGET();
+
+  void IFT();
 };
 
 #endif  // CONTROLLER_H_

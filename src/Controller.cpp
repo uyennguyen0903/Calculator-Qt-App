@@ -247,4 +247,8 @@ void Controller::ExecuteOperator(const QString& op) {
   if (op == "FORGET") {
     FORGET();
   }
+
+  if (op == "IFT") {
+    IFT();
+  }
 }

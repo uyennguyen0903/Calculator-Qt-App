@@ -115,3 +115,26 @@ void Controller::FORGET() {
         "Cet opérateur est seulement utilisé par des litéral expression."));
   }
 }
+
+void Controller::IFT() {
+  if (pile_.GetPileSize() < 2) {
+    throw(ComputerException("Pas assez arguments."));
+  }
+
+  Literal* arg2 = &pile_.Top();
+  pile_.Pop();
+  Literal* arg1 = &pile_.Top();
+  pile_.Pop();
+
+  if (arg1->GetLiteralType() == Literal::LiteralType::kInteger) {
+    Integer* n = dynamic_cast<Integer*>(arg1);
+    if (n->GetInt() == 0) return;
+  }
+
+  pile_.Push(*arg2);
+
+  Literal::LiteralType type2 = arg2->GetLiteralType();
+  if (type2 == Literal::LiteralType::kProgram ||
+      type2 == Literal::LiteralType::kExpression)
+    EVAL();
+}
