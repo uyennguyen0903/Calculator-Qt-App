@@ -1,12 +1,7 @@
 #include "NumericOperator.h"
 
-#include <iostream>
-
-// Addition Operator.
-
-void AdditionOperator::UpdatePile(Literal& arg1, Literal& arg2,
-                                  Literal* const res,
-                                  const QString& error_str) {
+void NumericOperator::UpdatePile(Literal& arg1, Literal& arg2,
+                                 Literal* const res, const QString& error_str) {
   if (error_str == "") {
     pile_.Push(literal_manager_.AddLiteral(res));
   } else {
@@ -15,7 +10,7 @@ void AdditionOperator::UpdatePile(Literal& arg1, Literal& arg2,
   }
 }
 
-Literal* AdditionOperator::CastSameType(Literal& arg1, Literal& arg2) {
+Literal* NumericOperator::CastSameType(Literal& arg1, Literal& arg2) {
   Literal::LiteralType type = arg1.GetLiteralType();
 
   if (type == Literal::LiteralType::kInteger) {
@@ -34,7 +29,7 @@ Literal* AdditionOperator::CastSameType(Literal& arg1, Literal& arg2) {
   return nullptr;
 }
 
-Literal* AdditionOperator::Compute(Literal& arg1, Literal& arg2) {
+Literal* NumericOperator::Compute(Literal& arg1, Literal& arg2) {
   Literal::LiteralType type1 = arg1.GetLiteralType();
   Literal::LiteralType type2 = arg2.GetLiteralType();
 
@@ -84,6 +79,11 @@ Literal* AdditionOperator::Compute(Literal& arg1, Literal& arg2) {
                           " entre " + arg1.Print() + " et " + arg2.Print()));
 }
 
+// ****************************************************************************
+// ****************************************************************************
+
+// Addition operator.
+
 Literal* AdditionOperator::Compute(Integer& arg1, Integer& arg2) {
   return new Integer(arg1.GetInt() + arg2.GetInt());
 }
@@ -109,54 +109,89 @@ Literal* AdditionOperator::Compute(Fraction& arg1, Fraction& arg2) {
 // ****************************************************************************
 // ****************************************************************************
 
-// NEG operator.
+// Subtraction operator.
 
-Literal* NegativeOperator::Compute(Literal& arg) {
-  Literal::LiteralType type = arg.GetLiteralType();
-
-  if (type == Literal::LiteralType::kInteger) {
-    return Compute(dynamic_cast<Integer&>(arg));
-  }
-
-  if (type == Literal::LiteralType::kReal) {
-    return Compute(dynamic_cast<Real&>(arg));
-  }
-
-  if (type == Literal::LiteralType::kFraction) {
-    return Compute(dynamic_cast<Fraction&>(arg));
-  }
-
-  if (type == Literal::LiteralType::kExpression) {
-    return Compute(dynamic_cast<ExpressionLiteral&>(arg));
-  }
-
-  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
-                          " entre " + arg.Print()));
+Literal* SubtractionOperator::Compute(Integer& arg1, Integer& arg2) {
+  return new Integer(arg1.GetInt() - arg2.GetInt());
 }
 
-Literal* NegativeOperator::Compute(Integer& arg) {
-  return new Integer(arg.GetInt() * -1);
+Literal* SubtractionOperator::Compute(Real& arg1, Real& arg2) {
+  return new Real(arg1.GetReal() - arg2.GetReal());
 }
 
-Literal* NegativeOperator::Compute(Fraction& arg) {
-  return new Fraction(arg.GetNumerator() * -1, arg.GetDenominator());
-}
-
-Literal* NegativeOperator::Compute(Real& arg) {
-  return new Real(arg.GetReal() * -1.0);
-}
-
-Literal* NegativeOperator::Compute(ExpressionLiteral& arg) {
-  if (arg.GetLiteralType() == Literal::LiteralType::kProgram) {
-    throw(ComputerException("Impossible de changer la signe d'une programme."));
+Literal* SubtractionOperator::Compute(Fraction& arg1, Fraction& arg2) {
+  int n1 = arg1.GetNumerator();
+  int d1 = arg1.GetDenominator();
+  int n2 = arg2.GetNumerator();
+  int d2 = arg2.GetDenominator();
+  Fraction* sum = new Fraction(n1 * d2 - n2 * d1, d1 * d2);
+  if (sum->GetDenominator() == 1) {
+    int sum_int = sum->GetNumerator();
+    delete sum;
+    return new Integer(sum_int);
   }
+  return sum;
+}
 
-  Literal* value = arg.GetAtom().CopyAtomValue();
-  if (value == nullptr) {
-    throw(ComputerException("Atome/Expression n'a pas value associée."));
+// ****************************************************************************
+// ****************************************************************************
+
+// Multiply operator.
+
+Literal* MultiplyOperator::Compute(Integer& arg1, Integer& arg2) {
+  return new Integer(arg1.GetInt() * arg2.GetInt());
+}
+
+Literal* MultiplyOperator::Compute(Real& arg1, Real& arg2) {
+  return new Real(arg1.GetReal() * arg2.GetReal());
+}
+
+Literal* MultiplyOperator::Compute(Fraction& arg1, Fraction& arg2) {
+  int n1 = arg1.GetNumerator();
+  int d1 = arg1.GetDenominator();
+  int n2 = arg2.GetNumerator();
+  int d2 = arg2.GetDenominator();
+  Fraction* sum = new Fraction(n1 * n2, d1 * d2);
+  if (sum->GetDenominator() == 1) {
+    int sum_int = sum->GetNumerator();
+    delete sum;
+    return new Integer(sum_int);
   }
+  return sum;
+}
 
-  arg.GetAtom().SetValue(Compute(*value));
+// ****************************************************************************
+// ****************************************************************************
 
-  return new ExpressionLiteral(arg.Print(), arg.GetAtom());
+// Devision operator.
+
+Literal* DivisionOperator::Compute(Integer& arg1, Integer& arg2) {
+  if (!arg2.GetInt()) {
+    throw(ComputerException("Division par zéro"));
+  }
+  return new Integer(arg1.GetInt() * arg2.GetInt());
+}
+
+Literal* DivisionOperator::Compute(Real& arg1, Real& arg2) {
+  if (!arg2.GetReal()) {
+    throw(ComputerException("Division par zéro"));
+  }
+  return new Real(arg1.GetReal() * arg2.GetReal());
+}
+
+Literal* DivisionOperator::Compute(Fraction& arg1, Fraction& arg2) {
+  int n1 = arg1.GetNumerator();
+  int d1 = arg1.GetDenominator();
+  int n2 = arg2.GetNumerator();
+  int d2 = arg2.GetDenominator();
+  if (!n2 || !d2) {
+    throw(ComputerException("Division par zéro"));
+  }
+  Fraction* sum = new Fraction(n1 * d2, d1 * n2);
+  if (sum->GetDenominator() == 1) {
+    int sum_int = sum->GetNumerator();
+    delete sum;
+    return new Integer(sum_int);
+  }
+  return sum;
 }

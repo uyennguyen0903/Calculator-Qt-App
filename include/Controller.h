@@ -10,6 +10,7 @@
 #include "ExpressionLiteral.h"
 #include "HandlingOperator.h"
 #include "LiteralManager.h"
+#include "NEGoperator.h"
 #include "NumericLiteral.h"
 #include "NumericOperator.h"
 #include "Operand.h"
@@ -18,12 +19,6 @@
 #include "PileCareTaker.h"
 #include "Program.h"
 #include "Utils.h"
-
-// TODO 1: Throw all the errors to ComputerException to clean code instead of
-// using pile_SetMessge().
-
-// TODO 2: The program literal is now just used to read command line, needs to
-// be implemented later.
 
 class Controller {
  private:

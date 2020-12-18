@@ -42,6 +42,21 @@ void Controller::ExecuteOperator(const QString& op) {
     operator_->Execute();
   }
 
+  if (op == "-") {
+    SetOperator(new SubtractionOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "*") {
+    SetOperator(new MultiplyOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "/") {
+    SetOperator(new DivisionOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
   if (op == "STO") {
     SetOperator(new STO(literal_manager_, pile_));
     operator_->Execute();
