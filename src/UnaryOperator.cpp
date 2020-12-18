@@ -5,7 +5,7 @@ void UnaryOperator::Execute() {
     Literal& arg = pile_.Top();
     pile_.Pop();
 
-    Literal* res = Compute(arg);
+    Literal* res = SimplifyResult(Compute(arg));
 
     pile_.Push(literal_manager_.AddLiteral(res));
   } else {

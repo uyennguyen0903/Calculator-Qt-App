@@ -67,16 +67,35 @@ void Controller::CommandeProcess(const QString& command) {
       }
 
       if (type == Operand::OperandType::kReal) {
-        pile_.Push(
-            literal_manager_.AddLiteral(new Real(cur_operand.toFloat())));
+        if (trunc(cur_operand.toFloat()) == cur_operand.toFloat()) {
+          pile_.Push(literal_manager_.AddLiteral(
+              new Integer(trunc(cur_operand.toFloat()))));
+        } else {
+          pile_.Push(
+              literal_manager_.AddLiteral(new Real(cur_operand.toFloat())));
+        }
         continue;
       }
 
       if (type == Operand::OperandType::kFraction) {
         QStringList list = cur_operand.split("/", QString::SkipEmptyParts);
-
-        pile_.Push(literal_manager_.AddLiteral(
-            new Fraction(list.at(0).toInt(), list.at(1).toInt())));
+        long n = list.at(0).toInt();
+        long d = list.at(1).toInt();
+        if (d == 0) {
+          throw(ComputerException("Dénominateur doit être non null."));
+        }
+        if (n == 0) {
+          pile_.Push(literal_manager_.AddLiteral(new Integer(long(0))));
+        } else {
+          long gcd = __gcd(n, d);
+          n /= gcd;
+          d /= gcd;
+          if (d != 1) {
+            pile_.Push(literal_manager_.AddLiteral(new Fraction(n, d)));
+          } else {
+            pile_.Push(literal_manager_.AddLiteral(new Integer(n)));
+          }
+        }
         continue;
       }
 
@@ -162,11 +181,6 @@ void Controller::ExecuteOperator(const QString& op) {
 
   if (op == "<") {
     SetOperator(new Greater(literal_manager_, pile_, true, false));
-    operator_->Execute();
-  }
-
-  if (op == "<=") {
-    SetOperator(new Greater(literal_manager_, pile_, true, true));
     operator_->Execute();
   }
 

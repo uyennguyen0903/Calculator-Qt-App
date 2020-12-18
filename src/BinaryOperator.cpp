@@ -9,7 +9,7 @@ void BinaryOperator::Execute() {
     Literal* res = nullptr;
     QString error_str = "";
     try {
-      res = Compute(arg1, arg2);
+      res = SimplifyResult(Compute(arg1, arg2));
     } catch (ComputerException& error) {
       error_str = error.GetInfo();
     }

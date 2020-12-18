@@ -65,7 +65,7 @@ class DivMod : public BinaryOperator {
 class AndOr : public BinaryOperator {
  private:
   QString expression_ = "";
-  bool and_; // True on AND, False on OR.
+  bool and_;  // True on AND, False on OR.
 
  public:
   AndOr(LiteralManager& literal_manager, Pile& pile, bool type)

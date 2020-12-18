@@ -27,6 +27,8 @@ class Operator {
 
   virtual void Execute() = 0;
 
+  Literal* SimplifyResult(Literal* const res);
+
   virtual const QString Print() const = 0;
 };
 

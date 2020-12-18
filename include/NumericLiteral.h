@@ -82,16 +82,7 @@ class Real : public NumericLiteral {
 
   void SetReal(float value) { value_ = value; }
 
-  const QString Print() const override {
-    QString str_float = QString::fromStdString(to_string(value_));
-    while (str_float != "" && str_float[str_float.size() - 1] == "0") {
-      str_float.remove(str_float.size() - 1, 1);
-    }
-    if (str_float[str_float.size() - 1] == ".") {
-      str_float.append("0");
-    }
-    return str_float;
-  }
+  const QString Print() const override { return QString::number(value_); }
 
   LiteralType GetLiteralType() const override { return LiteralType::kReal; }
 };

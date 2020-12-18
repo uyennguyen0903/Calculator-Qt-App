@@ -18,6 +18,7 @@
 #include "Program.h"
 #include "UnaryOperator.h"
 #include "Utils.h"
+#include "math.h"
 
 class Controller {
  private:

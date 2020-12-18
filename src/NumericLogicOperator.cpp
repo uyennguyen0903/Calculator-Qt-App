@@ -159,14 +159,14 @@ Literal* DivisionOperator::Compute(Integer& arg1, Integer& arg2) {
   if (!arg2.GetInt()) {
     throw(ComputerException("Division par zéro"));
   }
-  return new Integer(arg1.GetInt() * arg2.GetInt());
+  return new Integer(arg1.GetInt() / arg2.GetInt());
 }
 
 Literal* DivisionOperator::Compute(Real& arg1, Real& arg2) {
   if (!arg2.GetReal()) {
     throw(ComputerException("Division par zéro"));
   }
-  return new Real(arg1.GetReal() * arg2.GetReal());
+  return new Real(arg1.GetReal() / arg2.GetReal());
 }
 
 Literal* DivisionOperator::Compute(Fraction& arg1, Fraction& arg2) {
