@@ -29,7 +29,6 @@ bool AtomManager::CheckExistedAtom(const QString& id) {
 }
 
 Literal* AtomManager::EvalAtom(const QString& id) {
-  Literal* atom_value = nullptr;
   for (Atom* atom : atoms_) {
     if (atom->GetId() == id) {
       return atom->CopyAtomValue();

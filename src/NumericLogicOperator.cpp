@@ -83,13 +83,13 @@ Literal* AdditionOperator::Compute(Real& arg1, Real& arg2) {
 }
 
 Literal* AdditionOperator::Compute(Fraction& arg1, Fraction& arg2) {
-  int n1 = arg1.GetNumerator();
-  int d1 = arg1.GetDenominator();
-  int n2 = arg2.GetNumerator();
-  int d2 = arg2.GetDenominator();
+  long n1 = arg1.GetNumerator();
+  long d1 = arg1.GetDenominator();
+  long n2 = arg2.GetNumerator();
+  long d2 = arg2.GetDenominator();
   Fraction* sum = new Fraction(n1 * d2 + n2 * d1, d1 * d2);
   if (sum->GetDenominator() == 1) {
-    int sum_int = sum->GetNumerator();
+    long sum_int = sum->GetNumerator();
     delete sum;
     return new Integer(sum_int);
   }
@@ -110,13 +110,13 @@ Literal* SubtractionOperator::Compute(Real& arg1, Real& arg2) {
 }
 
 Literal* SubtractionOperator::Compute(Fraction& arg1, Fraction& arg2) {
-  int n1 = arg1.GetNumerator();
-  int d1 = arg1.GetDenominator();
-  int n2 = arg2.GetNumerator();
-  int d2 = arg2.GetDenominator();
+  long n1 = arg1.GetNumerator();
+  long d1 = arg1.GetDenominator();
+  long n2 = arg2.GetNumerator();
+  long d2 = arg2.GetDenominator();
   Fraction* sum = new Fraction(n1 * d2 - n2 * d1, d1 * d2);
   if (sum->GetDenominator() == 1) {
-    int sum_int = sum->GetNumerator();
+    long sum_int = sum->GetNumerator();
     delete sum;
     return new Integer(sum_int);
   }
@@ -137,13 +137,13 @@ Literal* MultiplyOperator::Compute(Real& arg1, Real& arg2) {
 }
 
 Literal* MultiplyOperator::Compute(Fraction& arg1, Fraction& arg2) {
-  int n1 = arg1.GetNumerator();
-  int d1 = arg1.GetDenominator();
-  int n2 = arg2.GetNumerator();
-  int d2 = arg2.GetDenominator();
+  long n1 = arg1.GetNumerator();
+  long d1 = arg1.GetDenominator();
+  long n2 = arg2.GetNumerator();
+  long d2 = arg2.GetDenominator();
   Fraction* sum = new Fraction(n1 * n2, d1 * d2);
   if (sum->GetDenominator() == 1) {
-    int sum_int = sum->GetNumerator();
+    long sum_int = sum->GetNumerator();
     delete sum;
     return new Integer(sum_int);
   }
@@ -170,16 +170,16 @@ Literal* DivisionOperator::Compute(Real& arg1, Real& arg2) {
 }
 
 Literal* DivisionOperator::Compute(Fraction& arg1, Fraction& arg2) {
-  int n1 = arg1.GetNumerator();
-  int d1 = arg1.GetDenominator();
-  int n2 = arg2.GetNumerator();
-  int d2 = arg2.GetDenominator();
+  long n1 = arg1.GetNumerator();
+  long d1 = arg1.GetDenominator();
+  long n2 = arg2.GetNumerator();
+  long d2 = arg2.GetDenominator();
   if (!n2 || !d2) {
     throw(ComputerException("Division par zéro"));
   }
   Fraction* sum = new Fraction(n1 * d2, d1 * n2);
   if (sum->GetDenominator() == 1) {
-    int sum_int = sum->GetNumerator();
+    long sum_int = sum->GetNumerator();
     delete sum;
     return new Integer(sum_int);
   }
@@ -192,8 +192,8 @@ Literal* DivisionOperator::Compute(Fraction& arg1, Fraction& arg2) {
 // Greater Operator.
 
 Literal* Greater::Compute(Integer& arg1, Integer& arg2) {
-  int n1 = arg1.GetInt();
-  int n2 = arg2.GetInt();
+  long n1 = arg1.GetInt();
+  long n2 = arg2.GetInt();
   bool res;
   if (inverse_) swap(n1, n2);
   if (equal_) {
@@ -201,7 +201,7 @@ Literal* Greater::Compute(Integer& arg1, Integer& arg2) {
   } else {
     res = (n1 > n2);
   }
-  return new Integer(int(res));
+  return new Integer(long(res));
 }
 
 Literal* Greater::Compute(Real& arg1, Real& arg2) {
@@ -214,7 +214,7 @@ Literal* Greater::Compute(Real& arg1, Real& arg2) {
   } else {
     res = (n1 > n2);
   }
-  return new Integer(int(res));
+  return new Integer(long(res));
 }
 
 Literal* Greater::Compute(Fraction& arg1, Fraction& arg2) {
@@ -227,7 +227,7 @@ Literal* Greater::Compute(Fraction& arg1, Fraction& arg2) {
   } else {
     res = (n1 > n2);
   }
-  return new Integer(int(res));
+  return new Integer(long(res));
 }
 
 // ****************************************************************************
@@ -236,15 +236,15 @@ Literal* Greater::Compute(Fraction& arg1, Fraction& arg2) {
 // Equal Operator.
 
 Literal* Equal::Compute(Integer& arg1, Integer& arg2) {
-  int n1 = arg1.GetInt();
-  int n2 = arg2.GetInt();
+  long n1 = arg1.GetInt();
+  long n2 = arg2.GetInt();
   bool res;
   if (diff_) {
     res = (n1 != n2);
   } else {
     res = (n1 == n2);
   }
-  return new Integer(int(res));
+  return new Integer(long(res));
 }
 
 Literal* Equal::Compute(Real& arg1, Real& arg2) {
@@ -256,7 +256,7 @@ Literal* Equal::Compute(Real& arg1, Real& arg2) {
   } else {
     res = (n1 == n2);
   }
-  return new Integer(int(res));
+  return new Integer(long(res));
 }
 
 Literal* Equal::Compute(Fraction& arg1, Fraction& arg2) {
@@ -268,5 +268,5 @@ Literal* Equal::Compute(Fraction& arg1, Fraction& arg2) {
   } else {
     res = (n1 == n2);
   }
-  return new Integer(int(res));
+  return new Integer(long(res));
 }

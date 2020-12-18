@@ -40,8 +40,6 @@ void Controller::CommandeProcess(const QString& command) {
   QStringList operand_list =
       command.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
-  int cnt_restore = 0;
-
   for (int i = 0; i < operand_list.size(); ++i) {
     try {
       const QString cur_operand = operand_list.at(i);
@@ -64,7 +62,7 @@ void Controller::CommandeProcess(const QString& command) {
 
       if (type == Operand::OperandType::kInteger) {
         pile_.Push(
-            literal_manager_.AddLiteral(new Integer(cur_operand.toInt())));
+            literal_manager_.AddLiteral(new Integer(cur_operand.toLong())));
         continue;
       }
 

@@ -14,7 +14,7 @@ void Pile::Pop() {
 
 Literal& Pile::Top() const { return items_.back().GetLiteral(); }
 
-void Pile::Restore(Pile* const memento) { 
+void Pile::Restore(Pile* const memento) {
   items_ = memento->items_;
   nb_display_ = memento->GetNbDisplay();
   message_ = memento->GetMessage();

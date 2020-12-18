@@ -22,12 +22,12 @@ Operand::OperandType FindTypeOperand(const QString& str) {
 
   bool ValidType;
 
-  int int_nb = str.toInt(&ValidType);
+  str.toLong(&ValidType);
   if (ValidType) {
     return Operand::OperandType::kInteger;
   }
 
-  float real_nb = str.toFloat(&ValidType);
+  str.toFloat(&ValidType);
   if (ValidType) {
     return Operand::OperandType::kReal;
   }
@@ -36,10 +36,10 @@ Operand::OperandType FindTypeOperand(const QString& str) {
     QStringList list = str.split("/", QString::SkipEmptyParts);
     if (list.size() != 2) return Operand::OperandType::kUndefined;
 
-    int_nb = list.at(0).toInt(&ValidType);
+    list.at(0).toLong(&ValidType);
     if (!ValidType) return Operand::OperandType::kUndefined;
 
-    int_nb = list.at(1).toInt(&ValidType);
+    list.at(1).toLong(&ValidType);
     if (!ValidType) return Operand::OperandType::kUndefined;
 
     return Operand::OperandType::kFraction;

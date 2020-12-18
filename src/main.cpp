@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
   QComputer fenetre;
-  fenetre.setFixedSize(700, 600);
+  fenetre.setFixedSize(700, 640);
   fenetre.show();
   return app.exec();
 }

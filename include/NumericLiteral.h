@@ -27,16 +27,16 @@ class NumericLiteral : public Literal {
 
 class Integer : public NumericLiteral {
  private:
-  int value_;
+  long value_;
 
  public:
-  Integer(int value) : value_(value){};
+  Integer(long value) : value_(value){};
 
-  int GetInt() const { return value_; }
+  long GetInt() const { return value_; }
 
   Integer(Integer* const num) : value_(num->GetInt()){};
 
-  void SetInt(int value) { value_ = value; }
+  void SetInt(long value) { value_ = value; }
 
   const QString Print() const override { return QString::number(value_); }
 
@@ -45,22 +45,22 @@ class Integer : public NumericLiteral {
 
 class Fraction : public NumericLiteral {
  private:
-  int numerator_;
-  int denominator_;
+  long numerator_;
+  long denominator_;
   void Simplification();
 
  public:
-  Fraction(int numerator = 0, int denominator = 1);
+  Fraction(long numerator = 0, long denominator = 1);
 
-  int GetNumerator() const { return numerator_; }
+  long GetNumerator() const { return numerator_; }
 
-  int GetDenominator() const { return denominator_; }
+  long GetDenominator() const { return denominator_; }
 
   Fraction(Fraction* const frac)
       : numerator_(frac->GetNumerator()),
         denominator_(frac->GetDenominator()){};
 
-  void SetFraction(int numerator, int denominator);
+  void SetFraction(long numerator, long denominator);
 
   const QString Print() const override {
     return QString::number(numerator_) + "/" + QString::number(denominator_);
