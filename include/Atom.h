@@ -12,27 +12,20 @@ using namespace std;
 class Atom {
  private:
   QString id_;
-  vector<Literal*> values_;
-  // Save all the values associated to Atom for later back-up.
+  Literal* value_;
 
  public:
-  Atom(QString const& id, Literal* literal) : id_(id) {
-    if (literal != nullptr) values_.push_back(literal);
-  };
+  Atom(QString const& id, Literal* literal) : id_(id), value_(literal){};
 
-  ~Atom() {
-    for (Literal* value : values_) delete value;
-  }
+  ~Atom() { delete value_; }
 
   const QString GetId() const { return id_; }
 
-  Literal* CopyAtomValue();
+  Literal* CopyAtomValue() const;
 
   void SetValue(Literal* literal);
 
   bool CheckEmptyAtom() const;
-
-  void Restore();
 };
 
 #endif  // ATOM_H_

@@ -3,17 +3,21 @@
 
 #include <vector>
 
+#include "Atom.h"
+#include "AtomManager.h"
 #include "Pile.h"
 
 using namespace std;
 
 class PileCareTaker {
  private:
-  vector<Pile*> mementos_;
-  Pile* originator_;
+  vector<Pile*> pile_mementos_;
+  vector<vector<pair<QString, Literal*> > > atom_mementos_;
+  Pile* pile_originator_;
+  AtomManager& atom_manager_ = AtomManager::GetInstance();
 
  public:
-  PileCareTaker(Pile* originator) : originator_(originator){};
+  PileCareTaker(Pile* originator) : pile_originator_(originator){};
 
   void BackUp();
 

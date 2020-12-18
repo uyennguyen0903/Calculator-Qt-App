@@ -57,6 +57,20 @@ void AtomManager::SetValueAtom(const QString& id, Literal* const literal) {
   }
 }
 
+void AtomManager::Restore(const vector<pair<QString, Literal*>>& backup_data) {
+  for (auto p : backup_data) {
+    SetValueAtom(p.first, p.second);
+  }
+}
+
+vector<pair<QString, Literal*>> AtomManager::SaveStatus() const {
+  vector<pair<QString, Literal*>> backup_data;
+  for (Atom* atom : atoms_) {
+    backup_data.push_back(make_pair(atom->GetId(), atom->CopyAtomValue()));
+  }
+  return backup_data;
+}
+
 AtomManager& AtomManager::GetInstance() {
   if (atom_handler_.instance == nullptr) {
     atom_handler_.instance = new AtomManager;

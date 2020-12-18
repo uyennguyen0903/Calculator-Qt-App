@@ -1,34 +1,31 @@
 #include "Atom.h"
 
+#include <iostream>
+
 void Atom::SetValue(Literal* literal) {
-  if (literal != nullptr) values_.push_back(literal);
+  delete value_;
+  value_ = literal;
 }
 
-Literal* Atom::CopyAtomValue() {
-  if (values_.empty()) return nullptr;
-  Literal* value = values_.back();
-  if (value->GetLiteralType() == Literal::LiteralType::kInteger) {
-    return new Integer(dynamic_cast<Integer*>(value));
+Literal* Atom::CopyAtomValue() const {
+  if (value_ == nullptr) return nullptr;
+  if (value_->GetLiteralType() == Literal::LiteralType::kInteger) {
+    return new Integer(dynamic_cast<Integer*>(value_));
   }
-  if (value->GetLiteralType() == Literal::LiteralType::kFraction) {
-    return new Fraction(dynamic_cast<Fraction*>(value));
+  if (value_->GetLiteralType() == Literal::LiteralType::kFraction) {
+    return new Fraction(dynamic_cast<Fraction*>(value_));
   }
-  if (value->GetLiteralType() == Literal::LiteralType::kReal) {
-    return new Real(dynamic_cast<Real*>(value));
+  if (value_->GetLiteralType() == Literal::LiteralType::kReal) {
+    return new Real(dynamic_cast<Real*>(value_));
   }
-  if (value->GetLiteralType() == Literal::LiteralType::kProgram) {
-    return new Program(dynamic_cast<Program*>(value));
+  if (value_->GetLiteralType() == Literal::LiteralType::kProgram) {
+    return new Program(dynamic_cast<Program*>(value_));
   }
   return nullptr;
 }
 
-void Atom::Restore() {
-  if (values_.empty()) return;
-  values_.pop_back();
-}
-
 bool Atom::CheckEmptyAtom() const {
-  if (values_.empty())
+  if (value_ == nullptr)
     return true;
   else
     return false;

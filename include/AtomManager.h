@@ -2,6 +2,7 @@
 #define ATOM_MANAGER_H_
 
 #include <QString>
+#include <iostream>
 #include <vector>
 
 #include "Atom.h"
@@ -43,6 +44,10 @@ class AtomManager {
   static AtomManager& GetInstance();
 
   static void FreeInstance();
+
+  vector<pair<QString, Literal*>> SaveStatus() const;
+
+  void Restore(const vector<pair<QString, Literal*>>& atoms);
 };
 
 #endif  // ATOM_MANAGER_H_

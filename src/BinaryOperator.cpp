@@ -19,5 +19,3 @@ void BinaryOperator::Execute() {
     throw(ComputerException("Pas assez argument."));
   }
 }
-
-

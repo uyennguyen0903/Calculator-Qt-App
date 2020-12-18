@@ -1,7 +1,5 @@
 #include "HandlingOperator.h"
 
-#include <iostream>
-
 void STO::UpdatePile(Literal& arg1, Literal& arg2, Literal* const res,
                      const QString& error_str) {
   if (error_str != "") {
