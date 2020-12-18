@@ -15,9 +15,6 @@ class NumericLogicOperator : public BinaryOperator {
 
   virtual const QString Print() const = 0;
 
-  void UpdatePile(Literal& arg1, Literal& arg2, Literal* res,
-                  const QString& error_str) override;
-
   Literal* CastSameType(Literal& arg1, Literal& arg2);
 
   Literal* Compute(Literal& arg1, Literal& arg2) override;

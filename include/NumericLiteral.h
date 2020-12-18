@@ -3,10 +3,14 @@
 
 #include <QString>
 #include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 #include "ComputerException.h"
 #include "Literal.h"
 #include "Operand.h"
+#include "math.h"
 
 using namespace std;
 
@@ -53,7 +57,8 @@ class Fraction : public NumericLiteral {
   int GetDenominator() const { return denominator_; }
 
   Fraction(Fraction* const frac)
-      : numerator_(frac->GetNumerator()), denominator_(frac->GetDenominator()){};
+      : numerator_(frac->GetNumerator()),
+        denominator_(frac->GetDenominator()){};
 
   void SetFraction(int numerator, int denominator);
 
@@ -66,18 +71,27 @@ class Fraction : public NumericLiteral {
 
 class Real : public NumericLiteral {
  private:
-  double value_;
+  float value_;
 
  public:
-  Real(double value) : value_(value){};
+  Real(float value) : value_(value){};
 
-  double GetReal() const { return value_; }
+  float GetReal() const { return value_; }
 
   Real(Real* const num) : value_(num->GetReal()){};
 
-  void SetReal(double value) { value_ = value; }
+  void SetReal(float value) { value_ = value; }
 
-  const QString Print() const override { return QString::number(value_); }
+  const QString Print() const override {
+    QString str_float = QString::fromStdString(to_string(value_));
+    while (str_float != "" && str_float[str_float.size() - 1] == "0") {
+      str_float.remove(str_float.size() - 1, 1);
+    }
+    if (str_float[str_float.size() - 1] == ".") {
+      str_float.append("0");
+    }
+    return str_float;
+  }
 
   LiteralType GetLiteralType() const override { return LiteralType::kReal; }
 };

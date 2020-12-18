@@ -1,16 +1,5 @@
 #include "NumericLogicOperator.h"
 
-void NumericLogicOperator::UpdatePile(Literal& arg1, Literal& arg2,
-                                      Literal* const res,
-                                      const QString& error_str) {
-  if (error_str == "") {
-    pile_.Push(literal_manager_.AddLiteral(res));
-  } else {
-    pile_.Push(arg1);
-    pile_.Push(arg2);
-  }
-}
-
 Literal* NumericLogicOperator::CastSameType(Literal& arg1, Literal& arg2) {
   Literal::LiteralType type = arg1.GetLiteralType();
 
@@ -216,8 +205,8 @@ Literal* Greater::Compute(Integer& arg1, Integer& arg2) {
 }
 
 Literal* Greater::Compute(Real& arg1, Real& arg2) {
-  double n1 = arg1.GetReal();
-  double n2 = arg2.GetReal();
+  float n1 = arg1.GetReal();
+  float n2 = arg2.GetReal();
   bool res;
   if (inverse_) swap(n1, n2);
   if (equal_) {
@@ -229,8 +218,8 @@ Literal* Greater::Compute(Real& arg1, Real& arg2) {
 }
 
 Literal* Greater::Compute(Fraction& arg1, Fraction& arg2) {
-  double n1 = double(arg1.GetNumerator()) / double(arg1.GetDenominator());
-  double n2 = double(arg2.GetNumerator()) / double(arg2.GetDenominator());
+  float n1 = float(arg1.GetNumerator()) / float(arg1.GetDenominator());
+  float n2 = float(arg2.GetNumerator()) / float(arg2.GetDenominator());
   bool res;
   if (inverse_) swap(n1, n2);
   if (equal_) {
@@ -259,8 +248,8 @@ Literal* Equal::Compute(Integer& arg1, Integer& arg2) {
 }
 
 Literal* Equal::Compute(Real& arg1, Real& arg2) {
-  double n1 = arg1.GetReal();
-  double n2 = arg2.GetReal();
+  float n1 = arg1.GetReal();
+  float n2 = arg2.GetReal();
   bool res;
   if (diff_) {
     res = (n1 != n2);
@@ -271,8 +260,8 @@ Literal* Equal::Compute(Real& arg1, Real& arg2) {
 }
 
 Literal* Equal::Compute(Fraction& arg1, Fraction& arg2) {
-  double n1 = double(arg1.GetNumerator()) / double(arg1.GetDenominator());
-  double n2 = double(arg2.GetNumerator()) / double(arg2.GetDenominator());
+  float n1 = float(arg1.GetNumerator()) / float(arg1.GetDenominator());
+  float n2 = float(arg2.GetNumerator()) / float(arg2.GetDenominator());
   bool res;
   if (diff_) {
     res = (n1 != n2);

@@ -27,7 +27,7 @@ Operand::OperandType FindTypeOperand(const QString& str) {
     return Operand::OperandType::kInteger;
   }
 
-  double real_nb = str.toDouble(&ValidType);
+  float real_nb = str.toFloat(&ValidType);
   if (ValidType) {
     return Operand::OperandType::kReal;
   }
@@ -68,12 +68,12 @@ Fraction* ConvertIntToFraction(Literal& num) {
 
 Real* ConvertIntToReal(Literal& num) {
   Integer& n = dynamic_cast<Integer&>(num);
-  return new Real(double(n.GetInt()));
+  return new Real(float(n.GetInt()));
 }
 
 Real* ConvertFractionToReal(Literal& frac) {
   Fraction& n = dynamic_cast<Fraction&>(frac);
-  return new Real(double(n.GetNumerator()) / double(n.GetDenominator()));
+  return new Real(float(n.GetNumerator()) / float(n.GetDenominator()));
 }
 
 Real* ConvertToReal(Literal& num) {

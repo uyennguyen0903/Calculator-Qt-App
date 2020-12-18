@@ -24,3 +24,11 @@ void Fraction::Simplification() {
     numerator_ = -numerator_;
   }
 }
+
+// const QString Real::Print() const { 
+//   if(trunc(value_) == value_) {
+//     return QString::number(value_) + ".0";
+//   } else {
+//     return QString::number(value_); 
+//   }
+// }

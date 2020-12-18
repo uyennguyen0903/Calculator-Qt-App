@@ -17,7 +17,7 @@ class BinaryOperator : public Operator {
   void Execute() override;
 
   virtual void UpdatePile(Literal& arg1, Literal& arg, Literal* res,
-                          const QString& error_str) = 0;
+                          const QString& error_str);
 
   virtual const QString Print() const = 0;
 
@@ -39,11 +39,27 @@ class STO : public BinaryOperator {
   const QString Print() const override { return expression_; }
 
   Literal* Compute(Literal& arg1, Literal& arg2) override;
-  
+
   Literal* Compute(Integer& arg1, ExpressionLiteral& arg2);
   Literal* Compute(Real& arg1, ExpressionLiteral& arg2);
-  Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2) ;
-  Literal* Compute(Program& arg1, ExpressionLiteral& arg2) ;
+  Literal* Compute(Fraction& arg1, ExpressionLiteral& arg2);
+  Literal* Compute(Program& arg1, ExpressionLiteral& arg2);
+};
+
+class DIVMOD : public BinaryOperator {
+ private:
+  QString expression_ = "DIV";
+  bool div_; // True on div, False on mod;
+
+ public:
+  DIVMOD(LiteralManager& literal_manager, Pile& pile, bool div)
+      : BinaryOperator(literal_manager, pile), div_(div){};
+
+  const QString Print() const override { return expression_; }
+
+  Literal* Compute(Literal& arg1, Literal& arg2) override;
+
+  Literal* Compute(Integer& arg1, Integer& arg2);
 };
 
 #endif  // BINARY_OPERATOR_H

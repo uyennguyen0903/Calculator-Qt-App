@@ -70,7 +70,7 @@ void Controller::CommandeProcess(const QString& command) {
 
       if (type == Operand::OperandType::kReal) {
         pile_.Push(
-            literal_manager_.AddLiteral(new Real(cur_operand.toDouble())));
+            literal_manager_.AddLiteral(new Real(cur_operand.toFloat())));
         continue;
       }
 
@@ -139,6 +139,16 @@ void Controller::ExecuteOperator(const QString& op) {
 
   if (op == "/") {
     SetOperator(new DivisionOperator(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "DIV") {
+    SetOperator(new DIVMOD(literal_manager_, pile_, true));
+    operator_->Execute();
+  }
+
+  if (op == "MOD") {
+    SetOperator(new DIVMOD(literal_manager_, pile_, false));
     operator_->Execute();
   }
 
