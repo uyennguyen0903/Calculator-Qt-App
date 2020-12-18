@@ -13,6 +13,11 @@ void UnaryOperator::Execute() {
   }
 }
 
+// ****************************************************************************
+// ****************************************************************************
+
+// NEG operator.
+
 Literal* NegativeOperator::Compute(Literal& arg) {
   Literal::LiteralType type = arg.GetLiteralType();
 
@@ -61,4 +66,24 @@ Literal* NegativeOperator::Compute(ExpressionLiteral& arg) {
   arg.GetAtom().SetValue(Compute(*value));
 
   return new ExpressionLiteral(arg.Print(), arg.GetAtom());
+}
+
+// ****************************************************************************
+// ****************************************************************************
+
+// NOT operator.
+
+Literal* Not::Compute(Literal& arg) {
+  Literal::LiteralType type = arg.GetLiteralType();
+
+  if (type == Literal::LiteralType::kInteger) {
+    return Compute(dynamic_cast<Integer&>(arg));
+  }
+
+  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
+                          " entre " + arg.Print()));
+}
+
+Literal* Not::Compute(Integer& arg) {
+  return new Integer(~arg.GetInt());
 }

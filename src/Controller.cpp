@@ -209,6 +209,11 @@ void Controller::ExecuteOperator(const QString& op) {
     operator_->Execute();
   }
 
+  if (op == "NOT") {
+    SetOperator(new Not(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
   if (op == "STO") {
     SetOperator(new STO(literal_manager_, pile_));
     operator_->Execute();
@@ -237,5 +242,9 @@ void Controller::ExecuteOperator(const QString& op) {
 
   if (op == "CLEAR") {
     CLEAR();
+  }
+
+  if (op == "FORGET") {
+    FORGET();
   }
 }

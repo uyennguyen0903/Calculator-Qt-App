@@ -96,3 +96,22 @@ void Controller::CLEAR() {
     pile_.Pop();
   }
 }
+
+void Controller::FORGET() {
+  if (pile_.GetPileSize() == 0) {
+    throw(ComputerException("Opérateur invalid."));
+  }
+
+  Literal* last_literal = &pile_.Top();
+
+  Literal::LiteralType type = last_literal->GetLiteralType();
+
+  if (type == Literal::LiteralType::kExpression) {
+    ExpressionLiteral* exp = dynamic_cast<ExpressionLiteral*>(last_literal);
+    atom_manager_.SetValueAtom(exp->Print(), nullptr);
+    pile_.Pop();
+  } else {
+    throw(ComputerException(
+        "Cet opérateur est seulement utilisé par des litéral expression."));
+  }
+}

@@ -62,6 +62,8 @@ class Controller {
   void SWAP();
 
   void CLEAR();
+
+  void FORGET();
 };
 
 #endif  // CONTROLLER_H_

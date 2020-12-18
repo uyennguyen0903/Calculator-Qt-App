@@ -39,4 +39,19 @@ class NegativeOperator : public UnaryOperator {
   Literal* Compute(ExpressionLiteral& arg);
 };
 
+class Not : public UnaryOperator {
+ private:
+  QString expression_ = "NOT";
+
+ public:
+  Not(LiteralManager& literal_manager, Pile& pile)
+      : UnaryOperator(literal_manager, pile){};
+
+  const QString Print() const override { return expression_; };
+
+  Literal* Compute(Literal& arg) override;
+
+  Literal* Compute(Integer& arg);
+};
+
 #endif  // UNARY_OPERATOR_H
