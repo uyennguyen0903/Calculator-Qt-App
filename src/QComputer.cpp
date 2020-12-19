@@ -1,6 +1,7 @@
 #include "QComputer.h"
 
 #include <QDebug>
+#include <QChar>
 
 QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   pile = new Pile;
@@ -294,10 +295,13 @@ void QComputer::getNextCommande() {
 void QComputer::onClick() {
   QPushButton* button = (QPushButton*)sender();
   QString c = commande->text();  // on récupère la ligne de commande
-  if (button->text() == "*" || button->text() == "-" || button->text() == "/" ||
-      button->text() == "+") {
-    if (c.size() > 0 && c[c.size() - 1] != " ") c += " ";
-  }
-  c += button->text();
+  QString newc = button->text();
+  if (newc.size() != 1 or checkInput(newc[0]) or (c.size() > 0 and checkInput(c[c.size() - 1]))) c += " ";
+  c += newc;
   commande->setText(c);
+}
+
+bool QComputer::checkInput(QChar input) {
+    // vérifier si input n'est pas un valeur numérique ni une virgule ni un espace
+    return !input.isDigit() and input != '.' and input != ' ';
 }

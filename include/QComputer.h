@@ -32,6 +32,7 @@ class QComputer : public QWidget {
 
  public:
   explicit QComputer(QWidget* parent = nullptr);
+  bool checkInput(QChar input);
  public slots:
   void refresh();
   void getNextCommande();
