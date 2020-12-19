@@ -113,9 +113,7 @@ void Controller::CommandeProcess(const QString& command) {
 
       if (type == Operand::OperandType::kAtom) {
         if (!atom_manager_.CheckExistedAtom(cur_operand)) {
-          pile_.SetMessage(
-              "Atome n'est pas initialisée, empiler litéral expression "
-              "associée.");
+          throw(ComputerException("Atome n'est pas initialisée"));
           pile_.Push(literal_manager_.AddLiteral(new ExpressionLiteral(
               cur_operand, atom_manager_.GetAtom(cur_operand))));
           continue;

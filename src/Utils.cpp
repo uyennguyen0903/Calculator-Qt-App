@@ -25,6 +25,8 @@ Operand::OperandType FindTypeOperand(const QString& str) {
   if (str.indexOf("-") == 0)
     throw(ComputerException("Impossible de saisir un nombre négatif."));
 
+  if (str.indexOf("+") == 0) throw(ComputerException("Invalid command."));
+
   str.toLong(&ValidType);
   if (ValidType) {
     return Operand::OperandType::kInteger;
@@ -88,7 +90,11 @@ Real* ConvertToReal(Literal& num) {
 }
 
 bool LogicTest(Literal* const literal) {
-  if (literal == nullptr) return false;
+  if (literal == nullptr) return true;
+  if (literal->GetLiteralType() == Literal::LiteralType::kExpression) {
+    ExpressionLiteral* exp = dynamic_cast<ExpressionLiteral*>(literal);
+    return LogicTest(exp->GetAtom().CopyAtomValue());
+  }
   if (literal->GetLiteralType() == Literal::LiteralType::kInteger) {
     Integer* n = dynamic_cast<Integer*>(literal);
     if (n->GetInt() == 0) return false;

@@ -294,7 +294,10 @@ void QComputer::getNextCommande() {
 void QComputer::onClick() {
   QPushButton* button = (QPushButton*)sender();
   QString c = commande->text();  // on récupère la ligne de commande
-  if (c[c.size() - 1] != " " && c.size() > 0) c += " ";
+  if (button->text() == "*" || button->text() == "-" || button->text() == "/" ||
+      button->text() == "+") {
+    if (c.size() > 0 && c[c.size() - 1] != " ") c += " ";
+  }
   c += button->text();
   commande->setText(c);
 }
