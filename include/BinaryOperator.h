@@ -1,12 +1,15 @@
 #ifndef BINARY_OPERATOR_H_
 #define BINARY_OPERATOR_H_
 
+#include <cmath>
+
 #include "AtomManager.h"
 #include "ComputerException.h"
 #include "NumericLiteral.h"
 #include "Operator.h"
 #include "Program.h"
 #include "Utils.h"
+#include "math.h"
 
 class BinaryOperator : public Operator {
  public:
@@ -71,6 +74,19 @@ class AndOr : public BinaryOperator {
  public:
   AndOr(LiteralManager& literal_manager, Pile& pile, bool type)
       : BinaryOperator(literal_manager, pile), and_(type){};
+
+  const QString Print() const override { return expression_; }
+
+  Literal* Compute(Literal& arg1, Literal& arg2) override;
+};
+
+class Pow : public BinaryOperator {
+ private:
+  QString expression_ = "POW";
+
+ public:
+  Pow(LiteralManager& literal_manager, Pile& pile)
+      : BinaryOperator(literal_manager, pile){};
 
   const QString Print() const override { return expression_; }
 

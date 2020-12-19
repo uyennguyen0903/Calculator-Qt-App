@@ -232,8 +232,52 @@ void Controller::ExecuteOperator(const QString& op) {
     operator_->Execute();
   }
 
+  if (op == "POW") {
+    SetOperator(new Pow(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
+  if (op == "SQRT") {
+    pile_.Push(literal_manager_.AddLiteral(new Real(0.5)));
+    SetOperator(new Pow(literal_manager_, pile_));
+    operator_->Execute();
+  }
+
   if (op == "EVAL") {
     EVAL();
+  }
+
+  if (op == "SIN") {
+    SetOperator(new Trigonometry(literal_manager_, pile_, Trigonometry::kSin));
+    operator_->Execute();
+  }
+
+  if (op == "COS") {
+    SetOperator(new Trigonometry(literal_manager_, pile_, Trigonometry::kCos));
+    operator_->Execute();
+  }
+
+  if (op == "TAN") {
+    SetOperator(new Trigonometry(literal_manager_, pile_, Trigonometry::kTan));
+    operator_->Execute();
+  }
+
+  if (op == "ARCSIN") {
+    SetOperator(
+        new Trigonometry(literal_manager_, pile_, Trigonometry::kArgSin));
+    operator_->Execute();
+  }
+
+  if (op == "ARCCOS") {
+    SetOperator(
+        new Trigonometry(literal_manager_, pile_, Trigonometry::kArgCos));
+    operator_->Execute();
+  }
+
+  if (op == "ARCTAN") {
+    SetOperator(
+        new Trigonometry(literal_manager_, pile_, Trigonometry::kArgTan));
+    operator_->Execute();
   }
 
   if (op == "DUP") {

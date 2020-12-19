@@ -1,6 +1,8 @@
 #ifndef UNARY_OPERATOR_H_
 #define UNARY_OPERATOR_H_
 
+#include <math.h>
+
 #include "AtomManager.h"
 #include "ComputerException.h"
 #include "NumericLiteral.h"
@@ -69,6 +71,27 @@ class NumDen : public UnaryOperator {
   Literal* Compute(Integer& arg);
   Literal* Compute(Fraction& arg);
   Literal* Compute(ExpressionLiteral& arg);
+};
+
+class Trigonometry : public UnaryOperator {
+ private:
+  QString expression_ = "";
+
+ public:
+  enum TrigoType { kSin = 0, kCos, kTan, kArgSin, kArgCos, kArgTan };
+
+  static constexpr TrigoType kTrigoList[] = {kSin,    kCos,    kTan,
+                                             kArgSin, kArgCos, kArgTan};
+
+  TrigoType command_type_;
+
+  Trigonometry(LiteralManager& literal_manager, Pile& pile,
+               TrigoType command_type)
+      : UnaryOperator(literal_manager, pile), command_type_(command_type){};
+
+  const QString Print() const override { return expression_; };
+
+  Literal* Compute(Literal& arg) override;
 };
 
 #endif  // UNARY_OPERATOR_H

@@ -123,3 +123,51 @@ Literal* NumDen::Compute(ExpressionLiteral& arg) {
   }
   return Compute(*value);
 }
+
+// ****************************************************************************
+// ****************************************************************************
+
+// Trigonometric operators.
+
+Literal* Trigonometry::Compute(Literal& arg) {
+  Literal::LiteralType type = arg.GetLiteralType();
+
+  if (type == Literal::LiteralType::kProgram) {
+    throw(ComputerException("Impossible d'effectuer cet opérateur sur " +
+                            arg.Print()));
+  }
+
+  if (type == Literal::LiteralType::kExpression) {
+    return Compute(dynamic_cast<ExpressionLiteral&>(arg));
+  }
+
+  float n;
+
+  if (type != Literal::LiteralType::kReal) {
+    n = ConvertToReal(arg)->GetReal();
+  } else {
+    n = (dynamic_cast<Real&>(arg)).GetReal();
+  }
+
+  switch (command_type_) {
+    case 0:
+      return new Real(sin(n));
+      break;
+
+    case 1:
+      return new Real(cos(n));
+      break;
+
+    case 2:
+      return new Real(tan(n));
+
+    case 3:
+      return new Real(asin(n));
+
+    case 4:
+      return new Real(acos(n));
+
+    case 5:
+      return new Real(atan(n));
+  }
+}

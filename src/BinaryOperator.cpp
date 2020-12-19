@@ -144,7 +144,7 @@ Literal* DivMod::Compute(Integer& arg1, Integer& arg2) {
 // ****************************************************************************
 // ****************************************************************************
 
-// AND, OR, NOT.
+// AND, OR.
 
 Literal* AndOr::Compute(Literal& arg1, Literal& arg2) {
   if (and_ == true) {
@@ -158,4 +158,65 @@ Literal* AndOr::Compute(Literal& arg1, Literal& arg2) {
     }
     return new Integer(long(0));
   }
+}
+
+// ****************************************************************************
+// ****************************************************************************
+
+// POW
+
+Literal* Pow::Compute(Literal& arg1, Literal& arg2) {
+  Literal::LiteralType type1 = arg1.GetLiteralType();
+  Literal::LiteralType type2 = arg2.GetLiteralType();
+
+  if (type1 == Literal::LiteralType::kProgram ||
+      type2 == Literal::LiteralType::kProgram) {
+    throw(ComputerException(
+        "Cet opérateur n'est pas utilisé pour des litérales programmes."));
+  }
+
+  if (type1 == Literal::LiteralType::kExpression) {
+    ExpressionLiteral& exp1 = dynamic_cast<ExpressionLiteral&>(arg1);
+    Literal* value1 = exp1.GetAtom().CopyAtomValue();
+    if (value1 != nullptr) {
+      return Compute(*value1, arg2);
+    } else {
+      throw(ComputerException("Atom/Expression n'est pas value associée."));
+    }
+  }
+
+  if (type2 == Literal::LiteralType::kExpression) {
+    ExpressionLiteral& exp2 = dynamic_cast<ExpressionLiteral&>(arg2);
+    Literal* value2 = exp2.GetAtom().CopyAtomValue();
+    if (value2 != nullptr) {
+      return Compute(arg1, *value2);
+    } else {
+      throw(ComputerException("Atom/Expression n'est pas value associée."));
+    }
+  }
+
+  float n1, n2;
+
+  if (type1 != Literal::LiteralType::kReal) {
+    n1 = ConvertToReal(arg1)->GetReal();
+  } else {
+    n1 = (dynamic_cast<Real&>(arg1)).GetReal();
+  }
+
+  if (type2 != Literal::LiteralType::kReal) {
+    n2 = ConvertToReal(arg2)->GetReal();
+  } else {
+    n2 = (dynamic_cast<Real&>(arg2)).GetReal();
+  }
+
+  if (trunc(n2) != n2 && n1 < 0) {
+    throw(ComputerException("Opération invalide."));
+  }
+
+  float res = pow(n1, n2);
+  if (res == NAN) {
+    throw(ComputerException("Operation invalide."));
+  }
+
+  return new Real(pow(n1, n2));
 }
