@@ -15,7 +15,7 @@ class Atom {
   Literal* value_;
 
  public:
-  Atom(QString const& id, Literal* literal) : id_(id), value_(literal){};
+  Atom(const QString& id, Literal* literal) : id_(id), value_(literal){};
 
   ~Atom() { delete value_; }
 
