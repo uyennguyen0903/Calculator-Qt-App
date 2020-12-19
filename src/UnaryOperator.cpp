@@ -170,4 +170,45 @@ Literal* Trigonometry::Compute(Literal& arg) {
     case 5:
       return new Real(atan(n));
   }
+
+  return nullptr;
+}
+
+// ****************************************************************************
+// ****************************************************************************
+
+// Ln, Exp.
+
+Literal* LnExp::Compute(Literal& arg) {
+  Literal::LiteralType type = arg.GetLiteralType();
+
+  if (type == Literal::LiteralType::kProgram) {
+    throw(ComputerException("Impossible d'effectuer cet opérateur sur " +
+                            arg.Print()));
+  }
+
+  if (type == Literal::LiteralType::kExpression) {
+    return Compute(dynamic_cast<ExpressionLiteral&>(arg));
+  }
+
+  float n;
+
+  if (type != Literal::LiteralType::kReal) {
+    n = ConvertToReal(arg)->GetReal();
+  } else {
+    n = (dynamic_cast<Real&>(arg)).GetReal();
+  }
+
+  if (ln_) {
+    if (n <= 0) {
+      throw(ComputerException("Operation invalide."));
+    } else {
+      return new Real(log(n));
+    }
+  } else {
+    if (n >= 43) {
+      throw(ComputerException("Erreur : Exposant est trop grand !!!"));
+    }
+    return new Real(exp(n));
+  }
 }

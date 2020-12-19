@@ -94,4 +94,18 @@ class Trigonometry : public UnaryOperator {
   Literal* Compute(Literal& arg) override;
 };
 
+class LnExp : public UnaryOperator {
+ private:
+  QString expression_ = "";
+  bool ln_;  // True on LN, False on EXP.
+
+ public:
+  LnExp(LiteralManager& literal_manager, Pile& pile, bool ln)
+      : UnaryOperator(literal_manager, pile), ln_(ln){};
+
+  const QString Print() const override { return expression_; };
+
+  Literal* Compute(Literal& arg) override;
+};
+
 #endif  // UNARY_OPERATOR_H

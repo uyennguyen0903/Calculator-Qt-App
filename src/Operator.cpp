@@ -1,10 +1,11 @@
 #include "Operator.h"
 
 const set<QString> Operator::kOperatorList = {
-    "+",    "-",    "*",     "/",   "DIV",  "MOD",    "NEG",    "=",     "!=",
-    "<=",   ">=",   "<",     ">",   "AND",  "OR",     "NOT",    "EVAL",  "DUP",
-    "DROP", "SWAP", "CLEAR", "IFT", "IFTE", "FORGET", "STO",    "NUM",   "DEN",
-    "POW",  "SQRT", "SIN",   "COS", "TAN",  "ARCSIN", "ARCCOS", "ARCTAN"};
+    "+",      "-",      "*",      "/",    "DIV",   "MOD", "NEG",  "=",
+    "!=",     "<=",     ">=",     "<",    ">",     "AND", "OR",   "NOT",
+    "EVAL",   "DUP",    "DROP",   "SWAP", "CLEAR", "IFT", "IFTE", "FORGET",
+    "STO",    "NUM",    "DEN",    "POW",  "SQRT",  "SIN", "COS",  "TAN",
+    "ARCSIN", "ARCCOS", "ARCTAN", "LN",   "EXP"};
 
 bool Operator::IsEnoughArguments(size_t n) const {
   if (pile_.GetPileSize() < n) {

@@ -280,6 +280,16 @@ void Controller::ExecuteOperator(const QString& op) {
     operator_->Execute();
   }
 
+  if (op == "LN") {
+    SetOperator(new LnExp(literal_manager_, pile_, true));
+    operator_->Execute();
+  }
+
+  if (op == "EXP") {
+    SetOperator(new LnExp(literal_manager_, pile_, false));
+    operator_->Execute();
+  }
+
   if (op == "DUP") {
     DUP();
   }
