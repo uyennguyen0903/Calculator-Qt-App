@@ -86,3 +86,12 @@ Real* ConvertToReal(Literal& num) {
     return ConvertFractionToReal(num);
   }
 }
+
+bool LogicTest(Literal* const literal) {
+  if (literal == nullptr) return false;
+  if (literal->GetLiteralType() == Literal::LiteralType::kInteger) {
+    Integer* n = dynamic_cast<Integer*>(literal);
+    if (n->GetInt() == 0) return false;
+  }
+  return true;
+}

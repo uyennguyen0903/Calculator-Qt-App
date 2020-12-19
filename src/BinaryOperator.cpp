@@ -147,42 +147,15 @@ Literal* DivMod::Compute(Integer& arg1, Integer& arg2) {
 // AND, OR, NOT.
 
 Literal* AndOr::Compute(Literal& arg1, Literal& arg2) {
-  Literal::LiteralType type1 = arg1.GetLiteralType();
-  Literal::LiteralType type2 = arg2.GetLiteralType();
-
-  if (type1 == Literal::LiteralType::kExpression) {
-    ExpressionLiteral& exp1 = dynamic_cast<ExpressionLiteral&>(arg1);
-    Literal* value1 = exp1.GetAtom().CopyAtomValue();
-    if (value1 != nullptr) {
-      return Compute(*value1, arg2);
-    } else {
-      throw(ComputerException("Atom/Expression n'est pas value associée."));
+  if (and_ == true) {
+    if (LogicTest(&arg1) && LogicTest(&arg2)) {
+      return new Integer(long(1));
     }
-  }
-
-  if (type2 == Literal::LiteralType::kExpression) {
-    ExpressionLiteral& exp2 = dynamic_cast<ExpressionLiteral&>(arg2);
-    Literal* value2 = exp2.GetAtom().CopyAtomValue();
-    if (value2 != nullptr) {
-      return Compute(arg1, *value2);
-    } else {
-      throw(ComputerException("Atom/Expression n'est pas value associée."));
-    }
-  }
-
-  if (arg1.GetLiteralType() == Literal::LiteralType::kInteger &&
-      arg2.GetLiteralType() == Literal::LiteralType::kInteger) {
-    return Compute(dynamic_cast<Integer&>(arg1), dynamic_cast<Integer&>(arg2));
-  }
-
-  throw(ComputerException(
-      "Cet opérateur est seulement utilisé pour des litérales entières."));
-}
-
-Literal* AndOr::Compute(Integer& arg1, Integer& arg2) {
-  if (and_) {
-    return new Integer(arg1.GetInt() & arg2.GetInt());
+    return new Integer(long(0));
   } else {
-    return new Integer(arg1.GetInt() | arg2.GetInt());
+    if (LogicTest(&arg1) || LogicTest(&arg2)) {
+      return new Integer(long(1));
+    }
+    return new Integer(long(0));
   }
 }

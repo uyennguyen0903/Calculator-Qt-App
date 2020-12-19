@@ -6,6 +6,7 @@
 #include "NumericLiteral.h"
 #include "Operator.h"
 #include "Program.h"
+#include "Utils.h"
 
 class BinaryOperator : public Operator {
  public:
@@ -74,8 +75,6 @@ class AndOr : public BinaryOperator {
   const QString Print() const override { return expression_; }
 
   Literal* Compute(Literal& arg1, Literal& arg2) override;
-
-  Literal* Compute(Integer& arg1, Integer& arg2);
 };
 
 #endif  // BINARY_OPERATOR_H

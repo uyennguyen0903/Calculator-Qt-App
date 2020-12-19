@@ -6,6 +6,7 @@
 #include "NumericLiteral.h"
 #include "Operator.h"
 #include "Program.h"
+#include "Utils.h"
 
 class UnaryOperator : public Operator {
  public:
@@ -50,8 +51,24 @@ class Not : public UnaryOperator {
   const QString Print() const override { return expression_; };
 
   Literal* Compute(Literal& arg) override;
+};
+
+class NumDen : public UnaryOperator {
+ private:
+  QString expression_ = "";
+  bool num_;  // True on getting numerator, false otherwise.
+
+ public:
+  NumDen(LiteralManager& literal_manager, Pile& pile, bool num)
+      : UnaryOperator(literal_manager, pile), num_(num){};
+
+  const QString Print() const override { return expression_; };
+
+  Literal* Compute(Literal& arg) override;
 
   Literal* Compute(Integer& arg);
+  Literal* Compute(Fraction& arg);
+  Literal* Compute(ExpressionLiteral& arg);
 };
 
 #endif  // UNARY_OPERATOR_H

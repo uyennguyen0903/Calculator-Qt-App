@@ -66,6 +66,8 @@ class Controller {
   void FORGET();
 
   void IFT();
+
+  void IFTE();
 };
 
 #endif  // CONTROLLER_H_

@@ -224,6 +224,16 @@ void Controller::ExecuteOperator(const QString& op) {
     operator_->Execute();
   }
 
+  if (op == "NUM") {
+    SetOperator(new NumDen(literal_manager_, pile_, true));
+    operator_->Execute();
+  }
+
+  if (op == "DEN") {
+    SetOperator(new NumDen(literal_manager_, pile_, false));
+    operator_->Execute();
+  }
+
   if (op == "EVAL") {
     EVAL();
   }
@@ -250,5 +260,9 @@ void Controller::ExecuteOperator(const QString& op) {
 
   if (op == "IFT") {
     IFT();
+  }
+
+  if (op == "IFTE") {
+    IFTE();
   }
 }

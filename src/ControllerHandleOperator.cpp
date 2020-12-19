@@ -126,15 +126,39 @@ void Controller::IFT() {
   Literal* arg1 = &pile_.Top();
   pile_.Pop();
 
-  if (arg1->GetLiteralType() == Literal::LiteralType::kInteger) {
-    Integer* n = dynamic_cast<Integer*>(arg1);
-    if (n->GetInt() == 0) return;
-  }
+  if (!LogicTest(arg1)) return;
 
   pile_.Push(*arg2);
 
   Literal::LiteralType type2 = arg2->GetLiteralType();
   if (type2 == Literal::LiteralType::kProgram ||
       type2 == Literal::LiteralType::kExpression)
+    EVAL();
+}
+
+void Controller::IFTE() {
+  if (pile_.GetPileSize() < 3) {
+    throw(ComputerException("Pas assez arguments."));
+  }
+
+  Literal* arg3 = &pile_.Top();
+  pile_.Pop();
+  Literal* arg2 = &pile_.Top();
+  pile_.Pop();
+  Literal* arg1 = &pile_.Top();
+  pile_.Pop();
+
+  Literal::LiteralType type;
+
+  if (LogicTest(arg1)) {
+    pile_.Push(*arg2);
+    type = arg2->GetLiteralType();
+  } else {
+    pile_.Push(*arg3);
+    type = arg3->GetLiteralType();
+  }
+
+  if (type == Literal::LiteralType::kProgram ||
+      type == Literal::LiteralType::kExpression)
     EVAL();
 }

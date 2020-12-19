@@ -38,7 +38,7 @@ Literal* NegativeOperator::Compute(Literal& arg) {
   }
 
   throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
-                          " entre " + arg.Print()));
+                          " sur " + arg.Print()));
 }
 
 Literal* NegativeOperator::Compute(Integer& arg) {
@@ -54,10 +54,6 @@ Literal* NegativeOperator::Compute(Real& arg) {
 }
 
 Literal* NegativeOperator::Compute(ExpressionLiteral& arg) {
-  if (arg.GetLiteralType() == Literal::LiteralType::kProgram) {
-    throw(ComputerException("Impossible de changer la signe d'une programme."));
-  }
-
   Literal* value = arg.GetAtom().CopyAtomValue();
   if (value == nullptr) {
     throw(ComputerException("Atome/Expression n'a pas value associée."));
@@ -74,16 +70,56 @@ Literal* NegativeOperator::Compute(ExpressionLiteral& arg) {
 // NOT operator.
 
 Literal* Not::Compute(Literal& arg) {
+  if (LogicTest(&arg))
+    return new Integer(long(0));
+  else
+    return new Integer(long(1));
+}
+
+// ****************************************************************************
+// ****************************************************************************
+
+// NUM, DEN operator.
+
+Literal* NumDen::Compute(Literal& arg) {
   Literal::LiteralType type = arg.GetLiteralType();
 
   if (type == Literal::LiteralType::kInteger) {
     return Compute(dynamic_cast<Integer&>(arg));
   }
 
-  throw(ComputerException("Impossible d'effectuer l'opération " + Print() +
-                          " entre " + arg.Print()));
+  if (type == Literal::LiteralType::kFraction) {
+    return Compute(dynamic_cast<Fraction&>(arg));
+  }
+
+  if (type == Literal::LiteralType::kExpression) {
+    return Compute(dynamic_cast<ExpressionLiteral&>(arg));
+  }
+
+  throw(ComputerException("Impossible d'effectuer cet opérateur sur " +
+                          arg.Print()));
 }
 
-Literal* Not::Compute(Integer& arg) {
-  return new Integer(~arg.GetInt());
+Literal* NumDen::Compute(Integer& arg) {
+  if (num_) {
+    return new Integer(arg.GetInt());
+  } else {
+    return new Integer(long(1));
+  }
+}
+
+Literal* NumDen::Compute(Fraction& arg) {
+  if (num_) {
+    return new Integer(arg.GetNumerator());
+  } else {
+    return new Integer(arg.GetDenominator());
+  }
+}
+
+Literal* NumDen::Compute(ExpressionLiteral& arg) {
+  Literal* value = arg.GetAtom().CopyAtomValue();
+  if (value == nullptr) {
+    throw(ComputerException("Atome/Expression n'a pas value associée."));
+  }
+  return Compute(*value);
 }

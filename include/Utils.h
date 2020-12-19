@@ -17,4 +17,6 @@ Real* ConvertFractionToReal(Literal& frac);
 
 Real* ConvertToReal(Literal& num);
 
+bool LogicTest(Literal* const literal);
+
 #endif  // UTILS_H_
