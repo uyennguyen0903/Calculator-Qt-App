@@ -1,6 +1,10 @@
 #include "Controller.h"
 
 void Controller::EVAL() {
+  if (pile_.GetPileSize() == 0) {
+    throw(ComputerException("Opérateur invalid."));
+  }
+
   Literal& exp_or_prog = pile_.Top();
   Literal::LiteralType type = exp_or_prog.GetLiteralType();
 

@@ -9,6 +9,9 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   // Créer la barre de message pour l'utilisateur.
   message = new QLineEdit;
   message->setReadOnly(true);
+  message->setFixedHeight(40);
+  message->setAlignment(Qt::AlignCenter);
+  message->setStyleSheet("font:20px; color: red");
 
   // Créer et customiser la panel de pile.
   vue_pile = new QTableWidget(pile->GetNbDisplay(), 1);
@@ -21,6 +24,7 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
     QString str = QString::number(i);
     labelList << str;
   }
+
   vue_pile->setVerticalHeaderLabels(labelList);
   //  vue_pile->setDisabled(true);  // Mettre la pile non modiable.
 
@@ -30,6 +34,9 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
 
   // Créer la barre de commande.
   commande = new QLineEdit;
+  commande->setFixedHeight(40);
+  commande->setAlignment(Qt::AlignRight);
+  commande->setStyleSheet("font:20px");
 
   // Mettre un titre à la fenêtre.
   setWindowTitle("Comp'UT");
@@ -85,44 +92,6 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   QPushButton* eval = new QPushButton("EVAL");
   connect(eval, SIGNAL(clicked()), this, SLOT(onClick()));
 
-  QHBoxLayout* line0 = new QHBoxLayout;
-  line0->addWidget(space);
-  line0->addWidget(zero);
-  line0->addWidget(point);
-  line0->addWidget(entree);
-
-  QHBoxLayout* line1 = new QHBoxLayout;
-  line1->addWidget(un);
-  line1->addWidget(deux);
-  line1->addWidget(trois);
-  line1->addWidget(plus);
-
-  QHBoxLayout* line2 = new QHBoxLayout;
-  line2->addWidget(quatre);
-  line2->addWidget(cinq);
-  line2->addWidget(six);
-  line2->addWidget(moins);
-
-  QHBoxLayout* line3 = new QHBoxLayout;
-  line3->addWidget(sept);
-  line3->addWidget(huit);
-  line3->addWidget(neuf);
-  line3->addWidget(fois);
-
-  QHBoxLayout* line4 = new QHBoxLayout;
-  line4->addWidget(eval);
-  line4->addWidget(paren_ouvrante);
-  line4->addWidget(paren_ferrmante);
-  line4->addWidget(division);
-
-  // La 'couche1' contient les chiffres et les opérandes +,-,*,/
-  QVBoxLayout* couche1 = new QVBoxLayout;
-  couche1->addLayout(line4);
-  couche1->addLayout(line3);
-  couche1->addLayout(line2);
-  couche1->addLayout(line1);
-  couche1->addLayout(line0);
-
   // Opérateurs numériques
   QPushButton* div = new QPushButton("DIV");
   connect(div, SIGNAL(clicked()), this, SLOT(onClick()));
@@ -155,6 +124,82 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   QPushButton* arctan = new QPushButton("ARCTAN");
   connect(arctan, SIGNAL(clicked()), this, SLOT(onClick()));
 
+  // Opérateurs logiques.
+  QPushButton* equal = new QPushButton("=");
+  connect(equal, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* diff = new QPushButton("!=");
+  connect(diff, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* sup = new QPushButton(">");
+  connect(sup, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* inf = new QPushButton("<");
+  connect(inf, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* et = new QPushButton("AND");
+  connect(et, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* ou = new QPushButton("OR");
+  connect(ou, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* non = new QPushButton("NOT");
+  connect(non, SIGNAL(clicked()), this, SLOT(onClick()));
+
+  // Opérateurs de manipulation.
+  QPushButton* dup = new QPushButton("DUP");
+  connect(dup, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* drop = new QPushButton("DROP");
+  connect(drop, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* echanger = new QPushButton("SWAP");
+  connect(echanger, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* effacer = new QPushButton("CLEAR");
+  connect(effacer, SIGNAL(clicked()), this, SLOT(onClick()));
+
+  // Opérateurs conditionnels et de boucle.
+  QPushButton* ift = new QPushButton("IFT");
+  connect(ift, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* ifte = new QPushButton("IFTE");
+  connect(ifte, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* backspace = new QPushButton("DEL");
+  connect(backspace, SIGNAL(clicked()), this, SLOT(onClick()));
+
+  QHBoxLayout* line0 = new QHBoxLayout;
+  line0->addWidget(space);
+  line0->addWidget(zero);
+  line0->addWidget(point);
+  line0->addWidget(entree);
+
+  QHBoxLayout* line1 = new QHBoxLayout;
+  line1->addWidget(un);
+  line1->addWidget(deux);
+  line1->addWidget(trois);
+  line1->addWidget(plus);
+
+  QHBoxLayout* line2 = new QHBoxLayout;
+  line2->addWidget(quatre);
+  line2->addWidget(cinq);
+  line2->addWidget(six);
+  line2->addWidget(moins);
+
+  QHBoxLayout* line3 = new QHBoxLayout;
+  line3->addWidget(sept);
+  line3->addWidget(huit);
+  line3->addWidget(neuf);
+  line3->addWidget(fois);
+
+  QHBoxLayout* line4 = new QHBoxLayout;
+  line4->addWidget(eval);
+  line4->addWidget(paren_ouvrante);
+  line4->addWidget(paren_ferrmante);
+  line4->addWidget(division);
+
+  QHBoxLayout* line55 = new QHBoxLayout;
+  line55->addWidget(equal);
+  line55->addWidget(diff);
+  line55->addWidget(sup);
+  line55->addWidget(inf);
+
+  QHBoxLayout* line66 = new QHBoxLayout;
+  line66->addWidget(drop);
+  line66->addWidget(echanger);
+  line66->addWidget(effacer);
+  line66->addWidget(backspace);
+
   QHBoxLayout* line5 = new QHBoxLayout;
   line5->addWidget(neg);
   line5->addWidget(den);
@@ -180,77 +225,52 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   line9->addWidget(arccos);
   line9->addWidget(arctan);
 
-  // La 'couche2' contient les opérateurs numériques.
-  QVBoxLayout* couche2 = new QVBoxLayout;
-  couche2->addLayout(line5);
-  couche2->addLayout(line6);
-  couche2->addLayout(line7);
-  couche2->addLayout(line8);
-  couche2->addLayout(line9);
+  QHBoxLayout* line10 = new QHBoxLayout;
+  line10->addWidget(et);
+  line10->addWidget(ou);
+  line10->addWidget(non);
 
-  // Opérateurs logiques.
-  QPushButton* equal = new QPushButton("=");
-  connect(equal, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* diff = new QPushButton("!=");
-  connect(diff, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* sup = new QPushButton(">");
-  connect(sup, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* inf = new QPushButton("<");
-  connect(inf, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* et = new QPushButton("AND");
-  connect(et, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* ou = new QPushButton("OR");
-  connect(ou, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* non = new QPushButton("NOT");
-  connect(non, SIGNAL(clicked()), this, SLOT(onClick()));
+  QHBoxLayout* line11 = new QHBoxLayout;
+  line11->addWidget(ift);
+  line11->addWidget(ifte);
+  line11->addWidget(dup);
 
-  // La 'couche3' contient les opérateurs logiques.
-  QHBoxLayout* couche3 = new QHBoxLayout;
-  couche3->addWidget(et);
-  couche3->addWidget(ou);
-  couche3->addWidget(non);
-  couche3->addWidget(equal);
-  couche3->addWidget(diff);
-  couche3->addWidget(sup);
-  couche3->addWidget(inf);
+  QHBoxLayout* L1 = new QHBoxLayout;
+  L1->addLayout(line11);
+  L1->addLayout(line66);
 
-  // Opérateurs de manipulation.
-  QPushButton* dup = new QPushButton("DUP");
-  connect(dup, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* drop = new QPushButton("DROP");
-  connect(drop, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* echanger = new QPushButton("SWAP");
-  connect(echanger, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* effacer = new QPushButton("CLEAR");
-  connect(effacer, SIGNAL(clicked()), this, SLOT(onClick()));
+  QHBoxLayout* L2 = new QHBoxLayout;
+  L2->addLayout(line10);
+  L2->addLayout(line55);
 
-  // Opérateurs conditionnels et de boucle.
-  QPushButton* ift = new QPushButton("IFT");
-  connect(ift, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* ifte = new QPushButton("IFTE");
-  connect(ifte, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* backspace = new QPushButton("DEL");
-  connect(backspace, SIGNAL(clicked()), this, SLOT(onClick()));
+  QHBoxLayout* L3 = new QHBoxLayout;
+  L3->addLayout(line5);
+  L3->addLayout(line4);
 
-  // La 'couche4' contient les opérateurs de manipulation et opérateurs
-  // conditionnels et de boucle.
-  QHBoxLayout* couche4 = new QHBoxLayout;
-  couche4->addWidget(ift);
-  couche4->addWidget(ifte);
-  couche4->addWidget(dup);
-  couche4->addWidget(drop);
-  couche4->addWidget(echanger);
-  couche4->addWidget(effacer);
-  couche4->addWidget(backspace);
+  QHBoxLayout* L4 = new QHBoxLayout;
+  L4->addLayout(line6);
+  L4->addLayout(line3);
 
-  QHBoxLayout* couche12 = new QHBoxLayout;
-  couche12->addLayout(couche2);
-  couche12->addLayout(couche1);
+  QHBoxLayout* L5 = new QHBoxLayout;
+  L5->addLayout(line7);
+  L5->addLayout(line2);
+
+  QHBoxLayout* L6 = new QHBoxLayout;
+  L6->addLayout(line8);
+  L6->addLayout(line1);
+
+  QHBoxLayout* L7 = new QHBoxLayout;
+  L7->addLayout(line9);
+  L7->addLayout(line0);
 
   QVBoxLayout* clavier = new QVBoxLayout;
-  clavier->addLayout(couche4);
-  clavier->addLayout(couche3);
-  clavier->addLayout(couche12);
+  clavier->addLayout(L1);
+  clavier->addLayout(L2);
+  clavier->addLayout(L3);
+  clavier->addLayout(L4);
+  clavier->addLayout(L5);
+  clavier->addLayout(L6);
+  clavier->addLayout(L7);
 
   wClavier = new QGroupBox;
   wClavier->setLayout(clavier);
@@ -302,9 +322,14 @@ void QComputer::refresh() {
   }
 
   size_t nb = 0;
+  QFont fnt;
+  fnt.setPointSize(12);
   for (Pile::Iterator it = pile->begin();
        it != pile->end() && nb < pile->GetNbDisplay(); ++it) {
+    vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)
+        ->setTextAlignment(Qt::AlignRight);
     vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)->setText((*it).Print());
+    vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)->setFont(fnt);
     nb++;
   }
 }
@@ -360,8 +385,10 @@ void QComputer::onClick() {
     pile->SetMessage("Affichage/Masquage du clavier principal");
     if (wClavier->isVisible() == true) {
       wClavier->hide();
+      this->setFixedSize(680, 445);
     } else {
       wClavier->show();
+      this->setFixedSize(680, 775);
     }
     return;
   }
