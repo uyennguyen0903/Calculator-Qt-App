@@ -162,9 +162,15 @@ Literal* Trigonometry::Compute(Literal& arg) {
       return new Real(tan(n));
 
     case 3:
+      if (abs(n) > 1) {
+        throw(ComputerException("Operation invalide."));
+      }
       return new Real(asin(n));
 
     case 4:
+      if (abs(n) > 1) {
+        throw(ComputerException("Operation invalide."));
+      }
       return new Real(acos(n));
 
     case 5:

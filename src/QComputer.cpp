@@ -1,7 +1,7 @@
 #include "QComputer.h"
 
-#include <QDebug>
 #include <QChar>
+#include <QDebug>
 
 QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   pile = new Pile;
@@ -22,7 +22,7 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
     labelList << str;
   }
   vue_pile->setVerticalHeaderLabels(labelList);
-  // vue_pile->setDisabled(true);  // Mettre la pile non modiable.
+  //  vue_pile->setDisabled(true);  // Mettre la pile non modiable.
 
   for (unsigned int i = 0; i < pile->GetNbDisplay(); i++) {
     vue_pile->setItem(i, 0, new QTableWidgetItem(""));
@@ -62,8 +62,8 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   connect(paren_ouvrante, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* paren_ferrmante = new QPushButton("]");
   connect(paren_ferrmante, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* guillemet_simp = new QPushButton("'");
-  connect(guillemet_simp, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* space = new QPushButton("SPACE");
+  connect(space, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // Opérandes.
   QPushButton* plus = new QPushButton("+");
@@ -80,13 +80,13 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   connect(division, SIGNAL(clicked()), this, SLOT(getNextCommande()));
 
   // Les touches Entrée & Eval.
-  QPushButton* entree = new QPushButton("ENTREE");
+  QPushButton* entree = new QPushButton("ENTER");
   connect(entree, SIGNAL(clicked()), this, SLOT(getNextCommande()));
   QPushButton* eval = new QPushButton("EVAL");
   connect(eval, SIGNAL(clicked()), this, SLOT(onClick()));
 
   QHBoxLayout* line0 = new QHBoxLayout;
-  line0->addWidget(guillemet_simp);
+  line0->addWidget(space);
   line0->addWidget(zero);
   line0->addWidget(point);
   line0->addWidget(entree);
@@ -229,8 +229,8 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   connect(ift, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* ifte = new QPushButton("IFTE");
   connect(ifte, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* forget = new QPushButton("FORGET");
-  connect(forget, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* backspace = new QPushButton("DEL");
+  connect(backspace, SIGNAL(clicked()), this, SLOT(onClick()));
 
   // La 'couche4' contient les opérateurs de manipulation et opérateurs
   // conditionnels et de boucle.
@@ -240,8 +240,8 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   couche4->addWidget(dup);
   couche4->addWidget(drop);
   couche4->addWidget(echanger);
-  couche4->addWidget(forget);
   couche4->addWidget(effacer);
+  couche4->addWidget(backspace);
 
   QHBoxLayout* couche12 = new QHBoxLayout;
   couche12->addLayout(couche2);
@@ -252,12 +252,43 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   clavier->addLayout(couche3);
   clavier->addLayout(couche12);
 
+  wClavier = new QGroupBox;
+  wClavier->setLayout(clavier);
+
+  // boutons de gestion des vues
+  QPushButton* vueGVar = new QPushButton("Gestion des variables");
+  connect(vueGVar, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* vueGProg = new QPushButton("Gestion des programmes");
+  connect(vueGProg, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* parametre = new QPushButton("Paramètre");
+  connect(parametre, SIGNAL(clicked()), this, SLOT(onClick()));
+
+  QHBoxLayout* menuVue = new QHBoxLayout;
+  menuVue->addWidget(vueGVar);
+  menuVue->addWidget(vueGProg);
+  menuVue->addWidget(parametre);
+
+  // boutons de gestion des vues
+  QPushButton* affClavierP = new QPushButton("Clavier principal");
+  connect(affClavierP, SIGNAL(clicked()), this, SLOT(onClick()));
+  QPushButton* affClavierVar =
+      new QPushButton("Clavier des variables et programmes");
+  connect(affClavierVar, SIGNAL(clicked()), this, SLOT(onClick()));
+
+  QHBoxLayout* menuAffClavier = new QHBoxLayout;
+  menuAffClavier->addWidget(affClavierP);
+  menuAffClavier->addWidget(affClavierVar);
+
   // Aligner tous les objets précédents.
   couche = new QVBoxLayout;
+  couche->addLayout(menuVue);
+  couche->addLayout(menuAffClavier);
+
   couche->addWidget(message);
   couche->addWidget(vue_pile);
   couche->addWidget(commande);
   couche->addLayout(clavier);
+  couche->addWidget(wClavier);
   setLayout(couche);
 
   connect(pile, SIGNAL(ModifyStatus()), this, SLOT(refresh()));
@@ -294,14 +325,63 @@ void QComputer::getNextCommande() {
 
 void QComputer::onClick() {
   QPushButton* button = (QPushButton*)sender();
+
+  if (button->text() == "SPACE") {
+    QString c = commande->text();  // on récupère la ligne de commande
+    c += " ";
+    commande->setText(c);
+    return;
+  }
+
+  if (button->text() == "DEL") {
+    QString c = commande->text();  // on récupère la ligne de commande
+    c.remove(c.size() - 1, 1);
+    commande->setText(c);
+    return;
+  }
+
+  if (button->text() == "Gestion des variables") {
+    // affichage de la vue de gestion des variables
+    return;
+  }
+
+  if (button->text() == "Gestion des programmes") {
+    // affichage de la vue de gestion des programmes
+    return;
+  }
+
+  if (button->text() == "Paramètre") {
+    // affichage de la vue des paramtres
+    return;
+  }
+
+  if (button->text() == "Clavier principal") {
+    // modification de la visibilité du claviers des variables et programmes
+    pile->SetMessage("Affichage/Masquage du clavier principal");
+    if (wClavier->isVisible() == true) {
+      wClavier->hide();
+    } else {
+      wClavier->show();
+    }
+    return;
+  }
+
+  if (button->text() == "Clavier des variables et programmes") {
+    // modification de la visibilité du claviers des variables et programmes
+    pile->SetMessage("Affichage/Masquage du clavier variables et programmes");
+    return;
+  }
+
   QString c = commande->text();  // on récupère la ligne de commande
   QString newc = button->text();
-  if (newc.size() != 1 or checkInput(newc[0]) or (c.size() > 0 and checkInput(c[c.size() - 1]))) c += " ";
+  if (newc.size() != 1 or checkInput(newc[0]) or
+      (c.size() > 0 and checkInput(c[c.size() - 1])))
+    c += " ";
   c += newc;
   commande->setText(c);
 }
 
 bool QComputer::checkInput(QChar input) {
-    // vérifier si input n'est pas un valeur numérique ni une virgule ni un espace
-    return !input.isDigit() and input != '.' and input != ' ';
+  // vérifier si input n'est pas un valeur numérique ni une virgule ni un espace
+  return !input.isDigit() and input != '.' and input != ' ';
 }

@@ -2,6 +2,7 @@
 #define QCOMPUTER_H_
 #include <QDebug>
 #include <QFormLayout>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLineEdit>
@@ -25,7 +26,7 @@ class QComputer : public QWidget {
   QLineEdit* commande;  // Barre de commande affichant la suite d'opérandes en
                         // train d'être saisies.
   QTableWidget* vue_pile;  // Panel affichant X derniers éléments de la pile.
-  QHBoxLayout* clavier;    // Clavier cliquable.
+  QGroupBox* wClavier;     // Clavier cliquable.
   QVBoxLayout* couche;     // Servir à aligner tous les objets précédents.
   Pile* pile;
   Controller* controleur;
