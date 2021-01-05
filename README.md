@@ -1,4 +1,4 @@
-# Reverse Polish Notation (RPN) calculator
+# Reverse Polish Notation (RPN) Calculator
 
 Scientific calculator using Reverse Polish Notation. 
 
