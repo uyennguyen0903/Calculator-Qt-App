@@ -24,10 +24,12 @@ mkdir build && cd build && cmake -G "Ninja" ../ && ninja
 
 ### Building using Qt:
 
-Open the file 'CompUT.pro' in QtCreator and build the project directly in QtCreator GUI.
+Open the file `CompUT.pro` in QtCreator and build the project directly in QtCreator GUI.
 
 ## User interface
 
-![main GUI](images/CalculatorGUI.png)
+![main GUI](images/CalculatorGUI.PNG)
+
+![extra TAB](images/GUI2.PNG)
 
 
