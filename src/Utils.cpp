@@ -1,6 +1,10 @@
 #include "Utils.h"
+#include "ComputerException.h"
 
 bool ValidIdentifier(const QString& str) {
+  if (str.length() > 5) {
+      throw(ComputerException("La taille de l'id doit être <= 5"));
+  }
   if (!str[0].isLetter()) return false;
 
   if (Operator::kOperatorList.find(str) != Operator::kOperatorList.end())

@@ -1,4 +1,5 @@
 #include "NumericLiteral.h"
+#include "GCD.h"
 
 Fraction::Fraction(long numerator, long denominator) {
   SetFraction(numerator, denominator);

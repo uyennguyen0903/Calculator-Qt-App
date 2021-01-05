@@ -1,4 +1,5 @@
 #include "BinaryOperator.h"
+#include "ClavierVar.h"
 
 void BinaryOperator::Execute() {
   if (IsEnoughArguments(2)) {
@@ -74,21 +75,44 @@ Literal* STO::Compute(Literal& arg1, Literal& arg2) {
 
 Literal* STO::Compute(Integer& arg1, ExpressionLiteral& arg2) {
   arg2.GetAtom().SetValue(new Integer(&arg1));
+  ClavierVar::GetInstance().addButton(arg2.GetAtom().GetId());
+  //ajout du variable dans la vue variable;
+  VariableLayout::GetInstance().addElement(arg2.GetAtom().GetId(), arg1.Print());
+  //suppression du programme dans la vue programme s'il existe;
+  ProgramLayout::GetInstance().deleteElement(arg2.GetAtom().GetId());
   return nullptr;
 }
 
 Literal* STO::Compute(Real& arg1, ExpressionLiteral& arg2) {
   arg2.GetAtom().SetValue(new Real(&arg1));
+  //ajout du bouton correspondant au clavier
+  ClavierVar::GetInstance().addButton(arg2.GetAtom().GetId());
+  //ajout du variable dans la vue variable;
+  VariableLayout::GetInstance().addElement(arg2.GetAtom().GetId(), arg1.Print());
+  //suppression du programme dans la vue programme s'il existe;
+  ProgramLayout::GetInstance().deleteElement(arg2.GetAtom().GetId());
   return nullptr;
 }
 
 Literal* STO::Compute(Fraction& arg1, ExpressionLiteral& arg2) {
   arg2.GetAtom().SetValue(new Fraction(&arg1));
+  //ajout du bouton correspondant au clavier
+  ClavierVar::GetInstance().addButton(arg2.GetAtom().GetId());
+  //ajout du variable dans la vue variable;
+  VariableLayout::GetInstance().addElement(arg2.GetAtom().GetId(), arg1.Print());
+  //suppression du programme dans la vue programme s'il existe;
+  ProgramLayout::GetInstance().deleteElement(arg2.GetAtom().GetId());
   return nullptr;
 }
 
 Literal* STO::Compute(Program& arg1, ExpressionLiteral& arg2) {
   arg2.GetAtom().SetValue(new Program(&arg1));
+  //ajout du bouton correspondant au clavier
+  ClavierVar::GetInstance().addButton(arg2.GetAtom().GetId());
+  //ajout du programme dans la vue programme;
+  ProgramLayout::GetInstance().addElement(arg2.GetAtom().GetId(), arg1.Print());
+  //suppression dde la variable dans la vue programme s'il existe;
+  VariableLayout::GetInstance().deleteElement(arg2.GetAtom().GetId());
   return nullptr;
 }
 

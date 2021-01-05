@@ -10,6 +10,7 @@
 #include "Program.h"
 #include "Utils.h"
 #include "math.h"
+#include "Layout.h"
 
 class BinaryOperator : public Operator {
  public:

@@ -7,6 +7,7 @@
 #include "Atom.h"
 #include "AtomManager.h"
 #include "BinaryOperator.h"
+#include "Layout.h"
 #include "ExpressionLiteral.h"
 #include "LiteralManager.h"
 #include "NumericLiteral.h"
@@ -19,6 +20,7 @@
 #include "UnaryOperator.h"
 #include "Utils.h"
 #include "math.h"
+
 
 class Controller {
  private:

@@ -113,6 +113,11 @@ void Controller::FORGET() {
   if (type == Literal::LiteralType::kExpression) {
     ExpressionLiteral* exp = dynamic_cast<ExpressionLiteral*>(last_literal);
     atom_manager_.SetValueAtom(exp->Print(), nullptr);
+    //suppression du programme dans la vue programme s'il existe;
+    ProgramLayout::GetInstance().deleteElement(exp->Print());
+    //suppression de la variable dans la vue variable s'il existe;
+    VariableLayout::GetInstance().deleteElement(exp->Print());
+
     pile_.Pop();
   } else {
     throw(ComputerException(

@@ -1,11 +1,15 @@
 #include "QComputer.h"
 
-#include <QChar>
-#include <QDebug>
+#include <QGraphicsDropShadowEffect>
 
 QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   pile = new Pile;
   controleur = new Controller(LiteralManager::GetInstance(), *pile, nullptr);
+
+  // Mettre un titre à la fenêtre.
+  setWindowTitle("Comp'UT");
+
+  // création de la vue principale
   // Créer la barre de message pour l'utilisateur.
   message = new QLineEdit;
   message->setReadOnly(true);
@@ -14,22 +18,23 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   message->setStyleSheet("font:20px; color: red");
 
   // Créer et customiser la panel de pile.
-  vue_pile = new QTableWidget(pile->GetNbDisplay(), 1);
-  // maintenant nbAfficher = 5, il faut modifier quand on a la class Pile.
+  vue_pile = new QTableWidget(nb_pile_param, 1);
   vue_pile->horizontalHeader()->setVisible(false);
   vue_pile->horizontalHeader()->setStretchLastSection(true);
+  vue_pile->setFixedHeight(nb_pile_param * 46);
 
   QStringList labelList;
-  for (unsigned int i = pile->GetNbDisplay(); i > 0; --i) {
+  for (unsigned int i = nb_pile_param; i > 0; --i) {
     QString str = QString::number(i);
     labelList << str;
   }
 
   vue_pile->setVerticalHeaderLabels(labelList);
-  //  vue_pile->setDisabled(true);  // Mettre la pile non modiable.
 
-  for (unsigned int i = 0; i < pile->GetNbDisplay(); i++) {
-    vue_pile->setItem(i, 0, new QTableWidgetItem(""));
+  for (unsigned int i = 0; i < nb_pile_param; i++) {
+    QTableWidgetItem* new_item = new QTableWidgetItem("");
+    new_item->setFlags(new_item->flags() ^ Qt::ItemIsEditable);
+    vue_pile->setItem(i, 0, new_item);
   }
 
   // Créer la barre de commande.
@@ -37,9 +42,6 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   commande->setFixedHeight(40);
   commande->setAlignment(Qt::AlignRight);
   commande->setStyleSheet("font:20px");
-
-  // Mettre un titre à la fenêtre.
-  setWindowTitle("Comp'UT");
 
   // Créer les buttons pour les claviers cliquables.
   // Expressions litérales.
@@ -274,21 +276,20 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
 
   wClavier = new QGroupBox;
   wClavier->setLayout(clavier);
+  wClavier->setFixedHeight(350);
 
-  // boutons de gestion des vues
-  QPushButton* vueGVar = new QPushButton("Gestion des variables");
-  connect(vueGVar, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* vueGProg = new QPushButton("Gestion des programmes");
-  connect(vueGProg, SIGNAL(clicked()), this, SLOT(onClick()));
-  QPushButton* parametre = new QPushButton("Paramètre");
-  connect(parametre, SIGNAL(clicked()), this, SLOT(onClick()));
+  // clavier variable et programme
 
-  QHBoxLayout* menuVue = new QHBoxLayout;
-  menuVue->addWidget(vueGVar);
-  menuVue->addWidget(vueGProg);
-  menuVue->addWidget(parametre);
+  QLabel* label_var = new QLabel("Clavier des Programmes et Variables");
+  label_var->setAlignment(Qt::AlignCenter);
 
-  // boutons de gestion des vues
+  QVBoxLayout* clavierVar = new QVBoxLayout;
+  clavierVar->addWidget(label_var);
+  clavierVar->addLayout(new QHBoxLayout);
+
+  wClavierVar.getClavier()->setLayout(clavierVar);
+
+  // boutons de gestion des claviers
   QPushButton* affClavierP = new QPushButton("Clavier principal");
   connect(affClavierP, SIGNAL(clicked()), this, SLOT(onClick()));
   QPushButton* affClavierVar =
@@ -299,17 +300,49 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
   menuAffClavier->addWidget(affClavierP);
   menuAffClavier->addWidget(affClavierVar);
 
-  // Aligner tous les objets précédents.
-  couche = new QVBoxLayout;
-  couche->addLayout(menuVue);
-  couche->addLayout(menuAffClavier);
+  // Aligner tous les objets précédents dans vue principale
+  vue_principale = new QVBoxLayout;
+  vue_principale->addLayout(menuAffClavier);
+  vue_principale->addWidget(message);
+  vue_principale->addWidget(vue_pile);
+  vue_principale->addWidget(commande);
+  vue_principale->addWidget(wClavier);
+  vue_principale->addWidget(wClavierVar.getScrollableClavier());
 
-  couche->addWidget(message);
-  couche->addWidget(vue_pile);
-  couche->addWidget(commande);
-  couche->addLayout(clavier);
-  couche->addWidget(wClavier);
-  setLayout(couche);
+  // création du widget correspondant au layout vue_principale
+  QWidget* wCouche = new QWidget;
+  wCouche->setLayout(vue_principale);
+
+  // création du widget associé à la vue paramètre
+  QWidget* wPileParamTab = new QWidget;
+  QLabel* label_pile_tab =
+      new QLabel("Modification du paramètre affichage de la pile.");
+  label_pile_tab->setAlignment(Qt::AlignCenter);
+  spinBox = new QSpinBox;
+  spinBox->setRange(1, 10);
+  spinBox->setValue(5);
+  QPushButton* modifier = new QPushButton("Modifier");
+  connect(modifier, SIGNAL(clicked()), this, SLOT(modifyPileParam()));
+  QHBoxLayout* layout1 = new QHBoxLayout;
+  layout1->addWidget(spinBox);
+  layout1->addWidget(modifier);
+  QVBoxLayout* layout2 = new QVBoxLayout;
+  layout2->addWidget(label_pile_tab);
+  layout2->addLayout(layout1);
+  layout2->setAlignment(Qt::AlignTop);
+  wPileParamTab->setLayout(layout2);
+
+  // création de la fenêtre
+  QTabWidget* menu = new QTabWidget;
+  menu->addTab(wCouche, "Vue Principale");
+  menu->addTab(&wVariable, "Vue Variable");
+  menu->addTab(&wProgramme, "Vue Programme");
+  menu->addTab(wPileParamTab, "Vue Paramètre");
+
+  wMenu = new QVBoxLayout;
+  wMenu->addWidget(menu);
+
+  setLayout(wMenu);
 
   connect(pile, SIGNAL(ModifyStatus()), this, SLOT(refresh()));
   connect(commande, SIGNAL(returnPressed()), this, SLOT(getNextCommande()));
@@ -317,19 +350,19 @@ QComputer::QComputer(QWidget* parent) : QWidget(parent) {
 
 void QComputer::refresh() {
   message->setText(pile->GetMessage());
-  for (size_t i = 0; i < pile->GetNbDisplay(); i++) {
+  for (size_t i = 0; i < nb_pile_param; i++) {
     vue_pile->item(i, 0)->setText("");
   }
 
   size_t nb = 0;
   QFont fnt;
   fnt.setPointSize(12);
+
   for (Pile::Iterator it = pile->begin();
-       it != pile->end() && nb < pile->GetNbDisplay(); ++it) {
-    vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)
-        ->setTextAlignment(Qt::AlignRight);
-    vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)->setText((*it).Print());
-    vue_pile->item(pile->GetNbDisplay() - nb - 1, 0)->setFont(fnt);
+       it != pile->end() && nb < nb_pile_param; ++it) {
+    vue_pile->item(nb_pile_param - nb - 1, 0)->setTextAlignment(Qt::AlignRight);
+    vue_pile->item(nb_pile_param - nb - 1, 0)->setText((*it).Print());
+    vue_pile->item(nb_pile_param - nb - 1, 0)->setFont(fnt);
     nb++;
   }
 }
@@ -365,30 +398,15 @@ void QComputer::onClick() {
     return;
   }
 
-  if (button->text() == "Gestion des variables") {
-    // affichage de la vue de gestion des variables
-    return;
-  }
-
-  if (button->text() == "Gestion des programmes") {
-    // affichage de la vue de gestion des programmes
-    return;
-  }
-
-  if (button->text() == "Paramètre") {
-    // affichage de la vue des paramtres
-    return;
-  }
-
   if (button->text() == "Clavier principal") {
     // modification de la visibilité du claviers des variables et programmes
     pile->SetMessage("Affichage/Masquage du clavier principal");
     if (wClavier->isVisible() == true) {
       wClavier->hide();
-      this->setFixedSize(680, 445);
+      this->setFixedHeight(this->height() - wClavier->height());
     } else {
       wClavier->show();
-      this->setFixedSize(680, 775);
+      this->setFixedHeight(this->height() + wClavier->height());
     }
     return;
   }
@@ -396,6 +414,15 @@ void QComputer::onClick() {
   if (button->text() == "Clavier des variables et programmes") {
     // modification de la visibilité du claviers des variables et programmes
     pile->SetMessage("Affichage/Masquage du clavier variables et programmes");
+    if (wClavierVar.getScrollableClavier()->isVisible() == true) {
+      wClavierVar.getScrollableClavier()->hide();
+      this->setFixedHeight(this->height() - wClavierVar.getScrollableClavier()->height() -
+                           20);
+    } else {
+      wClavierVar.getScrollableClavier()->show();
+      this->setFixedHeight(this->height() + wClavierVar.getScrollableClavier()->height() +
+                           20);
+    }
     return;
   }
 
@@ -411,4 +438,38 @@ void QComputer::onClick() {
 bool QComputer::checkInput(QChar input) {
   // vérifier si input n'est pas un valeur numérique ni une virgule ni un espace
   return !input.isDigit() and input != '.' and input != ' ';
+}
+
+void QComputer::modifyPileParam() {
+  nb_pile_param = spinBox->value();
+  this->setFixedHeight(this->height()-vue_pile->height());
+  vue_pile->clear();
+  vue_pile->setRowCount(nb_pile_param);
+  vue_pile->setColumnCount(1);
+  vue_pile->setFixedHeight(nb_pile_param * 46);
+  this->setFixedHeight(this->height()+vue_pile->height());
+
+  QStringList labelList;
+  for (unsigned int i = nb_pile_param; i > 0; --i) {
+    QString str = QString::number(i);
+    labelList << str;
+  }
+
+  vue_pile->setVerticalHeaderLabels(labelList);
+
+  for (unsigned int i = 0; i < nb_pile_param; i++) {
+      QTableWidgetItem* new_item = new QTableWidgetItem("");
+      new_item->setFlags(new_item->flags() ^ Qt::ItemIsEditable);
+      vue_pile->setItem(i, 0, new_item);
+  }
+
+  refresh();
+}
+
+void QComputer::setCommande(QString& text) {
+    commande->setText(text);
+}
+
+QString QComputer::getMessage() const {
+    return message->text();
 }
