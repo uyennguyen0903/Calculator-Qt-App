@@ -30,6 +30,4 @@ Open the file `CompUT.pro` in QtCreator and build the project directly in QtCrea
 
 ![main GUI](images/CalculatorGUI.PNG)
 
-![extra TAB](images/GUI2.PNG)
-
 
