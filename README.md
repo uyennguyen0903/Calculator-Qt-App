@@ -1,4 +1,6 @@
-# Calculator-Qt-App
-Scientific Calculator
+# Reverse Polish Notation (RPN) calculator
 
-*In progress*
+## GUI
+
+![main GUI](images/GUI.png)
+
