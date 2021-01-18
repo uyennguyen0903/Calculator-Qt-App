@@ -1,4 +1,5 @@
 #include "Controller.h"
+
 #include "GCD.h"
 
 void Controller::SetOperator(Operator* op) {
@@ -39,7 +40,7 @@ int Controller::ParseProgram(const QStringList& list, int position) {
 
 void Controller::CommandeProcess(const QString& command) {
   QStringList operand_list =
-      command.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+      command.split(QRegExp("\\s+"), QString::SplitBehavior::SkipEmptyParts);
 
   for (int i = 0; i < operand_list.size(); ++i) {
     try {
@@ -79,7 +80,8 @@ void Controller::CommandeProcess(const QString& command) {
       }
 
       if (type == Operand::OperandType::kFraction) {
-        QStringList list = cur_operand.split("/", Qt::SkipEmptyParts);
+        QStringList list =
+            cur_operand.split("/", QString::SplitBehavior::SkipEmptyParts);
         long n = list.at(0).toInt();
         long d = list.at(1).toInt();
         if (d == 0) {
