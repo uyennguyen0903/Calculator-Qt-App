@@ -5,11 +5,10 @@ Scientific calculator using Reverse Polish Notation.
 ## Prerequisites
 - Qt
 
-On Linux, the following would install all the dependencies you need for building the project:
+Install dependencies you need for building the project on Linux:
 
 ```
 sudo apt install cmake g++ ninja-build
-jurplel/install-qt-action@v2
 ```
 
 
